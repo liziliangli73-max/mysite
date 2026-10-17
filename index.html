@@ -1,175 +1,187 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="dark">
+<html lang="zh-CN" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>琳琅 · 在校学生 / 写网页 & 折腾服务器</title>
-<meta name="description" content="琳琅的个人主页 —— 在校学生，学 HTML/CSS、JavaScript、Python，喜欢折腾服务器。">
-<meta name="theme-color" content="#070a0f">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.88em' font-size='88'>🔷</text></svg>">
+<title>琳琅 — 个人主页</title>
+<meta name="description" content="琳琅，在校学生。喜欢写网页，也喜欢折腾服务器。">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230071e3'/><text x='50' y='68' font-size='54' font-family='-apple-system,PingFang SC,sans-serif' fill='%23fff' text-anchor='middle'>琳</text></svg>">
 <style>
 :root{
-  --bg:#070a0f; --bg2:#0b1018; --panel:rgba(255,255,255,.035);
-  --panel2:rgba(255,255,255,.055); --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.14);
-  --fg:#e9f1f3; --dim:#8595a0; --faint:#5a6873;
-  --jade:#4ade9b; --jade-soft:rgba(74,222,155,.13);
-  --violet:#8b8cf7;
-  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
-  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --bg:#ffffff; --bg-alt:#f5f5f7; --fg:#1d1d1f; --fg-dim:#6e6e73;
+  --fg-faint:#86868b; --line:#d2d2d7; --line-soft:#e8e8ed;
+  --blue:#0071e3; --blue-h:#0077ed; --card:#ffffff;
 }
-html[data-theme="light"]{
-  --bg:#f7f9f8; --bg2:#eef2f0; --panel:rgba(0,0,0,.025);
-  --panel2:rgba(0,0,0,.045); --line:rgba(0,0,0,.10); --line2:rgba(0,0,0,.16);
-  --fg:#0d1512; --dim:#5c6b66; --faint:#8a9793;
-  --jade:#0f9d63; --jade-soft:rgba(15,157,99,.10);
-  --violet:#5b5bd6;
+html[data-theme="dark"]{
+  --bg:#000000; --bg-alt:#1d1d1f; --fg:#f5f5f7; --fg-dim:#a1a1a6;
+  --fg-faint:#86868b; --line:#424245; --line-soft:#2c2c2e;
+  --blue:#2997ff; --blue-h:#4aa8ff; --card:#1d1d1f;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
-  background:var(--bg); color:var(--fg); font-family:var(--sans);
-  line-height:1.7; -webkit-font-smoothing:antialiased; overflow-x:hidden;
-  transition:background .35s,color .35s;
+  background:var(--bg); color:var(--fg); -webkit-font-smoothing:antialiased;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",
+    "PingFang SC","Hiragino Sans GB","Helvetica Neue","Microsoft YaHei",sans-serif;
+  line-height:1.47059; letter-spacing:-.022em;
+  transition:background .3s,color .3s;
 }
-/* 背景：网格 + 光晕 */
-body::before{
-  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
-  background-image:
-    linear-gradient(var(--line) 1px,transparent 1px),
-    linear-gradient(90deg,var(--line) 1px,transparent 1px);
-  background-size:56px 56px; opacity:.55;
-  -webkit-mask-image:radial-gradient(ellipse 90% 65% at 50% 0%,#000 35%,transparent 100%);
-  mask-image:radial-gradient(ellipse 90% 65% at 50% 0%,#000 35%,transparent 100%);
+.inner{max-width:1024px;margin:0 auto;padding:0 22px}
+.inner-narrow{max-width:692px;margin:0 auto;padding:0 22px}
+a{color:inherit;text-decoration:none}
+
+/* ═══════ 导航（苹果式半透明模糊条）═══════ */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:color-mix(in srgb,var(--bg) 72%,transparent);
+  backdrop-filter:saturate(180%) blur(20px);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--line-soft);
 }
-body::after{
-  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
-  background:
-    radial-gradient(620px circle at 12% -8%,var(--jade-soft),transparent 62%),
-    radial-gradient(520px circle at 92% 4%,rgba(139,140,247,.10),transparent 62%);
+.nav-in{
+  max-width:1024px;margin:0 auto;padding:0 22px;height:48px;
+  display:flex;align-items:center;justify-content:space-between;
 }
-.wrap{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:0 20px}
-
-/* ---------- 顶栏 ---------- */
-header{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);
-  background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--line)}
-.bar{display:flex;align-items:center;justify-content:space-between;height:56px}
-.logo{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.02em}
-.logo b{color:var(--jade)}
-nav{display:flex;gap:2px;align-items:center}
-nav a{font-family:var(--mono);font-size:12.5px;color:var(--dim);text-decoration:none;
-  padding:6px 10px;border-radius:7px;transition:.16s}
-nav a:hover{color:var(--jade);background:var(--panel2)}
-.tgl{border:1px solid var(--line);background:transparent;color:var(--dim);
-  width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:14px;
-  display:grid;place-items:center;margin-left:6px;transition:.16s}
-.tgl:hover{color:var(--fg);border-color:var(--line2)}
-@media(max-width:620px){nav .h{display:none}}
-
-/* ---------- 首屏 ---------- */
-.hero{padding:66px 0 46px}
-.kicker{font-family:var(--mono);font-size:12px;color:var(--jade);letter-spacing:.1em;
-  margin-bottom:16px;display:flex;align-items:center;gap:8px}
-.kicker::before{content:"";width:22px;height:1px;background:var(--jade);opacity:.7}
-h1{font-size:clamp(38px,10vw,68px);line-height:1.05;letter-spacing:-.045em;font-weight:800;margin-bottom:14px}
-h1 span{background:linear-gradient(100deg,var(--jade),var(--violet));
-  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.sub{font-size:clamp(15px,3.8vw,17px);color:var(--dim);max-width:520px}
-
-/* 终端卡片 */
-.term{
-  margin-top:34px;border:1px solid var(--line2);border-radius:14px;overflow:hidden;
-  background:color-mix(in srgb,var(--bg2) 90%,transparent);
-  box-shadow:0 24px 60px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.02) inset;
-  max-width:640px;
+.brand{font-size:18px;font-weight:600;letter-spacing:-.02em}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a{
+  font-size:12px;color:var(--fg);opacity:.82;padding:8px 10px;
+  border-radius:8px;transition:.18s;
 }
-.term-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;
-  border-bottom:1px solid var(--line);background:var(--panel)}
-.dot{width:10px;height:10px;border-radius:50%;opacity:.85}
-.d1{background:#ff5f57}.d2{background:#febc2e}.d3{background:#28c840}
-.term-title{margin-left:8px;font-family:var(--mono);font-size:11.5px;color:var(--faint)}
-.term-body{padding:18px 16px 20px;font-family:var(--mono);font-size:13.5px;line-height:1.95}
-.term-line{white-space:pre-wrap;word-break:break-word}
-.prompt{color:var(--jade)}
-.cmd{color:var(--fg)}
-.out{color:var(--dim)}
-.cursor{display:inline-block;width:8px;height:15px;background:var(--jade);
-  vertical-align:-2px;animation:blink 1.05s steps(1) infinite}
-@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
-
-.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;
-  font-size:14px;font-weight:600;text-decoration:none;transition:.18s;
-  border:1px solid var(--line2);color:var(--fg);background:var(--panel)}
-.btn:hover{transform:translateY(-2px);border-color:var(--jade);color:var(--jade)}
-.btn.pri{background:var(--jade);border-color:var(--jade);color:#04120c}
-.btn.pri:hover{color:#04120c;filter:brightness(1.08)}
-html[data-theme="light"] .btn.pri{color:#fff}
-
-/* ---------- Bento ---------- */
-section{padding:44px 0}
-.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:22px}
-.sec-h h2{font-family:var(--mono);font-size:12px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--faint);font-weight:600}
-.sec-h .rule{flex:1;height:1px;background:var(--line)}
-
-.bento{display:grid;gap:12px;grid-template-columns:1fr}
-@media(min-width:640px){.bento{grid-template-columns:repeat(6,1fr)}}
-.card{
-  border:1px solid var(--line);border-radius:14px;padding:20px 18px;
-  background:var(--panel);transition:.2s;position:relative;overflow:hidden;
+.nav-links a:hover{opacity:1;background:var(--bg-alt)}
+.tgl{
+  border:none;background:transparent;cursor:pointer;color:var(--fg);
+  width:32px;height:32px;border-radius:50%;font-size:15px;opacity:.8;
+  display:grid;place-items:center;transition:.18s;
 }
-.card:hover{border-color:var(--line2);background:var(--panel2)}
-.c-stat{grid-column:span 3}
-.c-stat .num{font-family:var(--mono);font-size:30px;font-weight:700;letter-spacing:-.02em;
-  color:var(--jade);line-height:1.1}
-.c-stat .lbl{font-size:12.5px;color:var(--faint);margin-top:6px;font-family:var(--mono)}
-.c-wide{grid-column:span 6}
-.c-half{grid-column:span 3}
-@media(max-width:639px){.card{grid-column:span 1!important}}
+.tgl:hover{opacity:1;background:var(--bg-alt)}
+@media(max-width:640px){.nav-links .hide-s{display:none}}
 
-.live{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);
-  font-size:12px;color:var(--jade)}
-.live i{width:7px;height:7px;border-radius:50%;background:var(--jade);
-  box-shadow:0 0 0 0 var(--jade);animation:pulse 2s infinite}
-@keyframes pulse{
-  0%{box-shadow:0 0 0 0 rgba(74,222,155,.6)}
-  70%{box-shadow:0 0 0 9px rgba(74,222,155,0)}
-  100%{box-shadow:0 0 0 0 rgba(74,222,155,0)}
+/* ═══════ 首屏 ═══════ */
+.hero{text-align:center;padding:88px 0 72px}
+.eyebrow{
+  font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--blue);margin-bottom:14px;
+}
+.hero h1{
+  font-size:clamp(52px,13vw,104px);font-weight:700;letter-spacing:-.045em;
+  line-height:1.02;margin-bottom:22px;
+}
+.hero .lead{
+  font-size:clamp(19px,4.6vw,28px);font-weight:400;letter-spacing:-.015em;
+  color:var(--fg-dim);max-width:640px;margin:0 auto 30px;line-height:1.4;
+}
+.hero .lead b{color:var(--fg);font-weight:600}
+.links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+.links a{color:var(--blue);font-size:clamp(16px,3.6vw,19px);font-weight:400}
+.links a:hover{text-decoration:underline}
+.links a::after{content:" ›";font-size:.95em}
+
+/* 首屏视觉卡（苹果式大圆角产品块） */
+.visual{
+  margin:64px auto 0;max-width:980px;border-radius:28px;overflow:hidden;
+  background:linear-gradient(160deg,#eef4fb 0%,#f7f9fc 46%,#eaf0f8 100%);
+  border:1px solid var(--line-soft);
+  padding:56px 28px;text-align:center;
+}
+html[data-theme="dark"] .visual{
+  background:linear-gradient(160deg,#141a22 0%,#10151b 50%,#151b24 100%);
+}
+.v-num{
+  font-size:clamp(56px,14vw,120px);font-weight:700;letter-spacing:-.05em;
+  line-height:1;color:var(--fg);font-variant-numeric:tabular-nums;
+}
+.v-label{font-size:14px;color:var(--fg-faint);margin-top:10px;letter-spacing:0}
+.v-row{
+  display:flex;justify-content:center;gap:0;flex-wrap:wrap;
+  margin-top:38px;border-top:1px solid var(--line-soft);padding-top:26px;
+}
+.v-cell{flex:1;min-width:130px;padding:6px 12px}
+.v-cell + .v-cell{border-left:1px solid var(--line-soft)}
+.v-cell .k{font-size:13px;color:var(--fg-faint)}
+.v-cell .v{font-size:17px;font-weight:600;margin-top:4px}
+@media(max-width:520px){
+  .v-cell{min-width:50%}
+  .v-cell:nth-child(3){border-left:none}
 }
 
-.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.chip{font-family:var(--mono);font-size:12.5px;padding:6px 11px;border-radius:7px;
-  border:1px solid var(--line);color:var(--dim);background:var(--bg2);transition:.16s}
-.chip:hover{color:var(--jade);border-color:var(--jade);background:var(--jade-soft)}
+/* ═══════ 分区通用 ═══════ */
+section{padding:100px 0}
+.sec-alt{background:var(--bg-alt)}
+.sec-h{
+  font-size:clamp(32px,7vw,52px);font-weight:700;letter-spacing:-.028em;
+  line-height:1.08;margin-bottom:24px;
+}
+.sec-p{
+  font-size:clamp(17px,4vw,21px);color:var(--fg-dim);line-height:1.55;
+  letter-spacing:-.01em;max-width:660px;
+}
+.sec-p + .sec-p{margin-top:18px}
+.sec-p b{color:var(--fg);font-weight:600}
+@media(max-width:700px){section{padding:64px 0}}
 
-.about p{color:var(--dim);font-size:15px;margin-bottom:12px}
-.about p:last-child{margin-bottom:0}
-.about b{color:var(--fg);font-weight:600}
+/* ═══════ 数据 ═══════ */
+.stats{display:flex;flex-wrap:wrap;gap:44px;margin-top:56px}
+.stat .n{
+  font-size:clamp(38px,9vw,64px);font-weight:700;letter-spacing:-.04em;
+  line-height:1;color:var(--fg);font-variant-numeric:tabular-nums;
+}
+.stat .l{font-size:14px;color:var(--fg-faint);margin-top:8px}
 
-.works{display:grid;gap:10px;grid-template-columns:1fr}
-@media(min-width:560px){.works{grid-template-columns:1fr 1fr}}
-.w{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);
-  border-radius:11px;padding:15px 14px;background:var(--bg2);transition:.18s}
-.w:hover{border-color:var(--jade);transform:translateY(-2px)}
-.w h3{font-size:14.5px;font-weight:700;margin-bottom:5px;display:flex;
-  align-items:center;gap:6px;color:var(--fg)}
-.w h3::before{content:"▸";color:var(--jade);font-size:11px}
-.w p{font-size:12.8px;color:var(--faint);line-height:1.6}
-.w .t{font-family:var(--mono);font-size:10.5px;color:var(--faint);
-  margin-top:9px;letter-spacing:.05em;opacity:.85}
+/* ═══════ 作品瓷砖（苹果式双列）═══════ */
+.tiles{display:grid;gap:16px;margin-top:56px;grid-template-columns:1fr}
+@media(min-width:700px){.tiles{grid-template-columns:1fr 1fr}}
+.tile{
+  border-radius:20px;padding:38px 30px;background:var(--bg-alt);
+  display:flex;flex-direction:column;min-height:230px;
+  transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s;
+}
+.tile:hover{transform:translateY(-4px);box-shadow:0 18px 42px -18px rgba(0,0,0,.22)}
+html[data-theme="dark"] .tile{background:#161618}
+.tile .tag{
+  font-size:12px;font-weight:600;color:var(--blue);letter-spacing:.02em;
+  margin-bottom:10px;
+}
+.tile h3{font-size:clamp(21px,4.6vw,27px);font-weight:700;letter-spacing:-.022em;margin-bottom:9px}
+.tile p{font-size:15px;color:var(--fg-dim);line-height:1.5;flex:1}
+.tile .go{
+  margin-top:20px;font-size:16px;color:var(--blue);
+}
+.tile:hover .go{text-decoration:underline}
 
-.contact{display:flex;flex-direction:column;gap:1px}
-.row{display:flex;justify-content:space-between;align-items:center;gap:14px;
-  padding:13px 2px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit}
-.row:last-child{border-bottom:none}
-.row .k{font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.06em}
-.row .v{font-size:13.5px;font-weight:600;word-break:break-all;text-align:right}
-.row:hover .v{color:var(--jade)}
+/* ═══════ 技能 ═══════ */
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:44px}
+.chip{
+  font-size:15px;padding:9px 18px;border-radius:980px;
+  background:var(--bg);border:1px solid var(--line-soft);color:var(--fg-dim);
+  transition:.2s;
+}
+html[data-theme="dark"] .chip{background:#161618}
+.chip:hover{border-color:var(--blue);color:var(--blue)}
 
-footer{padding:38px 0 56px;border-top:1px solid var(--line);margin-top:20px}
-.fbar{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
-  font-family:var(--mono);font-size:11.5px;color:var(--faint)}
-.fbar b{color:var(--jade);font-weight:600}
+/* ═══════ 联系 ═══════ */
+.center{text-align:center}
+.btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:34px}
+.btn{
+  display:inline-block;padding:12px 26px;border-radius:980px;font-size:17px;
+  background:var(--blue);color:#fff;transition:.2s;border:1px solid var(--blue);
+}
+.btn:hover{background:var(--blue-h);border-color:var(--blue-h)}
+.btn.ghost{background:transparent;color:var(--blue);border-color:var(--line)}
+.btn.ghost:hover{background:var(--bg-alt);border-color:var(--blue)}
+
+/* ═══════ 页脚 ═══════ */
+footer{background:var(--bg-alt);padding:44px 0 56px;border-top:1px solid var(--line-soft)}
+.f-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:28px}
+.f-col h4{font-size:12px;font-weight:600;margin-bottom:12px;color:var(--fg)}
+.f-col a{display:block;font-size:12px;color:var(--fg-dim);padding:4px 0}
+.f-col a:hover{color:var(--fg);text-decoration:underline}
+.f-bot{
+  margin-top:34px;padding-top:18px;border-top:1px solid var(--line-soft);
+  font-size:12px;color:var(--fg-faint);display:flex;justify-content:space-between;
+  flex-wrap:wrap;gap:8px;
+}
 
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
@@ -179,135 +191,161 @@ footer{padding:38px 0 56px;border-top:1px solid var(--line);margin-top:20px}
 </head>
 <body>
 
-<header>
-  <div class="wrap bar">
-    <div class="logo">linlang<b>.</b>dev</div>
-    <nav>
-      <a href="#about" class="h">关于</a>
-      <a href="#works" class="h">作品</a>
+<nav>
+  <div class="nav-in">
+    <a class="brand" href="#">琳琅</a>
+    <div class="nav-links">
+      <a href="#about" class="hide-s">关于</a>
+      <a href="#works">作品</a>
+      <a href="#stack" class="hide-s">技能</a>
       <a href="#contact">联系</a>
-      <button class="tgl" id="tgl" aria-label="切换主题">◐</button>
-    </nav>
-  </div>
-</header>
-
-<main class="wrap">
-
-  <div class="hero">
-    <div class="kicker">个人主页</div>
-    <h1>我是<span>琳琅</span>。</h1>
-    <p class="sub">在校学生 · 喜欢写网页，也喜欢折腾服务器。</p>
-
-    <div class="term">
-      <div class="term-bar">
-        <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
-        <span class="term-title">linlang@localhost: ~</span>
-      </div>
-      <div class="term-body" id="termBody"></div>
-    </div>
-
-    <div class="cta">
-      <a class="btn pri" href="mailto:liziliangli73@gmail.com">✉ 联系我</a>
-      <a class="btn" href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">GitHub ↗</a>
-      <a class="btn" href="http://8.218.152.183" target="_blank" rel="noopener">我的服务器 ↗</a>
+      <button class="tgl" id="tgl" aria-label="切换深浅色">◐</button>
     </div>
   </div>
+</nav>
 
-  <section id="about">
-    <div class="sec-h"><h2>Status</h2><span class="rule"></span></div>
-    <div class="bento">
-      <div class="card c-stat">
-        <div class="num" id="days">—</div>
-        <div class="lbl">这个小站已上线（天）</div>
-      </div>
-      <div class="card c-stat">
-        <div class="live"><i></i>ONLINE</div>
-        <div class="lbl" style="margin-top:12px">阿里云 ECS · 中国香港</div>
-      </div>
-      <div class="card c-wide about">
-        <p>我是 <b>琳琅</b>，一名在校学生，正在学 <b>HTML/CSS、JavaScript 和 Python</b>。</p>
-        <p>喜欢动手做点小东西 —— 从写网页到自己配置一台云服务器。<b>这个站就跑在我自己搭建的机器上</b>：装系统、配 Nginx、绑 GitHub Pages，一步一步踩过来的。</p>
-        <p>最近在补 <b>Linux 和 Git</b> 的功课，也喜欢研究网络相关的小玩意（比如自建 DNS 去广告）。欢迎交流。</p>
-      </div>
+<div class="hero inner">
+  <p class="eyebrow">个人主页</p>
+  <h1>琳琅。</h1>
+  <p class="lead">在校学生。喜欢写网页，<br>也喜欢<b>折腾服务器</b>。</p>
+  <div class="links">
+    <a href="#about">了解更多</a>
+    <a href="#contact">联系我</a>
+  </div>
+
+  <div class="visual">
+    <div class="v-num" id="days">1</div>
+    <div class="v-label">这个小站已上线（天）</div>
+    <div class="v-row">
+      <div class="v-cell"><div class="k">所在地</div><div class="v">中国 · 香港</div></div>
+      <div class="v-cell"><div class="k">服务器</div><div class="v">2 核 4G</div></div>
+      <div class="v-cell"><div class="k">状态</div><div class="v" style="color:var(--blue)">运行中</div></div>
     </div>
-  </section>
+  </div>
+</div>
 
-  <section id="skills">
-    <div class="sec-h"><h2>Stack</h2><span class="rule"></span></div>
-    <div class="card c-wide">
-      <div class="chips">
-        <span class="chip">HTML</span>
-        <span class="chip">CSS</span>
-        <span class="chip">JavaScript</span>
-        <span class="chip">Python</span>
-        <span class="chip">Photoshop</span>
-        <span class="chip">Linux</span>
-        <span class="chip">Nginx</span>
-        <span class="chip">Git</span>
-      </div>
+<section class="sec-alt" id="about">
+  <div class="inner">
+    <p class="eyebrow">关于我</p>
+    <h2 class="sec-h">不是最快的，<br>但是自己一步步搭的。</h2>
+    <p class="sec-p">我是一名在校学生，正在学 <b>HTML/CSS、JavaScript 和 Python</b>。喜欢动手做点小东西 —— 从写一个网页，到完整地配好一台云服务器。</p>
+    <p class="sec-p">这个站就跑在<b>我自己搭建的机器</b>上：装系统、配 Nginx、绑域名、接 GitHub Pages，每一步都踩过坑。代码也全部开源在 GitHub。</p>
+    <p class="sec-p">最近在补 <b>Linux 和 Git</b> 的功课，也喜欢研究网络相关的小玩意，比如用 AdGuard Home 给全屋设备做去广告 DNS。</p>
+
+    <div class="stats">
+      <div class="stat"><div class="n">4</div><div class="l">个作品</div></div>
+      <div class="stat"><div class="n">8</div><div class="l">项技能</div></div>
+      <div class="stat"><div class="n" id="days2">1</div><div class="l">天运行中</div></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="works">
-    <div class="sec-h"><h2>Projects</h2><span class="rule"></span></div>
-    <div class="card c-wide">
-      <div class="works">
-        <a class="w" href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener">
-          <h3>个人主页</h3>
-          <p>你现在看的这个页面。手写 HTML/CSS/JS，零框架、零依赖，自带深色/浅色切换和终端动画。</p>
-          <div class="t">HTML · CSS · JavaScript</div>
-        </a>
-        <a class="w" href="https://github.com/liziliangli73-max/AdGuardHomeForRoot" target="_blank" rel="noopener">
-          <h3>AdGuard Home 部署</h3>
-          <p>在 Android 上以 root 方式跑 AdGuard Home，给全屋设备提供去广告 DNS。</p>
-          <div class="t">Shell · Android · DNS</div>
-        </a>
-        <a class="w" href="#" >
-          <h3>待办清单</h3>
-          <p>纯前端待办小工具，数据存在浏览器本地，关掉页面也不会丢。</p>
-          <div class="t">JavaScript · localStorage</div>
-        </a>
-        <a class="w" href="#">
-          <h3>图片批处理脚本</h3>
-          <p>用 Python 批量压缩和重命名图片，省掉一张张手动处理的时间。</p>
-          <div class="t">Python · Pillow</div>
-        </a>
-      </div>
+<section id="works">
+  <div class="inner">
+    <p class="eyebrow">作品</p>
+    <h2 class="sec-h">做过的一些<br>小东西。</h2>
+    <div class="tiles">
+
+      <a class="tile" href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener">
+        <div class="tag">HTML / CSS / JS</div>
+        <h3>个人主页</h3>
+        <p>你现在看到的这个页面。手写实现，没有框架，也没有任何图片资源，全部用 CSS 和字体完成。</p>
+        <div class="go">在 GitHub 上查看 ›</div>
+      </a>
+
+      <a class="tile" href="https://github.com/liziliangli73-max/AdGuardHomeForRoot" target="_blank" rel="noopener">
+        <div class="tag">Shell / Android / DNS</div>
+        <h3>AdGuard Home</h3>
+        <p>在 Android 上以 root 方式运行 AdGuard Home，为家里所有设备提供去广告和防跟踪的 DNS 服务。</p>
+        <div class="go">在 GitHub 上查看 ›</div>
+      </a>
+
+      <a class="tile" href="#">
+        <div class="tag">JavaScript</div>
+        <h3>待办清单</h3>
+        <p>一个纯前端的待办小工具，数据保存在浏览器本地，关掉页面也不会丢失，不需要任何账号。</p>
+        <div class="go">了解详情 ›</div>
+      </a>
+
+      <a class="tile" href="#">
+        <div class="tag">Python</div>
+        <h3>图片批处理</h3>
+        <p>用 Python 批量压缩、重命名图片的小脚本，省掉一张张手动处理的时间。</p>
+        <div class="go">了解详情 ›</div>
+      </a>
+
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="contact">
-    <div class="sec-h"><h2>Contact</h2><span class="rule"></span></div>
-    <div class="card c-wide">
-      <div class="contact">
-        <a class="row" href="mailto:liziliangli73@gmail.com">
-          <span class="k">EMAIL</span><span class="v">liziliangli73@gmail.com</span>
-        </a>
-        <a class="row" href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">
-          <span class="k">GITHUB</span><span class="v">@liziliangli73-max</span>
-        </a>
-        <a class="row" href="http://8.218.152.183" target="_blank" rel="noopener">
-          <span class="k">SERVER</span><span class="v">8.218.152.183</span>
-        </a>
-      </div>
+<section class="sec-alt" id="stack">
+  <div class="inner">
+    <p class="eyebrow">技能</p>
+    <h2 class="sec-h">正在学的。</h2>
+    <p class="sec-p">还在路上，但每一个都亲手用过。</p>
+    <div class="chips">
+      <span class="chip">HTML</span>
+      <span class="chip">CSS</span>
+      <span class="chip">JavaScript</span>
+      <span class="chip">Python</span>
+      <span class="chip">Photoshop</span>
+      <span class="chip">Linux</span>
+      <span class="chip">Nginx</span>
+      <span class="chip">Git</span>
     </div>
-  </section>
+  </div>
+</section>
 
-</main>
+<section id="contact">
+  <div class="inner-narrow center">
+    <p class="eyebrow">联系</p>
+    <h2 class="sec-h">聊聊？</h2>
+    <p class="sec-p" style="margin:0 auto">有想法、有问题，或者只是想打个招呼，都欢迎。</p>
+    <div class="btns">
+      <a class="btn" href="mailto:liziliangli73@gmail.com">发邮件</a>
+      <a class="btn ghost" href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
 
 <footer>
-  <div class="wrap fbar">
-    <span>© 2026 <b>琳琅</b> · 用 HTML/CSS 手写，没有框架</span>
-    <span>托管于 <b>GitHub Pages</b></span>
+  <div class="inner">
+    <div class="f-cols">
+      <div class="f-col">
+        <h4>关于本站</h4>
+        <a href="#about">关于我</a>
+        <a href="#works">作品</a>
+        <a href="#stack">技能</a>
+      </div>
+      <div class="f-col">
+        <h4>代码</h4>
+        <a href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener">本站源码</a>
+        <a href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">我的 GitHub</a>
+      </div>
+      <div class="f-col">
+        <h4>联系</h4>
+        <a href="mailto:liziliangli73@gmail.com">liziliangli73@gmail.com</a>
+      </div>
+      <div class="f-col">
+        <h4>托管</h4>
+        <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a>
+        <a href="http://8.218.152.183" target="_blank" rel="noopener">阿里云 ECS · 香港</a>
+      </div>
+    </div>
+    <div class="f-bot">
+      <span>© 2026 琳琅 · 手写 HTML/CSS，没有框架，没有图片</span>
+      <span id="year"></span>
+    </div>
   </div>
 </footer>
 
 <script>
 (function(){
   var root = document.documentElement;
+  // 默认浅色；只有用户手动切过才记住
   var saved = null;
   try { saved = localStorage.getItem('theme'); } catch(e){}
-  if (saved) root.setAttribute('data-theme', saved);
+  if (saved === 'dark') root.setAttribute('data-theme','dark');
 
   document.getElementById('tgl').addEventListener('click', function(){
     var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -315,68 +353,11 @@ footer{padding:38px 0 56px;border-top:1px solid var(--line);margin-top:20px}
     try { localStorage.setItem('theme', next); } catch(e){}
   });
 
-  // 上线天数
-  var start = new Date(2026, 9, 17); // 2026-10-17
+  var start = new Date(2026, 9, 17);
   var d = Math.max(1, Math.floor((Date.now() - start.getTime()) / 86400000));
-  document.getElementById('days').textContent = d;
-
-  // 终端逐行打印
-  var lines = [
-    {p:'$ ', c:'whoami', o:''},
-    {p:'', c:'', o:'琳琅'},
-    {p:'$ ', c:'cat status.txt', o:''},
-    {p:'', c:'', o:'在校学生 · 学 HTML/CSS / JavaScript / Python'},
-    {p:'$ ', c:'uptime', o:''},
-    {p:'', c:'', o:'已稳定运行 ' + d + ' 天'}
-  ];
-  var body = document.getElementById('termBody');
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  function lineEl(cls, txt){
-    var div = document.createElement('div');
-    div.className = 'term-line';
-    if (cls) { var s = document.createElement('span'); s.className = cls; s.textContent = txt; div.appendChild(s); }
-    else { div.textContent = txt; }
-    return div;
-  }
-  function renderAll(){
-    body.innerHTML = '';
-    lines.forEach(function(l){
-      if (l.p) body.appendChild(lineEl('prompt', l.p)).appendChild(lineEl('cmd', l.c));
-      else body.appendChild(lineEl('out', l.o));
-    });
-  }
-  if (reduce || !lines.length) {
-    renderAll();
-    var cur = document.createElement('span'); cur.className='cursor'; body.appendChild(cur);
-    return;
-  }
-
-  var i = 0;
-  function nextLine(){
-    if (i >= lines.length) {
-      var cur = document.createElement('span'); cur.className='cursor'; body.appendChild(cur);
-      return;
-    }
-    var l = lines[i];
-    var div = document.createElement('div');
-    div.className = 'term-line';
-    body.appendChild(div);
-    if (l.p) {
-      var sp = document.createElement('span'); sp.className='prompt'; sp.textContent=l.p; div.appendChild(sp);
-      var sc = document.createElement('span'); sc.className='cmd'; div.appendChild(sc);
-      var txt = l.c, j = 0;
-      var t = setInterval(function(){
-        sc.textContent = txt.slice(0, ++j);
-        if (j >= txt.length) { clearInterval(t); i++; setTimeout(nextLine, 180); }
-      }, 42);
-    } else {
-      div.textContent = l.o;
-      i++;
-      setTimeout(nextLine, 220);
-    }
-  }
-  nextLine();
+  var a = document.getElementById('days'); if(a) a.textContent = d;
+  var b = document.getElementById('days2'); if(b) b.textContent = d;
+  var y = document.getElementById('year'); if(y) y.textContent = new Date().getFullYear();
 })();
 </script>
 </body>
