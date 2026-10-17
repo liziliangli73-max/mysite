@@ -147,11 +147,13 @@ html[data-theme="night"] .scroll-hint{color:rgba(200,225,215,.55)}
 /* 观影 */
 .films{display:grid;gap:14px;grid-template-columns:1fr}
 @media(min-width:720px){.films{grid-template-columns:1fr 1fr}}
-.film{padding:26px 24px;border-radius:16px;border:1px solid var(--line);
-  background:var(--card);transition:.24s;position:relative;overflow:hidden}
-.film::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
-  background:linear-gradient(180deg,var(--jade),var(--clay));opacity:.7}
+.film{display:flex;gap:16px;padding:14px;border-radius:16px;border:1px solid var(--line);
+  background:var(--card);transition:.24s;position:relative;overflow:hidden;align-items:flex-start}
 .film:hover{transform:translateY(-3px);border-color:var(--jade2)}
+.poster{width:106px;min-width:106px;aspect-ratio:2/3;object-fit:cover;border-radius:10px;
+  background:var(--line);box-shadow:0 8px 22px -10px rgba(0,0,0,.4);cursor:zoom-in}
+.f-body{flex:1;min-width:0}
+@media(max-width:430px){.poster{width:84px;min-width:84px}.film{gap:12px;padding:12px}}
 .film .y{font-size:11.5px;letter-spacing:.24em;color:var(--jade);font-weight:700;margin-bottom:9px}
 .film h3{font-size:19px;font-weight:700;letter-spacing:.04em;margin-bottom:10px}
 .film p{font-size:14.5px;line-height:1.85;color:var(--ink2)}
@@ -181,25 +183,40 @@ html[data-theme="night"] .scroll-hint{color:rgba(200,225,215,.55)}
 footer{padding:32px 0 46px;text-align:center;background:var(--paper);border-top:1px solid var(--line)}
 footer .f{font-size:12px;letter-spacing:.12em;color:var(--ink3);line-height:2.1}
 
-/* 灯箱 */
-.lb{position:fixed;inset:0;z-index:500;background:rgba(8,14,12,.94);
-  display:none;place-items:center;padding:56px 16px;backdrop-filter:blur(6px)}
-.lb.on{display:grid}
-.lb figure{max-width:100%;max-height:100%;display:flex;flex-direction:column;align-items:center;gap:14px}
-.lb img{max-width:100%;max-height:78svh;border-radius:10px;object-fit:contain;
-  box-shadow:0 30px 80px -30px rgba(0,0,0,.8)}
-.lb figcaption{color:#dfe9e4;font-size:13px;letter-spacing:.06em;text-align:center;opacity:.9}
-.lb .num{color:#7d918a;font-size:11.5px;letter-spacing:.2em;margin-top:-4px}
-.lb-btn{position:absolute;border:none;background:rgba(255,255,255,.08);color:#fff;
-  width:46px;height:46px;border-radius:50%;cursor:pointer;font-size:22px;
-  display:grid;place-items:center;transition:.2s;line-height:1}
-.lb-btn:hover{background:rgba(255,255,255,.2)}
-.lb-close{top:16px;right:16px}
-.lb-prev{left:14px;top:50%;transform:translateY(-50%)}
-.lb-next{right:14px;top:50%;transform:translateY(-50%)}
-@media(max-width:560px){.lb-prev,.lb-next{width:40px;height:40px;font-size:19px}
-  .lb-prev{left:6px}.lb-next{right:6px}}
-
+/* 灯箱 · 图集 */
+.lb{position:fixed;inset:0;z-index:500;background:rgba(8,14,12,.96);
+  display:none;flex-direction:column;padding:14px 12px 10px;backdrop-filter:blur(8px)}
+.lb.on{display:flex}
+.lb-top{display:flex;align-items:center;justify-content:space-between;padding:0 4px 10px;flex-shrink:0}
+.lb-num{color:#8ea29b;font-size:11.5px;letter-spacing:.24em;font-variant-numeric:tabular-nums}
+.lb-btn{border:none;background:rgba(255,255,255,.09);color:#fff;
+  width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:21px;
+  display:grid;place-items:center;transition:.2s;line-height:1;flex-shrink:0}
+.lb-btn:hover{background:rgba(255,255,255,.22)}
+.lb-close{width:38px;height:38px;font-size:19px}
+.lb-prev,.lb-next{position:absolute;top:50%;transform:translateY(-50%);z-index:3}
+.lb-prev{left:10px}.lb-next{right:10px}
+.lb-stage{flex:1;min-height:0;display:grid;place-items:center;position:relative}
+.lb-stage img{max-width:100%;max-height:100%;border-radius:10px;object-fit:contain;
+  box-shadow:0 30px 80px -30px rgba(0,0,0,.85);opacity:1;transition:opacity .22s,transform .22s}
+.lb-stage img.out{opacity:0;transform:scale(.985)}
+.lb-foot{flex-shrink:0;padding-top:12px}
+.lb-cap{color:#dfe9e4;font-size:13px;letter-spacing:.05em;text-align:center;
+  margin-bottom:11px;line-height:1.6;min-height:1.6em}
+.lb-thumbs{display:flex;gap:7px;overflow-x:auto;padding:2px 2px 8px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;justify-content:safe center}
+.lb-thumbs::-webkit-scrollbar{display:none}
+.lb-thumbs img{width:52px;height:52px;min-width:52px;object-fit:cover;border-radius:7px;
+  opacity:.42;cursor:pointer;transition:.18s;border:2px solid transparent}
+.lb-thumbs img:hover{opacity:.75}
+.lb-thumbs img.on{opacity:1;border-color:#7fb9a6;transform:scale(1.06)}
+@media(max-width:600px){
+  .lb{padding:10px 8px 8px}
+  .lb-prev,.lb-next{width:38px;height:38px;font-size:18px}
+  .lb-prev{left:4px}.lb-next{right:4px}
+  .lb-thumbs img{width:44px;height:44px;min-width:44px}
+  .lb-cap{font-size:12px}
+}
 .rv{opacity:0;transform:translateY(26px);
   transition:opacity 1s cubic-bezier(.2,.6,.2,1),transform 1s cubic-bezier(.2,.6,.2,1)}
 .rv.in{opacity:1;transform:none}
@@ -317,24 +334,36 @@ footer .f{font-size:12px;letter-spacing:.12em;color:var(--ink3);line-height:2.1}
     </div>
     <div class="films">
       <article class="film rv">
+        <img class="poster" src="photos/yourname.jpg" alt="你的名字。" loading="lazy" width="460" height="690">
+        <div class="f-body">
         <div class="y">2016</div>
         <h3 data-en="Your Name.">你的名字。</h3>
         <p data-en="The moment at dusk on the mountain top — that's the most concrete picture I have of what “passing each other by” means.">「黄昏之时」那一幕，是我对"擦肩而过"这四个字最具体的想象。两个人在山顶终于见面，天光只剩最后一分钟。</p>
+        </div>
       </article>
       <article class="film rv">
+        <img class="poster" src="photos/weathering.jpg" alt="天气之子" loading="lazy" width="460" height="690">
+        <div class="f-body">
         <div class="y">2019</div>
         <h3 data-en="Weathering With You">天气之子</h3>
         <p data-en="Rain buries the whole city and nobody apologises for it. I like that it refuses to be a noble story.">雨把整座城市淹了，他也没打算道歉。喜欢它不肯做一个"正确"的选择，就是想把那个人留下来而已。</p>
+        </div>
       </article>
       <article class="film rv">
+        <img class="poster" src="photos/helloworld.jpg" alt="HELLO WORLD" loading="lazy" width="460" height="690">
+        <div class="f-body">
         <div class="y">2019</div>
         <h3 data-en="HELLO WORLD">HELLO WORLD</h3>
         <p data-en="“Hello, World.” I've been using this line as a signature ever since — it's also the first thing every program says.">「你好，世界。」后来我把这句话一直用着 —— 它是每段程序说的第一句话，也是人第一次抬头看这个世界时说的。</p>
+        </div>
       </article>
       <article class="film rv">
+        <img class="poster" src="photos/suzume.jpg" alt="铃芽之旅" loading="lazy" width="460" height="690">
+        <div class="f-body">
         <div class="y">2022</div>
         <h3 data-en="Suzume">铃芽之旅</h3>
         <p data-en="Doors, ruins, and the things people left behind. The closing door is a kind of goodbye.">关于门、废墟，还有被留下的东西。关上一扇门，其实也是一种告别。</p>
+        </div>
       </article>
     </div>
   </div>
@@ -389,15 +418,19 @@ footer .f{font-size:12px;letter-spacing:.12em;color:var(--ink3);line-height:2.1}
   </div>
 </footer>
 
-<!-- 灯箱 -->
-<div class="lb" id="lb" aria-hidden="true" role="dialog">
-  <button class="lb-btn lb-close" id="lbClose" aria-label="Close">×</button>
+<!-- 灯箱 · 图集 -->
+<div class="lb" id="lb" aria-hidden="true" role="dialog" aria-label="Photo gallery">
+  <div class="lb-top">
+    <span class="lb-num" id="lbNum"></span>
+    <button class="lb-btn lb-close" id="lbClose" aria-label="Close">×</button>
+  </div>
   <button class="lb-btn lb-prev" id="lbPrev" aria-label="Previous">‹</button>
   <button class="lb-btn lb-next" id="lbNext" aria-label="Next">›</button>
-  <figure>
-    <img id="lbImg" alt="">
-    <figcaption><span id="lbCap"></span><span class="num" id="lbNum"></span></figcaption>
-  </figure>
+  <div class="lb-stage"><img id="lbImg" alt=""></div>
+  <div class="lb-foot">
+    <div class="lb-cap" id="lbCap"></div>
+    <div class="lb-thumbs" id="lbThumbs"></div>
+  </div>
 </div>
 
 <script>
@@ -443,46 +476,77 @@ footer .f{font-size:12px;letter-spacing:.12em;color:var(--ink3);line-height:2.1}
     setLang(root.getAttribute('data-lang')==='en'?'zh':'en');
   });
 
-  /* 灯箱 */
+  /* 灯箱 · 图集 */
   var lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'),
-      lbCap=document.getElementById('lbCap'), lbNum=document.getElementById('lbNum');
-  var list=Array.prototype.slice.call(document.querySelectorAll('.g-item img'));
+      lbCap=document.getElementById('lbCap'), lbNum=document.getElementById('lbNum'),
+      lbThumbs=document.getElementById('lbThumbs');
+  var list=Array.prototype.slice.call(document.querySelectorAll('.g-item img, .poster'));
   var cur=0;
+
+  list.forEach(function(img,i){
+    var t=document.createElement('img');
+    t.src=img.getAttribute('src'); t.alt=''; t.loading='lazy';
+    t.addEventListener('click', function(e){ e.stopPropagation(); show(i); });
+    lbThumbs.appendChild(t);
+  });
+  var thumbs=Array.prototype.slice.call(lbThumbs.children);
+
+  function capOf(img){
+    var fig=img.closest('.g-item');
+    if(fig) return fig.getAttribute('data-active-cap') || '';
+    var film=img.closest('.film');
+    if(film){ var h=film.querySelector('h3'); return h?h.textContent:''; }
+    return img.alt || '';
+  }
 
   function show(i){
     cur=(i+list.length)%list.length;
     var img=list[cur];
-    lbImg.src=img.currentSrc||img.src;
-    lbImg.alt=img.alt||'';
-    var fig=img.closest('.g-item');
-    lbCap.textContent=fig.getAttribute('data-active-cap')||'';
+    var full=img.currentSrc || img.src;
+    lbImg.classList.add('out');
+    var pre=new Image();
+    function done(){ lbImg.src=full; requestAnimationFrame(function(){ lbImg.classList.remove('out'); }); }
+    pre.onload=done; pre.onerror=done; pre.src=full;
+    lbCap.textContent=capOf(img);
     lbNum.textContent=(cur+1)+' / '+list.length;
-    lb.classList.add('on'); lb.setAttribute('aria-hidden','false');
-    document.body.style.overflow='hidden';
+    thumbs.forEach(function(t,k){ t.classList.toggle('on', k===cur); });
+    var at=thumbs[cur];
+    if(at && at.scrollIntoView) at.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});
+    [cur-1,cur+1].forEach(function(k){
+      var q=(k+list.length)%list.length;
+      if(q!==cur){ var im=new Image(); im.src=list[q].currentSrc||list[q].src; }
+    });
+    if(!lb.classList.contains('on')){
+      lb.classList.add('on'); lb.setAttribute('aria-hidden','false');
+      document.body.style.overflow='hidden';
+    }
   }
   function hide(){
     lb.classList.remove('on'); lb.setAttribute('aria-hidden','true');
     document.body.style.overflow='';
   }
+
   list.forEach(function(img,i){
-    img.parentElement.addEventListener('click', function(ev){ ev.preventDefault(); show(i); });
+    var host = img.closest('.g-item') || img;
+    host.addEventListener('click', function(ev){ ev.preventDefault(); ev.stopPropagation(); show(i); });
   });
   document.getElementById('lbClose').addEventListener('click', hide);
   document.getElementById('lbPrev').addEventListener('click', function(e){ e.stopPropagation(); show(cur-1); });
   document.getElementById('lbNext').addEventListener('click', function(e){ e.stopPropagation(); show(cur+1); });
-  lb.addEventListener('click', function(e){ if(e.target===lb) hide(); });
+  lb.addEventListener('click', function(e){
+    if(e.target===lb || e.target.classList.contains('lb-stage')) hide();
+  });
   document.addEventListener('keydown', function(e){
     if(!lb.classList.contains('on')) return;
     if(e.key==='Escape') hide();
     else if(e.key==='ArrowLeft') show(cur-1);
     else if(e.key==='ArrowRight') show(cur+1);
   });
-  /* 触摸滑动 */
   var sx=0, sy=0;
   lb.addEventListener('touchstart', function(e){ sx=e.touches[0].clientX; sy=e.touches[0].clientY; }, {passive:true});
   lb.addEventListener('touchend', function(e){
     var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
-    if(Math.abs(dx)>50 && Math.abs(dx)>Math.abs(dy)) show(cur + (dx<0?1:-1));
+    if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)*1.2) show(cur + (dx<0?1:-1));
   }, {passive:true});
 
   /* 入场 */
