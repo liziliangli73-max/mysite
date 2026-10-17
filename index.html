@@ -460,6 +460,87 @@ html[data-theme="night"] nav{
   .film::after,.mail::after{display:none}
   .film:hover,.mail:hover{transform:none}
 }
+
+/* ══════════════════════════════════════════
+   沉浸光感 · 跟随重力
+   ══════════════════════════════════════════ */
+:root{
+  --gx:22%;      /* 光源水平位置 */
+  --gy:4%;       /* 光源垂直位置 */
+  --gxr:0;       /* -1..1 归一化倾斜 */
+  --gyr:0;
+}
+
+/* 玻璃卡：主高光跟着重力走 */
+.film, .mail{
+  background:
+    radial-gradient(130% 95% at var(--gx) var(--gy), var(--gl-hi) 0%, transparent 56%),
+    linear-gradient(158deg, var(--gl-mid) 0%, var(--gl-lo) 48%, var(--gl-mid) 100%);
+}
+
+/* 叠加一层会移动的柔光（滤色模式，光合成的感觉） */
+.film::before, .mail::before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:radial-gradient(52% 46% at var(--gx) var(--gy),
+    rgba(255,255,255,.50) 0%, rgba(255,255,255,.14) 42%, transparent 72%);
+  mix-blend-mode:screen;opacity:.9;
+  transition:opacity .3s;
+}
+html[data-theme="night"] .film::before,
+html[data-theme="night"] .mail::before{
+  background:radial-gradient(52% 46% at var(--gx) var(--gy),
+    rgba(170,240,214,.20) 0%, rgba(170,240,214,.06) 42%, transparent 72%);
+}
+
+/* 海报随倾斜轻微位移（视差，制造厚度感） */
+.poster{
+  transform:translate3d(calc(var(--gxr) * 4px), calc(var(--gyr) * 3px), 0);
+  transition:transform .12s linear;
+}
+
+/* 卡片本体：极轻微的 3D 倾斜 */
+.film, .mail{
+  transform:perspective(900px)
+            rotateX(calc(var(--gyr) * -1.4deg))
+            rotateY(calc(var(--gxr) * 1.4deg));
+  will-change:transform;
+}
+.film:hover, .mail:hover{
+  transform:perspective(900px)
+            rotateX(calc(var(--gyr) * -1.4deg))
+            rotateY(calc(var(--gxr) * 1.4deg))
+            translateY(-1px);
+}
+
+/* 首屏：光晕随重力移动 */
+.hero::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(46% 38% at var(--gx) var(--gy),
+    rgba(255,244,222,.62) 0%, rgba(255,244,222,.22) 38%, transparent 70%);
+  mix-blend-mode:screen;
+  transition:opacity .4s;
+}
+html[data-theme="night"] .hero::after{
+  background:radial-gradient(46% 38% at var(--gx) var(--gy),
+    rgba(140,200,255,.26) 0%, rgba(140,200,255,.08) 40%, transparent 72%);
+}
+/* 标题文字微视差 */
+.hero-in{transform:translate3d(calc(var(--gxr) * -5px), calc(var(--gyr) * -4px), 0);
+  transition:transform .15s linear}
+
+/* 照片墙：极轻的表面反光 */
+.g-item::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(44% 40% at var(--gx) var(--gy),
+    rgba(255,255,255,.18) 0%, transparent 68%);
+  mix-blend-mode:soft-light;
+}
+.g-cap{z-index:2}
+
+@media(prefers-reduced-motion:reduce){
+  .film,.mail,.poster,.hero-in{transform:none!important}
+  .film::before,.mail::before,.hero::after,.g-item::after{display:none}
+}
 </style>
 </head>
 <body>
@@ -774,6 +855,62 @@ html[data-theme="night"] nav{
     }, {rootMargin:'0px 0px -8% 0px', threshold:0.05});
     els.forEach(function(e){ io.observe(e); });
   }
+})();
+</script>
+
+<script>
+(function(){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var root = document.documentElement;
+  var tx = 0, ty = 0;   // 目标
+  var cx = 0, cy = 0;   // 平滑后的当前值
+  var hasData = false;
+
+  function clamp(v, a, b){ return v < a ? a : (v > b ? b : v); }
+
+  /* 设备方向：gamma 左右，beta 前后 */
+  function onOri(e){
+    if (e.gamma == null && e.beta == null) return;
+    hasData = true;
+    tx = clamp((e.gamma || 0) / 42, -1, 1);
+    // 竖持手机时 beta 约 45~70，把 55° 当"正对"
+    ty = clamp(((e.beta || 0) - 55) / 42, -1, 1);
+  }
+  /* 备用：加速度计 */
+  function onMot(e){
+    if (hasData) return;
+    var a = e.accelerationIncludingGravity;
+    if (!a) return;
+    tx = clamp((a.x || 0) / 9.4, -1, 1);
+    ty = clamp(-(a.y || 0) / 9.4, -1, 1);
+  }
+
+  window.addEventListener('deviceorientation', onOri, true);
+  window.addEventListener('devicemotion', onMot, true);
+
+  /* iOS 13+ 需要用户手势授权 */
+  function askPerm(){
+    if (typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission().catch(function(){});
+    }
+    window.removeEventListener('touchend', askPerm);
+    window.removeEventListener('click', askPerm);
+  }
+  window.addEventListener('touchend', askPerm, { passive:true });
+  window.addEventListener('click', askPerm);
+
+  /* 帧循环：平滑插值，避免抖动 */
+  function loop(){
+    cx += (tx - cx) * 0.10;
+    cy += (ty - cy) * 0.10;
+    root.style.setProperty('--gx', clamp(50 + cx * 38, 4, 96).toFixed(1) + '%');
+    root.style.setProperty('--gy', clamp(26 + cy * 26, 2, 80).toFixed(1) + '%');
+    root.style.setProperty('--gxr', cx.toFixed(3));
+    root.style.setProperty('--gyr', cy.toFixed(3));
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
 })();
 </script>
 </body>
