@@ -541,6 +541,64 @@ html[data-theme="night"] .hero::after{
   .film,.mail,.poster,.hero-in{transform:none!important}
   .film::before,.mail::before,.hero::after,.g-item::after{display:none}
 }
+
+/* ══════════════════════════════════════════
+   照片墙 · 沉浸光感（跟随重力）
+   ══════════════════════════════════════════ */
+
+/* ① 玻璃压感：内高光边 + 外投影 + 微翻转 */
+.g-item{
+  overflow:hidden;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.58),
+    inset 0 0 0 1px rgba(255,255,255,.14),
+    inset 0 -1px 0 rgba(0,0,0,.10),
+    0 24px 52px -26px var(--gl-shadow);
+  transform:perspective(1200px)
+            rotateX(calc(var(--gyr) * -0.9deg))
+            rotateY(calc(var(--gxr) * 0.9deg));
+  will-change:transform;
+  transition:transform .12s linear, box-shadow .3s;
+}
+html[data-theme="night"] .g-item{
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.16),
+    inset 0 0 0 1px rgba(255,255,255,.06),
+    0 24px 52px -26px rgba(0,0,0,.8);
+}
+
+/* ② 主光：柔光混合，像光打在照片上（不洗白） */
+.g-item::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(58% 62% at var(--gx) var(--gy),
+    rgba(255,255,255,.58) 0%,
+    rgba(255,255,255,.18) 34%,
+    rgba(255,255,255,0)   68%);
+  mix-blend-mode:soft-light;
+  transition:opacity .3s;
+}
+html[data-theme="night"] .g-item::after{
+  background:radial-gradient(58% 62% at var(--gx) var(--gy),
+    rgba(180,240,220,.30) 0%,
+    rgba(180,240,220,.08) 36%,
+    rgba(180,240,220,0)   68%);
+}
+
+/* ③ 表面反光：滤色叠加，模拟玻璃面的一层薄光 */
+.g-item::before{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(72% 84% at var(--gx) var(--gy),
+    rgba(255,255,255,.14) 0%, rgba(255,255,255,.04) 46%, transparent 70%);
+  mix-blend-mode:screen;
+}
+
+/* ④ 说明条保持在光层之上 */
+.g-cap{z-index:3}
+
+@media(prefers-reduced-motion:reduce){
+  .g-item{transform:none!important}
+  .g-item::before,.g-item::after{display:none}
+}
 </style>
 </head>
 <body>
