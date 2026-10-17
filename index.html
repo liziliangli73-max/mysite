@@ -227,6 +227,100 @@ footer .f{font-size:12px;letter-spacing:.12em;color:var(--ink3);line-height:2.1}
   *{animation:none!important;transition:none!important}
   .rv{opacity:1!important;transform:none!important}
 }
+
+/* ══════════════════════════════════════════
+   苹果风覆盖层：留白 / 轻字重 / 无边框 / 纯色块
+   ══════════════════════════════════════════ */
+:root{
+  --tint:#f5f7f6;      /* 苹果式浅灰区块 */
+  --tint2:#eff3f1;     /* 卡片底色 */
+  --tint2h:#e6ede9;    /* hover */
+}
+html[data-theme="night"]{
+  --tint:#101816; --tint2:#141d1a; --tint2h:#1b2622;
+}
+
+/* 字体：向 SF Pro 靠，字距收紧 */
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",
+    "PingFang SC","Hiragino Sans GB","Noto Sans SC","Noto Sans CJK SC",
+    "Microsoft YaHei",sans-serif;
+  letter-spacing:-.008em; line-height:1.72;
+}
+h1,h2,h3,.film h3{ letter-spacing:-.022em; }
+
+/* 导航：44px，更细 */
+.nav-in{height:44px}
+.brand{font-size:15px;letter-spacing:.04em;font-weight:600}
+.nav-links a{font-size:12px;padding:0 10px;opacity:.78}
+.ico{height:28px}
+
+/* 首屏：字更大更紧 */
+.hero h1{font-size:clamp(40px,10vw,80px);font-weight:600;letter-spacing:-.015em;line-height:1.22}
+.hero .lead{font-size:clamp(15px,3.7vw,19px);line-height:1.9;letter-spacing:.01em}
+
+/* 诗句：更大留白 */
+.poem{padding:124px 0}
+.poem blockquote{font-size:clamp(26px,6.4vw,46px);font-weight:600;letter-spacing:.1em;line-height:1.8}
+
+/* 区块：交替纯色底 + 更大留白 */
+.sec{padding:104px 0;background:var(--paper)}
+#hz{background:var(--tint)}
+#about{background:var(--tint)}
+.contact{padding:104px 0 108px;background:var(--paper)}
+
+/* 章节头：去掉横线，标题放大 */
+.sec-head{display:block;margin-bottom:38px}
+.sec-head h2{font-size:clamp(26px,5.6vw,40px);font-weight:600;letter-spacing:-.025em;line-height:1.14;margin-bottom:9px}
+.sec-head p{font-size:clamp(15px,3.8vw,18px);color:var(--ink2);letter-spacing:.005em;line-height:1.65}
+.sec-head .rule{display:none}
+
+/* 照片：去掉边框，圆角加大 */
+.gallery{gap:16px}
+.g-item{border:none;border-radius:18px;background:var(--tint2)}
+.g-cap{padding:40px 18px 15px;font-size:12.5px;letter-spacing:.02em}
+.g-cap .n{font-size:11px;opacity:.55}
+
+/* 观影：无边框卡片改成纯色块 */
+.films{gap:12px}
+.film{
+  border:none;background:var(--tint2);border-radius:20px;
+  padding:22px;gap:18px;align-items:flex-start;
+}
+.film:hover{transform:none;background:var(--tint2h);border-color:transparent}
+.poster{
+  width:84px;min-width:84px;border-radius:9px;
+  box-shadow:0 12px 28px -16px rgba(0,0,0,.5);
+}
+.film .y{font-size:11px;letter-spacing:.2em;color:var(--jade);margin-bottom:8px}
+.film h3{font-size:18px;font-weight:600;margin-bottom:8px}
+.film p{font-size:13.5px;line-height:1.78;color:var(--ink2)}
+
+/* 标签：药丸、无边框 */
+.tag{border:none;background:var(--tint2);padding:9px 16px;border-radius:980px;
+  color:var(--ink2);font-size:13px;transition:.22s}
+.tag:hover{background:var(--jade);color:#fff;border:none}
+
+/* 关于正文 */
+.about-split p{font-size:16px;line-height:1.9;letter-spacing:-.005em;color:var(--ink2)}
+
+/* 联系：无边框行 */
+.mails{gap:8px;max-width:460px}
+.mail{border:none;background:var(--tint2);border-radius:14px;padding:16px 20px}
+.mail:hover{transform:none;background:var(--tint2h);border-color:transparent}
+.mail .k{font-size:11px;letter-spacing:.16em;color:var(--ink3)}
+.mail .v{font-size:14.5px;font-weight:600}
+
+/* 页脚 */
+footer{border-top:none;background:var(--tint);padding:36px 0 48px}
+footer .f{font-size:12px;letter-spacing:.06em;color:var(--ink3);line-height:2}
+
+@media(max-width:700px){
+  .sec{padding:64px 0}
+  .poem{padding:80px 0}
+  .contact{padding:64px 0 72px}
+  .about-split{gap:28px}
+}
 </style>
 </head>
 <body>
