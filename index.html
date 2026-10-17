@@ -915,6 +915,16 @@ html[data-theme="night"]{
 .langsel button.on{opacity:1;background:var(--jade);color:#fff}
 html[data-theme="night"] .langsel button.on{color:#0d0f0d}
 @media(max-width:400px){.langsel button{padding:5px 5px;font-size:10.5px}}
+
+/* 站点统计 */
+.stats{display:flex;justify-content:center;gap:clamp(30px,8vw,72px);
+  padding:34px 0 30px;margin-bottom:20px;border-bottom:1px solid var(--line)}
+.st{display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0}
+.st .v{font-size:clamp(17px,4.4vw,22px);font-weight:600;letter-spacing:-.01em;
+  font-variant-numeric:tabular-nums;color:var(--ink);line-height:1;
+  white-space:nowrap}
+.st .l{font-size:11px;letter-spacing:.18em;color:var(--ink3);white-space:nowrap}
+@media(max-width:360px){.stats{gap:22px}}
 </style>
 <script>
 /* 页面打开时强制回到顶部（浏览器默认会恢复上次滚动位置，
@@ -1102,9 +1112,21 @@ html[data-theme="night"] .langsel button.on{color:#0d0f0d}
 </section>
 
 <footer>
-  <div class="wrap f">
+  <div class="wrap">
+    <div class="stats">
+      <div class="st">
+        <span class="v" id="uptime">—</span>
+        <span class="l" data-en="Running for" data-ja="稼働時間">已运行</span>
+      </div>
+      <div class="st">
+        <span class="v" id="views">—</span>
+        <span class="l" data-en="Page views" data-ja="閲覧数">浏览次数</span>
+      </div>
+    </div>
+    <div class="f">
     <div data-en="© 2026 · hand-written HTML &amp; CSS" data-ja="© 2026 · HTML / CSS 手書き">© 2026 · 手写 HTML / CSS</div>
     <div data-en=" Photos from my own camera roll" data-ja="写真は自分のアルバムから">照片来自我的相册</div>
+  </div>
   </div>
 </footer>
 
@@ -1329,6 +1351,61 @@ html[data-theme="night"] .langsel button.on{color:#0d0f0d}
     }
   }
   requestAnimationFrame(tick);
+})();
+</script>
+
+<script>
+(function(){
+  /* ═══ 运行时间（实时跳秒）═══ */
+  var START = new Date('2026-10-17T00:00:00+08:00').getTime();
+  var up = document.getElementById('uptime');
+  function pad(n){ return n < 10 ? '0' + n : '' + n; }
+  function tick(){
+    if (!up) return;
+    var t = Math.max(0, Date.now() - START);
+    var d = Math.floor(t / 86400000);
+    var h = Math.floor(t % 86400000 / 3600000);
+    var m = Math.floor(t % 3600000 / 60000);
+    var sec = Math.floor(t % 60000 / 1000);
+    up.textContent = d + ' 天 ' + pad(h) + ':' + pad(m) + ':' + pad(sec);
+  }
+  tick();
+  setInterval(function(){
+    if (!document.hidden) tick();
+  }, 1000);
+
+  /* ═══ 浏览次数（abacus，免费无需注册）═══ */
+  var el = document.getElementById('views');
+  if (!el) return;
+  var BASE = 'https://abacus.jasoncameron.dev';
+  var ID   = 'liziliangli73/mysite-views';
+  var KEY  = 'mysite_counted';
+
+  var counted = false;
+  try { counted = sessionStorage.getItem(KEY) === '1'; } catch(e){}
+  /* 一次会话只加一次，刷新不会灌水 */
+  var url = BASE + (counted ? '/get/' : '/hit/') + '/' + ID;
+
+  var ctrl = window.AbortController ? new AbortController() : null;
+  var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, 7000) : null;
+
+  fetch(url, ctrl ? { signal: ctrl.signal, cache: 'no-store' }
+                  : { cache: 'no-store' })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(j){
+      if (timer) clearTimeout(timer);
+      var n = j && (typeof j.value === 'number' ? j.value : j.count);
+      if (typeof n === 'number' && isFinite(n)) {
+        el.textContent = n.toLocaleString('en-US');
+        try { sessionStorage.setItem(KEY, '1'); } catch(e){}
+      } else {
+        el.textContent = '—';
+      }
+    })
+    .catch(function(){
+      if (timer) clearTimeout(timer);
+      el.textContent = '—';
+    });
 })();
 </script>
 </body>
