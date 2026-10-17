@@ -3,143 +3,210 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>琳琅 — 个人主页</title>
+<title>琳琅</title>
 <meta name="description" content="琳琅，在校学生。喜欢写网页，也喜欢折腾些东西。">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230071e3'/><text x='50' y='68' font-size='54' font-family='-apple-system,PingFang SC,sans-serif' fill='%23fff' text-anchor='middle'>琳</text></svg>">
 <style>
 :root{
-  --bg:#ffffff; --bg-alt:#f5f5f7; --fg:#1d1d1f; --fg-dim:#6e6e73;
-  --fg-faint:#86868b; --line:#d2d2d7; --line-soft:#e8e8ed;
-  --blue:#0071e3; --blue-h:#0077ed;
+  --w:#ffffff; --g:#f5f5f7; --k:#000000;
+  --fg:#1d1d1f; --dim:#6e6e73; --faint:#86868b;
+  --blue:#0066cc; --blue-h:#0077ed;
+  --hair:rgba(0,0,0,.10);
 }
 html[data-theme="dark"]{
-  --bg:#000000; --bg-alt:#1d1d1f; --fg:#f5f5f7; --fg-dim:#a1a1a6;
-  --fg-faint:#86868b; --line:#424245; --line-soft:#2c2c2e;
+  --w:#000000; --g:#1d1d1f; --k:#0a0a0c;
+  --fg:#f5f5f7; --dim:#a1a1a6; --faint:#86868b;
   --blue:#2997ff; --blue-h:#4aa8ff;
+  --hair:rgba(255,255,255,.12);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
-  background:var(--bg); color:var(--fg); -webkit-font-smoothing:antialiased;
+  background:var(--w); color:var(--fg); -webkit-font-smoothing:antialiased;
   font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",
     "PingFang SC","Hiragino Sans GB","Helvetica Neue","Microsoft YaHei",sans-serif;
-  line-height:1.47059; letter-spacing:-.022em;
-  transition:background .3s,color .3s;
+  font-size:17px; line-height:1.47059; letter-spacing:-.022em;
+  transition:background .35s,color .35s;
 }
-.inner{max-width:1024px;margin:0 auto;padding:0 22px}
-.inner-narrow{max-width:692px;margin:0 auto;padding:0 22px}
 a{color:inherit;text-decoration:none}
+::selection{background:var(--blue);color:#fff}
+.wrap{max-width:1024px;margin:0 auto;padding:0 22px}
 
+/* ═══════ 全局导航（44px，苹果式）═══════ */
 nav{
   position:sticky;top:0;z-index:100;
-  background:color-mix(in srgb,var(--bg) 72%,transparent);
+  background:color-mix(in srgb,var(--w) 72%,transparent);
   backdrop-filter:saturate(180%) blur(20px);
   -webkit-backdrop-filter:saturate(180%) blur(20px);
-  border-bottom:1px solid var(--line-soft);
+  border-bottom:1px solid var(--hair);
 }
 .nav-in{
-  max-width:1024px;margin:0 auto;padding:0 22px;height:48px;
+  max-width:1024px;margin:0 auto;padding:0 22px;height:44px;
   display:flex;align-items:center;justify-content:space-between;
 }
-.brand{font-size:18px;font-weight:600;letter-spacing:-.02em}
-.nav-links{display:flex;align-items:center;gap:4px}
-.nav-links a{font-size:12px;color:var(--fg);opacity:.82;padding:8px 10px;border-radius:8px;transition:.18s}
-.nav-links a:hover{opacity:1;background:var(--bg-alt)}
+.brand{font-size:19px;font-weight:600;letter-spacing:-.02em}
+.nav-links{display:flex;align-items:center;gap:0}
+.nav-links a{
+  font-size:12px;line-height:1;color:var(--fg);opacity:.8;
+  padding:0 11px;transition:opacity .2s;
+}
+.nav-links a:hover{opacity:1}
 .tgl{
-  border:none;background:transparent;cursor:pointer;color:var(--fg);
-  width:32px;height:32px;border-radius:50%;font-size:15px;opacity:.8;
-  display:grid;place-items:center;transition:.18s;
+  border:none;background:transparent;cursor:pointer;color:var(--fg);opacity:.8;
+  width:30px;height:44px;font-size:14px;display:grid;place-items:center;
+  transition:opacity .2s;padding:0 8px;
 }
-.tgl:hover{opacity:1;background:var(--bg-alt)}
-@media(max-width:640px){.nav-links .hide-s{display:none}}
+.tgl:hover{opacity:1}
+@media(max-width:640px){.nav-links .m{display:none}}
 
-.hero{text-align:center;padding:88px 0 72px}
-.eyebrow{
-  font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--blue);margin-bottom:14px;
+/* ═══════ 首屏 ═══════ */
+.hero{text-align:center;padding:74px 0 0;background:var(--w)}
+.hero .kicker{font-size:19px;font-weight:600;letter-spacing:-.01em;color:var(--dim);margin-bottom:8px}
+.hero h1{
+  font-size:clamp(48px,11.5vw,88px);font-weight:600;letter-spacing:-.04em;
+  line-height:1.04;margin-bottom:14px;
 }
-.hero h1{font-size:clamp(52px,13vw,104px);font-weight:700;letter-spacing:-.045em;line-height:1.02;margin-bottom:22px}
 .hero .lead{
-  font-size:clamp(19px,4.6vw,28px);font-weight:400;letter-spacing:-.015em;
-  color:var(--fg-dim);max-width:640px;margin:0 auto 30px;line-height:1.4;
+  font-size:clamp(19px,4.6vw,28px);font-weight:400;letter-spacing:-.012em;
+  color:var(--dim);max-width:640px;margin:0 auto;line-height:1.32;
 }
 .hero .lead b{color:var(--fg);font-weight:600}
-.links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
-.links a{color:var(--blue);font-size:clamp(16px,3.6vw,19px);font-weight:400}
-.links a:hover{text-decoration:underline}
-.links a::after{content:" ›";font-size:.95em}
+.links-row{display:flex;justify-content:center;gap:34px;flex-wrap:wrap;margin-top:26px}
+.links-row a{color:var(--blue);font-size:clamp(17px,3.8vw,21px);font-weight:400}
+.links-row a:hover{text-decoration:underline}
+.links-row a::after{content:" ›"}
 
-.visual{
-  margin:64px auto 0;max-width:980px;border-radius:28px;overflow:hidden;
-  background:linear-gradient(160deg,#eef4fb 0%,#f7f9fc 46%,#eaf0f8 100%);
-  border:1px solid var(--line-soft);padding:56px 28px;text-align:center;
+/* 首屏下的大块视觉（仿苹果产品页主视觉） */
+.stage{
+  margin-top:52px;padding:78px 24px 66px;text-align:center;
+  background:linear-gradient(180deg,#fbfbfd 0%,#f2f5fa 62%,#e8eef7 100%);
+  border-top:1px solid var(--hair);
 }
-html[data-theme="dark"] .visual{background:linear-gradient(160deg,#141a22 0%,#10151b 50%,#151b24 100%)}
-.v-num{font-size:clamp(56px,14vw,120px);font-weight:700;letter-spacing:-.05em;line-height:1;color:var(--fg);font-variant-numeric:tabular-nums}
-.v-label{font-size:14px;color:var(--fg-faint);margin-top:10px}
-.v-row{display:flex;justify-content:center;gap:0;flex-wrap:wrap;margin-top:38px;border-top:1px solid var(--line-soft);padding-top:26px}
-.v-cell{flex:1;min-width:130px;padding:6px 12px}
-.v-cell + .v-cell{border-left:1px solid var(--line-soft)}
-.v-cell .k{font-size:13px;color:var(--fg-faint)}
-.v-cell .v{font-size:17px;font-weight:600;margin-top:4px}
-@media(max-width:520px){.v-cell{min-width:50%}.v-cell:nth-child(3){border-left:none}}
+html[data-theme="dark"] .stage{
+  background:linear-gradient(180deg,#0d1014 0%,#11151b 60%,#0b0e12 100%);
+}
+.stage .num{
+  font-size:clamp(72px,19vw,160px);font-weight:600;letter-spacing:-.055em;
+  line-height:.95;font-variant-numeric:tabular-nums;
+}
+.stage .cap{font-size:clamp(19px,4.4vw,24px);color:var(--dim);margin-top:6px}
+.stage .row{
+  display:flex;justify-content:center;flex-wrap:wrap;
+  margin-top:54px;padding-top:34px;border-top:1px solid var(--hair);
+  max-width:760px;margin-left:auto;margin-right:auto;
+}
+.stage .cell{flex:1;min-width:120px;padding:0 10px}
+.stage .cell + .cell{border-left:1px solid var(--hair)}
+.stage .cell .k{font-size:12px;color:var(--faint)}
+.stage .cell .v{font-size:21px;font-weight:600;letter-spacing:-.02em;margin-top:3px}
+@media(max-width:520px){
+  .stage .cell{min-width:50%;margin-bottom:18px}
+  .stage .cell:nth-child(3){border-left:none}
+}
 
-section{padding:100px 0}
-.sec-alt{background:var(--bg-alt)}
-.sec-h{font-size:clamp(32px,7vw,52px);font-weight:700;letter-spacing:-.028em;line-height:1.08;margin-bottom:24px}
-.sec-p{font-size:clamp(17px,4vw,21px);color:var(--fg-dim);line-height:1.55;letter-spacing:-.01em;max-width:660px}
-.sec-p + .sec-p{margin-top:18px}
-.sec-p b{color:var(--fg);font-weight:600}
-@media(max-width:700px){section{padding:64px 0}}
+/* ═══════ 文字区块 ═══════ */
+.txt{padding:110px 0;background:var(--g)}
+.txt .kicker{font-size:19px;font-weight:600;color:var(--dim);margin-bottom:10px}
+.txt h2{
+  font-size:clamp(32px,7.4vw,48px);font-weight:600;letter-spacing:-.03em;
+  line-height:1.08;margin-bottom:22px;
+}
+.txt p{font-size:clamp(17px,4vw,21px);color:var(--dim);line-height:1.5;max-width:680px}
+.txt p + p{margin-top:16px}
+.txt p b{color:var(--fg);font-weight:600}
+@media(max-width:700px){.txt{padding:66px 0}}
 
-.stats{display:flex;flex-wrap:wrap;gap:44px;margin-top:56px}
-.stat .n{font-size:clamp(38px,9vw,64px);font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--fg);font-variant-numeric:tabular-nums}
-.stat .l{font-size:14px;color:var(--fg-faint);margin-top:8px}
+/* 数据行（苹果式大数字） */
+.nums{display:flex;flex-wrap:wrap;gap:56px;margin-top:62px}
+.num-i .n{font-size:clamp(44px,10vw,64px);font-weight:600;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.num-i .l{font-size:14px;color:var(--faint);margin-top:8px}
 
-.tiles{display:grid;gap:16px;margin-top:56px;grid-template-columns:1fr}
-@media(min-width:700px){.tiles{grid-template-columns:1fr 1fr}}
+/* ═══════ 苹果式 promo 瓷砖网格 ═══════ */
+.promo{
+  display:grid;gap:12px;padding:12px;background:var(--w);
+  grid-template-columns:1fr;
+}
+@media(min-width:734px){.promo{grid-template-columns:1fr 1fr}}
 .tile{
-  border-radius:20px;padding:38px 30px;background:var(--bg-alt);
-  display:flex;flex-direction:column;min-height:230px;
-  transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s;
+  background:var(--g);color:var(--fg);
+  min-height:420px;padding:64px 34px 54px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  text-align:center;
 }
-.tile:hover{transform:translateY(-4px);box-shadow:0 18px 42px -18px rgba(0,0,0,.22)}
-html[data-theme="dark"] .tile{background:#161618}
-.tile .tag{font-size:12px;font-weight:600;color:var(--blue);letter-spacing:.02em;margin-bottom:10px}
-.tile h3{font-size:clamp(21px,4.6vw,27px);font-weight:700;letter-spacing:-.022em;margin-bottom:9px}
-.tile p{font-size:15px;color:var(--fg-dim);line-height:1.5;flex:1}
-.tile .go{margin-top:20px;font-size:16px;color:var(--blue)}
-.tile:hover .go{text-decoration:underline}
-
-.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:44px}
-.chip{
-  font-size:15px;padding:9px 18px;border-radius:980px;
-  background:var(--bg);border:1px solid var(--line-soft);color:var(--fg-dim);
-  transition:.2s;
+.tile.dark{background:#1d1d1f;color:#f5f5f7}
+html[data-theme="dark"] .tile{background:#161617}
+html[data-theme="dark"] .tile.dark{background:#242426}
+.tile .tag{
+  font-size:14px;font-weight:600;letter-spacing:-.01em;
+  color:var(--dim);margin-bottom:8px;
 }
-html[data-theme="dark"] .chip{background:#161618}
-.chip:hover{border-color:var(--blue);color:var(--blue)}
+.tile.dark .tag{color:#a1a1a6}
+.tile h3{
+  font-size:clamp(28px,6.2vw,40px);font-weight:600;letter-spacing:-.025em;
+  line-height:1.08;margin-bottom:12px;
+}
+.tile p{
+  font-size:clamp(16px,3.8vw,19px);line-height:1.42;
+  color:var(--dim);max-width:380px;
+}
+.tile.dark p{color:#a1a1a6}
+.tile .acts{
+  display:flex;gap:26px;flex-wrap:wrap;justify-content:center;margin-top:auto;padding-top:34px;
+}
+.tile .acts a{color:var(--blue);font-size:clamp(16px,3.6vw,19px)}
+.tile .acts a:hover{text-decoration:underline}
+.tile .acts a::after{content:" ›"}
+.tile.dark .acts a{color:#2997ff}
 
-.center{text-align:center}
-.btns{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:34px}
+/* ═══════ 技能 ═══════ */
+.skills{padding:110px 0;background:var(--w)}
+.skills h2{font-size:clamp(32px,7.4vw,48px);font-weight:600;letter-spacing:-.03em;line-height:1.08;margin-bottom:16px}
+.skills .sub{font-size:clamp(17px,4vw,21px);color:var(--dim);max-width:660px}
+.pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:44px}
+.pill{
+  font-size:15px;padding:10px 20px;border-radius:980px;
+  background:var(--g);color:var(--fg);transition:.2s;
+}
+.pill:hover{background:var(--blue);color:#fff}
+@media(max-width:700px){.skills{padding:66px 0}}
+
+/* ═══════ 联系 ═══════ */
+.contact{padding:110px 0;background:var(--g);text-align:center}
+.contact h2{font-size:clamp(32px,7.4vw,48px);font-weight:600;letter-spacing:-.03em;margin-bottom:14px}
+.contact .sub{font-size:clamp(17px,4vw,21px);color:var(--dim);max-width:560px;margin:0 auto}
+.acts-big{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:34px}
 .btn{
-  display:inline-block;padding:12px 26px;border-radius:980px;font-size:17px;
-  background:var(--blue);color:#fff;transition:.2s;border:1px solid var(--blue);
+  display:inline-block;padding:12px 22px;border-radius:980px;font-size:17px;
+  background:var(--blue);color:#fff;transition:background .2s;
 }
-.btn:hover{background:var(--blue-h);border-color:var(--blue-h)}
-.btn.ghost{background:transparent;color:var(--blue);border-color:var(--line)}
-.btn.ghost:hover{background:var(--bg-alt);border-color:var(--blue)}
+.btn:hover{background:var(--blue-h)}
+.btn.line{background:transparent;color:var(--blue);border:1px solid var(--blue)}
+.btn.line:hover{background:var(--blue);color:#fff}
+@media(max-width:700px){.contact{padding:66px 0}}
 
-footer{background:var(--bg-alt);padding:44px 0 56px;border-top:1px solid var(--line-soft)}
-.f-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:28px}
-.f-col h4{font-size:12px;font-weight:600;margin-bottom:12px;color:var(--fg)}
-.f-col a{display:block;font-size:12px;color:var(--fg-dim);padding:4px 0}
+/* ═══════ 页脚（苹果结构）═══════ */
+footer{background:var(--g);border-top:1px solid var(--hair);padding:0 0 34px}
+.f-in{max-width:1024px;margin:0 auto;padding:0 22px}
+.f-dir{border-top:1px solid var(--hair);padding:20px 0 10px;font-size:12px;color:var(--dim)}
+.f-dir a{color:var(--blue)}
+.f-dir a:hover{text-decoration:underline}
+.f-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:26px;padding:10px 0 26px}
+.f-col h4{font-size:12px;font-weight:600;margin-bottom:9px}
+.f-col a{display:block;font-size:12px;color:var(--dim);padding:4px 0}
 .f-col a:hover{color:var(--fg);text-decoration:underline}
-.f-bot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line-soft);font-size:12px;color:var(--fg-faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.f-legal{
+  border-top:1px solid var(--hair);padding-top:17px;font-size:12px;color:var(--dim);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
 
+/* ═══════ 滚动淡入 ═══════ */
+.rv{opacity:0;transform:translateY(22px);
+  transition:opacity .9s cubic-bezier(.4,0,.2,1),transform .9s cubic-bezier(.4,0,.2,1)}
+.rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
+  .rv{opacity:1!important;transform:none!important}
   html{scroll-behavior:auto}
 }
 </style>
@@ -150,127 +217,132 @@ footer{background:var(--bg-alt);padding:44px 0 56px;border-top:1px solid var(--l
   <div class="nav-in">
     <a class="brand" href="#">琳琅</a>
     <div class="nav-links">
-      <a href="#about" class="hide-s">关于</a>
-      <a href="#works">作品</a>
-      <a href="#stack" class="hide-s">技能</a>
+      <a href="#about" class="m">关于</a>
+      <a href="#works" class="m">作品</a>
+      <a href="#skills" class="m">技能</a>
       <a href="#contact">联系</a>
       <button class="tgl" id="tgl" aria-label="切换深浅色">◐</button>
     </div>
   </div>
 </nav>
 
-<div class="hero inner">
-  <p class="eyebrow">个人主页</p>
-  <h1>琳琅。</h1>
-  <p class="lead">在校学生。喜欢写网页，<br>也喜欢<b>折腾些东西</b>。</p>
-  <div class="links">
-    <a href="#about">了解更多</a>
-    <a href="#contact">联系我</a>
-  </div>
-
-  <div class="visual">
-    <div class="v-num" id="days">1</div>
-    <div class="v-label">这个小站已上线（天）</div>
-    <div class="v-row">
-      <div class="v-cell"><div class="k">作品</div><div class="v">4 个</div></div>
-      <div class="v-cell"><div class="k">技能</div><div class="v">8 项</div></div>
-      <div class="v-cell"><div class="k">更新</div><div class="v">2026.10</div></div>
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker rv">你好</p>
+    <h1 class="rv">琳琅。</h1>
+    <p class="lead rv">在校学生。喜欢写网页，<br>也喜欢<b>折腾些东西</b>。</p>
+    <div class="links-row rv">
+      <a href="#about">了解更多</a>
+      <a href="#contact">联系我</a>
     </div>
+  </div>
+</header>
+
+<div class="stage">
+  <div class="num rv" id="days">1</div>
+  <p class="cap rv">这个小站已上线（天）</p>
+  <div class="row rv">
+    <div class="cell"><div class="k">作品</div><div class="v">4 个</div></div>
+    <div class="cell"><div class="k">技能</div><div class="v">8 项</div></div>
+    <div class="cell"><div class="k">更新</div><div class="v">2026.10</div></div>
   </div>
 </div>
 
-<section class="sec-alt" id="about">
-  <div class="inner">
-    <p class="eyebrow">关于我</p>
-    <h2 class="sec-h">不是最快的，<br>但是自己一步步搭的。</h2>
-    <p class="sec-p">我是一名在校学生，正在学 <b>HTML/CSS、JavaScript 和 Python</b>。喜欢动手做点小东西 —— 从一个网页，到一些顺手的小脚本。</p>
-    <p class="sec-p">这个站的每一行都是我亲手写的：<b>没有框架、没有模板、也没有一张图片</b>，全部用 CSS 和字体完成。代码开源在 GitHub 上。</p>
-    <p class="sec-p">最近在补 <b>Linux 和 Git</b> 的功课，也喜欢研究网络相关的小玩意，比如用 AdGuard Home 给全屋设备做去广告 DNS。</p>
+<section class="txt" id="about">
+  <div class="wrap">
+    <p class="kicker rv">关于我</p>
+    <h2 class="rv">不是最快的，<br>但是自己一步步搭的。</h2>
+    <p class="rv">我是一名在校学生，正在学 <b>HTML/CSS、JavaScript 和 Python</b>。喜欢动手做点小东西 —— 从一个网页，到一些顺手的小脚本。</p>
+    <p class="rv">这个站的每一行都是我亲手写的：<b>没有框架、没有模板、也没有一张图片</b>，全部用 CSS 和字体完成。代码开源在 GitHub 上。</p>
+    <p class="rv">最近在补 <b>Linux 和 Git</b> 的功课，也喜欢研究网络相关的小玩意，比如用 AdGuard Home 给全屋设备做去广告 DNS。</p>
 
-    <div class="stats">
-      <div class="stat"><div class="n">4</div><div class="l">个作品</div></div>
-      <div class="stat"><div class="n">8</div><div class="l">项技能</div></div>
-      <div class="stat"><div class="n" id="days2">1</div><div class="l">天运行中</div></div>
+    <div class="nums rv">
+      <div class="num-i"><div class="n">4</div><div class="l">个作品</div></div>
+      <div class="num-i"><div class="n">8</div><div class="l">项技能</div></div>
+      <div class="num-i"><div class="n" id="days2">1</div><div class="l">天运行中</div></div>
     </div>
   </div>
 </section>
 
-<section id="works">
-  <div class="inner">
-    <p class="eyebrow">作品</p>
-    <h2 class="sec-h">做过的一些<br>小东西。</h2>
-    <div class="tiles">
+<div class="promo" id="works">
 
-      <a class="tile" href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener">
-        <div class="tag">HTML / CSS / JS</div>
-        <h3>个人主页</h3>
-        <p>你现在看到的这个页面。手写实现，没有框架，也没有任何图片资源，全部用 CSS 和字体完成。</p>
-        <div class="go">在 GitHub 上查看 ›</div>
-      </a>
+  <div class="tile rv">
+    <div class="tag">作品</div>
+    <h3>个人主页</h3>
+    <p>手写 HTML / CSS，没有框架，也没有任何图片资源。深浅色随系统。</p>
+    <div class="acts">
+      <a href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener">查看源码</a>
+    </div>
+  </div>
 
-      <a class="tile" href="https://github.com/liziliangli73-max/AdGuardHomeForRoot" target="_blank" rel="noopener">
-        <div class="tag">Shell / Android / DNS</div>
-        <h3>AdGuard Home</h3>
-        <p>在 Android 上以 root 方式运行 AdGuard Home，为家里所有设备提供去广告和防跟踪的 DNS 服务。</p>
-        <div class="go">在 GitHub 上查看 ›</div>
-      </a>
+  <div class="tile rv">
+    <div class="tag">作品</div>
+    <h3>AdGuard Home</h3>
+    <p>在 Android 上以 root 方式运行，为家里所有设备提供去广告 DNS。</p>
+    <div class="acts">
+      <a href="https://github.com/liziliangli73-max/AdGuardHomeForRoot" target="_blank" rel="noopener">查看源码</a>
+    </div>
+  </div>
 
-      <a class="tile" href="#">
-        <div class="tag">JavaScript</div>
-        <h3>待办清单</h3>
-        <p>一个纯前端的待办小工具，数据保存在浏览器本地，关掉页面也不会丢失，不需要任何账号。</p>
-        <div class="go">了解详情 ›</div>
-      </a>
+  <div class="tile dark rv">
+    <div class="tag">作品</div>
+    <h3>待办清单</h3>
+    <p>纯前端待办工具，数据存在浏览器本地，关掉页面也不会丢。</p>
+    <div class="acts">
+      <a href="#">了解一下</a>
+    </div>
+  </div>
 
-      <a class="tile" href="#">
-        <div class="tag">Python</div>
-        <h3>图片批处理</h3>
-        <p>用 Python 批量压缩、重命名图片的小脚本，省掉一张张手动处理的时间。</p>
-        <div class="go">了解详情 ›</div>
-      </a>
+  <div class="tile dark rv">
+    <div class="tag">作品</div>
+    <h3>图片批处理</h3>
+    <p>用 Python 批量压缩、重命名图片，省掉一张张手动处理的时间。</p>
+    <div class="acts">
+      <a href="#">了解一下</a>
+    </div>
+  </div>
 
+</div>
+
+<section class="skills" id="skills">
+  <div class="wrap">
+    <h2 class="rv">正在学的。</h2>
+    <p class="sub rv">还在路上，但每一个都亲手用过。</p>
+    <div class="pills rv">
+      <span class="pill">HTML</span>
+      <span class="pill">CSS</span>
+      <span class="pill">JavaScript</span>
+      <span class="pill">Python</span>
+      <span class="pill">Photoshop</span>
+      <span class="pill">Linux</span>
+      <span class="pill">Git</span>
+      <span class="pill">Nginx</span>
     </div>
   </div>
 </section>
 
-<section class="sec-alt" id="stack">
-  <div class="inner">
-    <p class="eyebrow">技能</p>
-    <h2 class="sec-h">正在学的。</h2>
-    <p class="sec-p">还在路上，但每一个都亲手用过。</p>
-    <div class="chips">
-      <span class="chip">HTML</span>
-      <span class="chip">CSS</span>
-      <span class="chip">JavaScript</span>
-      <span class="chip">Python</span>
-      <span class="chip">Photoshop</span>
-      <span class="chip">Linux</span>
-      <span class="chip">Git</span>
-      <span class="chip">Nginx</span>
-    </div>
-  </div>
-</section>
-
-<section id="contact">
-  <div class="inner-narrow center">
-    <p class="eyebrow">联系</p>
-    <h2 class="sec-h">聊聊？</h2>
-    <p class="sec-p" style="margin:0 auto">有想法、有问题，或者只是想打个招呼，都欢迎。</p>
-    <div class="btns">
+<section class="contact" id="contact">
+  <div class="wrap">
+    <h2 class="rv">聊聊？</h2>
+    <p class="sub rv">有想法、有问题，或者只是想打个招呼，都欢迎。</p>
+    <div class="acts-big rv">
       <a class="btn" href="mailto:liziliangli73@gmail.com">发邮件</a>
-      <a class="btn ghost" href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn line" href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="inner">
+  <div class="f-in">
+    <div class="f-dir">
+      更多内容可以在 <a href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">GitHub</a> 上找到，或者直接 <a href="mailto:liziliangli73@gmail.com">写信给我</a>。
+    </div>
     <div class="f-cols">
       <div class="f-col">
         <h4>关于本站</h4>
         <a href="#about">关于我</a>
         <a href="#works">作品</a>
-        <a href="#stack">技能</a>
+        <a href="#skills">技能</a>
       </div>
       <div class="f-col">
         <h4>代码</h4>
@@ -287,8 +359,8 @@ footer{background:var(--bg-alt);padding:44px 0 56px;border-top:1px solid var(--l
         <a href="#about">手写 HTML / CSS</a>
       </div>
     </div>
-    <div class="f-bot">
-      <span>© 2026 琳琅 · 手写 HTML/CSS，没有框架，没有图片</span>
+    <div class="f-legal">
+      <span>Copyright © 2026 琳琅。保留所有权利。</span>
       <span id="year"></span>
     </div>
   </div>
@@ -312,6 +384,19 @@ footer{background:var(--bg-alt);padding:44px 0 56px;border-top:1px solid var(--l
   var a = document.getElementById('days'); if(a) a.textContent = d;
   var b = document.getElementById('days2'); if(b) b.textContent = d;
   var y = document.getElementById('year'); if(y) y.textContent = new Date().getFullYear();
+
+  var els = document.querySelectorAll('.rv');
+  if (!('IntersectionObserver' in window) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    els.forEach(function(e){ e.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(en){
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.05 });
+  els.forEach(function(e){ io.observe(e); });
 })();
 </script>
 </body>
