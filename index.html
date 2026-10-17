@@ -1,193 +1,294 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>琳琅 · 个人主页</title>
-<meta name="description" content="在校学生 · 喜欢写写网页和折腾点小工具">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>琳琅 · 在校学生 / 写网页 & 折腾服务器</title>
+<meta name="description" content="琳琅的个人主页 —— 在校学生，学 HTML/CSS、JavaScript、Python，喜欢折腾服务器。">
+<meta name="theme-color" content="#070a0f">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.88em' font-size='88'>🔷</text></svg>">
 <style>
 :root{
-  --bg:#ffffff; --bg-soft:#f6f8fa; --fg:#12161c; --fg-dim:#5c6570;
-  --line:#e5e9ef; --accent:#3b6ef6; --accent-soft:#eef3ff;
-  --card:#ffffff; --shadow:0 1px 2px rgba(16,24,40,.05),0 10px 28px rgba(16,24,40,.07);
+  --bg:#070a0f; --bg2:#0b1018; --panel:rgba(255,255,255,.035);
+  --panel2:rgba(255,255,255,.055); --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.14);
+  --fg:#e9f1f3; --dim:#8595a0; --faint:#5a6873;
+  --jade:#4ade9b; --jade-soft:rgba(74,222,155,.13);
+  --violet:#8b8cf7;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
 }
-html[data-theme="dark"]{
-  --bg:#0b0f16; --bg-soft:#121822; --fg:#e8eef6; --fg-dim:#8c96a3;
-  --line:#1e2733; --accent:#7aa2ff; --accent-soft:#16233c;
-  --card:#121822; --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 28px rgba(0,0,0,.35);
+html[data-theme="light"]{
+  --bg:#f7f9f8; --bg2:#eef2f0; --panel:rgba(0,0,0,.025);
+  --panel2:rgba(0,0,0,.045); --line:rgba(0,0,0,.10); --line2:rgba(0,0,0,.16);
+  --fg:#0d1512; --dim:#5c6b66; --faint:#8a9793;
+  --jade:#0f9d63; --jade-soft:rgba(15,157,99,.10);
+  --violet:#5b5bd6;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{
-  background:var(--bg); color:var(--fg); line-height:1.75;
-  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-  -webkit-font-smoothing:antialiased; transition:background .3s,color .3s;
+  background:var(--bg); color:var(--fg); font-family:var(--sans);
+  line-height:1.7; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  transition:background .35s,color .35s;
 }
-.wrap{max-width:820px;margin:0 auto;padding:0 22px}
+/* 背景：网格 + 光晕 */
+body::before{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:
+    linear-gradient(var(--line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:56px 56px; opacity:.55;
+  -webkit-mask-image:radial-gradient(ellipse 90% 65% at 50% 0%,#000 35%,transparent 100%);
+  mask-image:radial-gradient(ellipse 90% 65% at 50% 0%,#000 35%,transparent 100%);
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(620px circle at 12% -8%,var(--jade-soft),transparent 62%),
+    radial-gradient(520px circle at 92% 4%,rgba(139,140,247,.10),transparent 62%);
+}
+.wrap{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:0 20px}
 
-header{
-  position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);
-  backdrop-filter:blur(12px);border-bottom:1px solid var(--line);
-}
-.bar{display:flex;align-items:center;justify-content:space-between;height:58px}
-.logo{font-weight:700;letter-spacing:-.02em;font-size:15px}
-nav{display:flex;gap:4px;align-items:center}
-nav a{color:var(--fg-dim);text-decoration:none;font-size:13.5px;padding:6px 11px;border-radius:8px;transition:.18s}
-nav a:hover{color:var(--fg);background:var(--bg-soft)}
-.tgl{
-  border:1px solid var(--line);background:transparent;color:var(--fg-dim);
-  width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:15px;
-  display:grid;place-items:center;transition:.18s;margin-left:6px;
-}
-.tgl:hover{color:var(--fg);background:var(--bg-soft)}
-@media(max-width:600px){nav .hidem{display:none}}
+/* ---------- 顶栏 ---------- */
+header{position:sticky;top:0;z-index:60;backdrop-filter:blur(14px);
+  background:color-mix(in srgb,var(--bg) 82%,transparent);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;justify-content:space-between;height:56px}
+.logo{font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.02em}
+.logo b{color:var(--jade)}
+nav{display:flex;gap:2px;align-items:center}
+nav a{font-family:var(--mono);font-size:12.5px;color:var(--dim);text-decoration:none;
+  padding:6px 10px;border-radius:7px;transition:.16s}
+nav a:hover{color:var(--jade);background:var(--panel2)}
+.tgl{border:1px solid var(--line);background:transparent;color:var(--dim);
+  width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:14px;
+  display:grid;place-items:center;margin-left:6px;transition:.16s}
+.tgl:hover{color:var(--fg);border-color:var(--line2)}
+@media(max-width:620px){nav .h{display:none}}
 
-.hero{padding:76px 0 56px}
-.avatar{
-  width:88px;height:88px;border-radius:50%;object-fit:cover;
-  border:1px solid var(--line);box-shadow:var(--shadow);margin-bottom:22px;
-  background:linear-gradient(135deg,var(--accent),#a06bff);
-  display:grid;place-items:center;color:#fff;font-size:34px;font-weight:700;
-}
-.hero h1{font-size:clamp(28px,6vw,40px);letter-spacing:-.03em;font-weight:800;margin-bottom:12px}
-.hero .sub{font-size:clamp(15px,3.6vw,18px);color:var(--fg-dim);max-width:560px}
-.tagline{
-  display:inline-block;margin-top:18px;padding:5px 13px;border-radius:999px;
-  background:var(--accent-soft);color:var(--accent);font-size:13px;font-weight:600;
-}
-.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
-.btn{
-  display:inline-flex;align-items:center;gap:7px;padding:10px 18px;border-radius:11px;
-  text-decoration:none;font-size:14px;font-weight:600;transition:.18s;
-  border:1px solid var(--line);color:var(--fg);background:var(--card);
-}
-.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
-.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+/* ---------- 首屏 ---------- */
+.hero{padding:66px 0 46px}
+.kicker{font-family:var(--mono);font-size:12px;color:var(--jade);letter-spacing:.1em;
+  margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.kicker::before{content:"";width:22px;height:1px;background:var(--jade);opacity:.7}
+h1{font-size:clamp(38px,10vw,68px);line-height:1.05;letter-spacing:-.045em;font-weight:800;margin-bottom:14px}
+h1 span{background:linear-gradient(100deg,var(--jade),var(--violet));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sub{font-size:clamp(15px,3.8vw,17px);color:var(--dim);max-width:520px}
 
-section{padding:52px 0;border-top:1px solid var(--line)}
-h2{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-dim);margin-bottom:26px}
-.about p{font-size:16px;color:var(--fg);margin-bottom:14px;max-width:660px}
-.about p:last-child{margin-bottom:0}
-.about strong{color:var(--accent)}
-
-.skills{display:flex;flex-wrap:wrap;gap:9px}
-.chip{
-  padding:7px 14px;border-radius:9px;background:var(--bg-soft);
-  border:1px solid var(--line);font-size:13.5px;color:var(--fg-dim);transition:.18s;
+/* 终端卡片 */
+.term{
+  margin-top:34px;border:1px solid var(--line2);border-radius:14px;overflow:hidden;
+  background:color-mix(in srgb,var(--bg2) 90%,transparent);
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.8),0 0 0 1px rgba(255,255,255,.02) inset;
+  max-width:640px;
 }
-.chip:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.term-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;
+  border-bottom:1px solid var(--line);background:var(--panel)}
+.dot{width:10px;height:10px;border-radius:50%;opacity:.85}
+.d1{background:#ff5f57}.d2{background:#febc2e}.d3{background:#28c840}
+.term-title{margin-left:8px;font-family:var(--mono);font-size:11.5px;color:var(--faint)}
+.term-body{padding:18px 16px 20px;font-family:var(--mono);font-size:13.5px;line-height:1.95}
+.term-line{white-space:pre-wrap;word-break:break-word}
+.prompt{color:var(--jade)}
+.cmd{color:var(--fg)}
+.out{color:var(--dim)}
+.cursor{display:inline-block;width:8px;height:15px;background:var(--jade);
+  vertical-align:-2px;animation:blink 1.05s steps(1) infinite}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
 
-.grid{display:grid;gap:14px}
-@media(min-width:660px){.grid{grid-template-columns:1fr 1fr}}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;
+  font-size:14px;font-weight:600;text-decoration:none;transition:.18s;
+  border:1px solid var(--line2);color:var(--fg);background:var(--panel)}
+.btn:hover{transform:translateY(-2px);border-color:var(--jade);color:var(--jade)}
+.btn.pri{background:var(--jade);border-color:var(--jade);color:#04120c}
+.btn.pri:hover{color:#04120c;filter:brightness(1.08)}
+html[data-theme="light"] .btn.pri{color:#fff}
+
+/* ---------- Bento ---------- */
+section{padding:44px 0}
+.sec-h{display:flex;align-items:baseline;gap:12px;margin-bottom:22px}
+.sec-h h2{font-family:var(--mono);font-size:12px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--faint);font-weight:600}
+.sec-h .rule{flex:1;height:1px;background:var(--line)}
+
+.bento{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:640px){.bento{grid-template-columns:repeat(6,1fr)}}
 .card{
-  display:block;padding:22px;border-radius:15px;background:var(--card);
-  border:1px solid var(--line);text-decoration:none;color:inherit;transition:.2s;
+  border:1px solid var(--line);border-radius:14px;padding:20px 18px;
+  background:var(--panel);transition:.2s;position:relative;overflow:hidden;
 }
-.card:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--accent)}
-.card h3{font-size:16.5px;font-weight:700;margin-bottom:8px;color:var(--fg)}
-.card p{font-size:14px;color:var(--fg-dim);line-height:1.65}
-.card .meta{margin-top:14px;font-size:12px;color:var(--fg-dim);letter-spacing:.04em;opacity:.8}
+.card:hover{border-color:var(--line2);background:var(--panel2)}
+.c-stat{grid-column:span 3}
+.c-stat .num{font-family:var(--mono);font-size:30px;font-weight:700;letter-spacing:-.02em;
+  color:var(--jade);line-height:1.1}
+.c-stat .lbl{font-size:12.5px;color:var(--faint);margin-top:6px;font-family:var(--mono)}
+.c-wide{grid-column:span 6}
+.c-half{grid-column:span 3}
+@media(max-width:639px){.card{grid-column:span 1!important}}
 
-.contact-list{display:flex;flex-direction:column;gap:2px}
-.crow{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  padding:15px 2px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit;
+.live{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);
+  font-size:12px;color:var(--jade)}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--jade);
+  box-shadow:0 0 0 0 var(--jade);animation:pulse 2s infinite}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(74,222,155,.6)}
+  70%{box-shadow:0 0 0 9px rgba(74,222,155,0)}
+  100%{box-shadow:0 0 0 0 rgba(74,222,155,0)}
 }
-.crow:last-child{border-bottom:none}
-.crow .k{font-size:14px;color:var(--fg-dim)}
-.crow .v{font-size:14.5px;font-weight:600;color:var(--fg);word-break:break-all;text-align:right}
-.crow:hover .v{color:var(--accent)}
 
-footer{padding:44px 0 64px;color:var(--fg-dim);font-size:13px;border-top:1px solid var(--line)}
-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chip{font-family:var(--mono);font-size:12.5px;padding:6px 11px;border-radius:7px;
+  border:1px solid var(--line);color:var(--dim);background:var(--bg2);transition:.16s}
+.chip:hover{color:var(--jade);border-color:var(--jade);background:var(--jade-soft)}
+
+.about p{color:var(--dim);font-size:15px;margin-bottom:12px}
+.about p:last-child{margin-bottom:0}
+.about b{color:var(--fg);font-weight:600}
+
+.works{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:560px){.works{grid-template-columns:1fr 1fr}}
+.w{display:block;text-decoration:none;color:inherit;border:1px solid var(--line);
+  border-radius:11px;padding:15px 14px;background:var(--bg2);transition:.18s}
+.w:hover{border-color:var(--jade);transform:translateY(-2px)}
+.w h3{font-size:14.5px;font-weight:700;margin-bottom:5px;display:flex;
+  align-items:center;gap:6px;color:var(--fg)}
+.w h3::before{content:"▸";color:var(--jade);font-size:11px}
+.w p{font-size:12.8px;color:var(--faint);line-height:1.6}
+.w .t{font-family:var(--mono);font-size:10.5px;color:var(--faint);
+  margin-top:9px;letter-spacing:.05em;opacity:.85}
+
+.contact{display:flex;flex-direction:column;gap:1px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:13px 2px;border-bottom:1px solid var(--line);text-decoration:none;color:inherit}
+.row:last-child{border-bottom:none}
+.row .k{font-family:var(--mono);font-size:11.5px;color:var(--faint);letter-spacing:.06em}
+.row .v{font-size:13.5px;font-weight:600;word-break:break-all;text-align:right}
+.row:hover .v{color:var(--jade)}
+
+footer{padding:38px 0 56px;border-top:1px solid var(--line);margin-top:20px}
+.fbar{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+  font-family:var(--mono);font-size:11.5px;color:var(--faint)}
+.fbar b{color:var(--jade);font-weight:600}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
 </style>
 </head>
 <body>
 
 <header>
   <div class="wrap bar">
-    <div class="logo">琳琅</div>
+    <div class="logo">linlang<b>.</b>dev</div>
     <nav>
-      <a href="#about" class="hidem">关于</a>
-      <a href="#skills" class="hidem">技能</a>
-      <a href="#works">作品</a>
+      <a href="#about" class="h">关于</a>
+      <a href="#works" class="h">作品</a>
       <a href="#contact">联系</a>
-      <button class="tgl" id="tgl" title="切换主题">◐</button>
+      <button class="tgl" id="tgl" aria-label="切换主题">◐</button>
     </nav>
   </div>
 </header>
 
-<main>
+<main class="wrap">
 
-  <div class="wrap hero">
-    <div class="avatar">琳</div>
-    <h1>你好，我是琳琅 👋</h1>
-    <p class="sub">在校学生，平时喜欢写写网页、折腾点小工具。</p>
-    <div class="tagline">在校学生</div>
-    <div class="links">
+  <div class="hero">
+    <div class="kicker">个人主页</div>
+    <h1>我是<span>琳琅</span>。</h1>
+    <p class="sub">在校学生 · 喜欢写网页，也喜欢折腾服务器。</p>
+
+    <div class="term">
+      <div class="term-bar">
+        <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+        <span class="term-title">linlang@localhost: ~</span>
+      </div>
+      <div class="term-body" id="termBody"></div>
+    </div>
+
+    <div class="cta">
       <a class="btn pri" href="mailto:liziliangli73@gmail.com">✉ 联系我</a>
-      <a class="btn" href="https://github.com/liziliangli73-max">GitHub</a>
+      <a class="btn" href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="http://8.218.152.183" target="_blank" rel="noopener">我的服务器 ↗</a>
     </div>
   </div>
 
   <section id="about">
-    <div class="wrap about">
-      <h2>关于我</h2>
-      <p>我是一名在校学生，正在学 <strong>HTML/CSS、JavaScript 和 Python</strong>。</p>
-      <p>喜欢动手做点小东西，从写网页到折腾服务器都挺感兴趣。这个站点就跑在我自己配置的一台云服务器上 —— 从装系统、配 Nginx 到让页面能被访问，一步步都是自己搭起来的。</p>
-      <p>目前在慢慢补 <strong>Linux 和 Git</strong> 的功课，也喜欢研究一些网络相关的小玩意。欢迎交流。</p>
+    <div class="sec-h"><h2>Status</h2><span class="rule"></span></div>
+    <div class="bento">
+      <div class="card c-stat">
+        <div class="num" id="days">—</div>
+        <div class="lbl">这个小站已上线（天）</div>
+      </div>
+      <div class="card c-stat">
+        <div class="live"><i></i>ONLINE</div>
+        <div class="lbl" style="margin-top:12px">阿里云 ECS · 中国香港</div>
+      </div>
+      <div class="card c-wide about">
+        <p>我是 <b>琳琅</b>，一名在校学生，正在学 <b>HTML/CSS、JavaScript 和 Python</b>。</p>
+        <p>喜欢动手做点小东西 —— 从写网页到自己配置一台云服务器。<b>这个站就跑在我自己搭建的机器上</b>：装系统、配 Nginx、绑 GitHub Pages，一步一步踩过来的。</p>
+        <p>最近在补 <b>Linux 和 Git</b> 的功课，也喜欢研究网络相关的小玩意（比如自建 DNS 去广告）。欢迎交流。</p>
+      </div>
     </div>
   </section>
 
   <section id="skills">
-    <div class="wrap">
-      <h2>技能</h2>
-      <div class="skills">
-        <span class="chip">HTML / CSS</span>
+    <div class="sec-h"><h2>Stack</h2><span class="rule"></span></div>
+    <div class="card c-wide">
+      <div class="chips">
+        <span class="chip">HTML</span>
+        <span class="chip">CSS</span>
         <span class="chip">JavaScript</span>
         <span class="chip">Python</span>
         <span class="chip">Photoshop</span>
-        <span class="chip">Linux 基础</span>
+        <span class="chip">Linux</span>
+        <span class="chip">Nginx</span>
         <span class="chip">Git</span>
       </div>
     </div>
   </section>
 
   <section id="works">
-    <div class="wrap">
-      <h2>作品</h2>
-      <div class="grid">
-        <a class="card" href="https://github.com/liziliangli73-max/mysite">
+    <div class="sec-h"><h2>Projects</h2><span class="rule"></span></div>
+    <div class="card c-wide">
+      <div class="works">
+        <a class="w" href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener">
           <h3>个人主页</h3>
-          <p>你现在看到的这个页面。手写的 HTML/CSS，不依赖任何框架，带深色模式切换。</p>
-          <div class="meta">HTML · CSS · JavaScript</div>
+          <p>你现在看的这个页面。手写 HTML/CSS/JS，零框架、零依赖，自带深色/浅色切换和终端动画。</p>
+          <div class="t">HTML · CSS · JavaScript</div>
         </a>
-        <a class="card" href="https://github.com/liziliangli73-max/AdGuardHomeForRoot">
-          <h3>AdGuard Home 部署折腾</h3>
-          <p>研究在 Android 上以 root 方式跑 AdGuard Home，做全屋去广告的 DNS 服务。</p>
-          <div class="meta">Shell · Android · DNS</div>
+        <a class="w" href="https://github.com/liziliangli73-max/AdGuardHomeForRoot" target="_blank" rel="noopener">
+          <h3>AdGuard Home 部署</h3>
+          <p>在 Android 上以 root 方式跑 AdGuard Home，给全屋设备提供去广告 DNS。</p>
+          <div class="t">Shell · Android · DNS</div>
         </a>
-        <a class="card" href="#">
+        <a class="w" href="#" >
           <h3>待办清单</h3>
-          <p>一个纯前端的待办小工具，数据存在浏览器本地，关掉页面也不会丢。</p>
-          <div class="meta">JavaScript · localStorage</div>
+          <p>纯前端待办小工具，数据存在浏览器本地，关掉页面也不会丢。</p>
+          <div class="t">JavaScript · localStorage</div>
         </a>
-        <a class="card" href="#">
-          <h3>图片批量处理脚本</h3>
-          <p>用 Python 写的小脚本，批量压缩、重命名图片，省掉手动一张张处理的时间。</p>
-          <div class="meta">Python · Pillow</div>
+        <a class="w" href="#">
+          <h3>图片批处理脚本</h3>
+          <p>用 Python 批量压缩和重命名图片，省掉一张张手动处理的时间。</p>
+          <div class="t">Python · Pillow</div>
         </a>
       </div>
     </div>
   </section>
 
   <section id="contact">
-    <div class="wrap">
-      <h2>联系</h2>
-      <div class="contact-list">
-        <a class="crow" href="mailto:liziliangli73@gmail.com"><span class="k">邮箱</span><span class="v">liziliangli73@gmail.com</span></a>
-        <a class="crow" href="https://github.com/liziliangli73-max"><span class="k">GitHub</span><span class="v">@liziliangli73-max</span></a>
+    <div class="sec-h"><h2>Contact</h2><span class="rule"></span></div>
+    <div class="card c-wide">
+      <div class="contact">
+        <a class="row" href="mailto:liziliangli73@gmail.com">
+          <span class="k">EMAIL</span><span class="v">liziliangli73@gmail.com</span>
+        </a>
+        <a class="row" href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">
+          <span class="k">GITHUB</span><span class="v">@liziliangli73-max</span>
+        </a>
+        <a class="row" href="http://8.218.152.183" target="_blank" rel="noopener">
+          <span class="k">SERVER</span><span class="v">8.218.152.183</span>
+        </a>
       </div>
     </div>
   </section>
@@ -195,9 +296,9 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 </main>
 
 <footer>
-  <div class="wrap">
-    <span>© 2026 琳琅</span>
-    <span>由阿里云 ECS · 中国香港 托管</span>
+  <div class="wrap fbar">
+    <span>© 2026 <b>琳琅</b> · 用 HTML/CSS 手写，没有框架</span>
+    <span>托管于 <b>GitHub Pages</b></span>
   </div>
 </footer>
 
@@ -206,15 +307,76 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
   var root = document.documentElement;
   var saved = null;
   try { saved = localStorage.getItem('theme'); } catch(e){}
-  var dark = saved ? saved === 'dark'
-    : window.matchMedia('(prefers-color-scheme: dark)').matches;
-  root.setAttribute('data-theme', dark ? 'dark' : 'light');
+  if (saved) root.setAttribute('data-theme', saved);
 
   document.getElementById('tgl').addEventListener('click', function(){
     var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     root.setAttribute('data-theme', next);
     try { localStorage.setItem('theme', next); } catch(e){}
   });
+
+  // 上线天数
+  var start = new Date(2026, 9, 17); // 2026-10-17
+  var d = Math.max(1, Math.floor((Date.now() - start.getTime()) / 86400000));
+  document.getElementById('days').textContent = d;
+
+  // 终端逐行打印
+  var lines = [
+    {p:'$ ', c:'whoami', o:''},
+    {p:'', c:'', o:'琳琅'},
+    {p:'$ ', c:'cat status.txt', o:''},
+    {p:'', c:'', o:'在校学生 · 学 HTML/CSS / JavaScript / Python'},
+    {p:'$ ', c:'uptime', o:''},
+    {p:'', c:'', o:'已稳定运行 ' + d + ' 天'}
+  ];
+  var body = document.getElementById('termBody');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function lineEl(cls, txt){
+    var div = document.createElement('div');
+    div.className = 'term-line';
+    if (cls) { var s = document.createElement('span'); s.className = cls; s.textContent = txt; div.appendChild(s); }
+    else { div.textContent = txt; }
+    return div;
+  }
+  function renderAll(){
+    body.innerHTML = '';
+    lines.forEach(function(l){
+      if (l.p) body.appendChild(lineEl('prompt', l.p)).appendChild(lineEl('cmd', l.c));
+      else body.appendChild(lineEl('out', l.o));
+    });
+  }
+  if (reduce || !lines.length) {
+    renderAll();
+    var cur = document.createElement('span'); cur.className='cursor'; body.appendChild(cur);
+    return;
+  }
+
+  var i = 0;
+  function nextLine(){
+    if (i >= lines.length) {
+      var cur = document.createElement('span'); cur.className='cursor'; body.appendChild(cur);
+      return;
+    }
+    var l = lines[i];
+    var div = document.createElement('div');
+    div.className = 'term-line';
+    body.appendChild(div);
+    if (l.p) {
+      var sp = document.createElement('span'); sp.className='prompt'; sp.textContent=l.p; div.appendChild(sp);
+      var sc = document.createElement('span'); sc.className='cmd'; div.appendChild(sc);
+      var txt = l.c, j = 0;
+      var t = setInterval(function(){
+        sc.textContent = txt.slice(0, ++j);
+        if (j >= txt.length) { clearInterval(t); i++; setTimeout(nextLine, 180); }
+      }, 42);
+    } else {
+      div.textContent = l.o;
+      i++;
+      setTimeout(nextLine, 220);
+    }
+  }
+  nextLine();
 })();
 </script>
 </body>
