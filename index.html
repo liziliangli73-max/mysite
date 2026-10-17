@@ -1356,7 +1356,7 @@ html[data-theme="night"] .langsel button.on{color:#0d0f0d}
 
 <script>
 (function(){
-  /* ═══ 运行时间（实时跳秒）═══ */
+  /* ═══════ 运行时间（实时跳秒）═══════ */
   var START = new Date('2026-10-17T00:00:00+08:00').getTime();
   var up = document.getElementById('uptime');
   function pad(n){ return n < 10 ? '0' + n : '' + n; }
@@ -1370,41 +1370,81 @@ html[data-theme="night"] .langsel button.on{color:#0d0f0d}
     up.textContent = d + ' 天 ' + pad(h) + ':' + pad(m) + ':' + pad(sec);
   }
   tick();
-  setInterval(function(){
-    if (!document.hidden) tick();
-  }, 1000);
+  setInterval(function(){ if (!document.hidden) tick(); }, 1000);
 
-  /* ═══ 浏览次数（abacus，免费无需注册）═══ */
+  /* ═══════ 浏览次数 ═══════
+     通道 1：不蒜子（境内可访问，JSONP，无需 CORS）
+     通道 2：abacus（境外，fetch + CORS）
+     两者都失败才显示 — */
   var el = document.getElementById('views');
   if (!el) return;
-  var BASE = 'https://abacus.jasoncameron.dev';
-  var ID   = 'liziliangli73/mysite-views';
-  var KEY  = 'mysite_counted';
+  el.textContent = '…';
+  el.title = '正在读取';
 
-  var counted = false;
-  try { counted = sessionStorage.getItem(KEY) === '1'; } catch(e){}
-  /* 一次会话只加一次，刷新不会灌水 */
-  var url = BASE + (counted ? '/get/' : '/hit/') + '/' + ID;
+  function done(n, src){
+    if (typeof n === 'number' && isFinite(n) && n >= 0) {
+      el.textContent = n.toLocaleString('en-US');
+      el.title = '数据来自 ' + src;
+      return true;
+    }
+    return false;
+  }
 
-  var ctrl = window.AbortController ? new AbortController() : null;
-  var timer = ctrl ? setTimeout(function(){ ctrl.abort(); }, 7000) : null;
+  /* 通道 1：不蒜子 */
+  function viaBusuanzi(){
+    return new Promise(function(resolve, reject){
+      var cb = 'bz_' + Date.now() + '_' + Math.floor(Math.random()*1e5);
+      var closed = false;
+      var t = setTimeout(function(){
+        if (closed) return; closed = true;
+        try { delete window[cb]; } catch(e){}
+        reject(new Error('busuanzi timeout'));
+      }, 6000);
+      window[cb] = function(d){
+        if (closed) return; closed = true;
+        clearTimeout(t);
+        try { delete window[cb]; } catch(e){}
+        resolve(d);
+      };
+      var sc = document.createElement('script');
+      sc.src = 'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=' + cb;
+      sc.onerror = function(){
+        if (closed) return; closed = true;
+        clearTimeout(t);
+        reject(new Error('busuanzi error'));
+      };
+      document.head.appendChild(sc);
+    });
+  }
 
-  fetch(url, ctrl ? { signal: ctrl.signal, cache: 'no-store' }
-                  : { cache: 'no-store' })
-    .then(function(r){ return r.ok ? r.json() : null; })
-    .then(function(j){
-      if (timer) clearTimeout(timer);
-      var n = j && (typeof j.value === 'number' ? j.value : j.count);
-      if (typeof n === 'number' && isFinite(n)) {
-        el.textContent = n.toLocaleString('en-US');
-        try { sessionStorage.setItem(KEY, '1'); } catch(e){}
-      } else {
-        el.textContent = '—';
-      }
+  /* 通道 2：abacus */
+  function viaAbacus(){
+    return new Promise(function(resolve, reject){
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var t = ctrl ? setTimeout(function(){ ctrl.abort(); }, 4500) : null;
+      fetch('https://abacus.jasoncameron.dev/get/liziliangli73/mysite-views',
+            ctrl ? { signal: ctrl.signal, cache: 'no-store' } : { cache: 'no-store' })
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(j){
+          if (t) clearTimeout(t);
+          var n = j && (typeof j.value === 'number' ? j.value : j.count);
+          if (typeof n === 'number') resolve(n); else reject(new Error('bad payload'));
+        })
+        .catch(function(err){ if (t) clearTimeout(t); reject(err); });
+    });
+  }
+
+  viaBusuanzi()
+    .then(function(d){
+      var n = d && (d.site_pv != null ? d.site_pv : d.page_pv);
+      if (done(Number(n), '不蒜子')) return;
+      return viaAbacus().then(function(v){ done(v, 'abacus'); });
     })
     .catch(function(){
-      if (timer) clearTimeout(timer);
-      el.textContent = '—';
+      el.title = '不蒜子不可达，切换备用';
+      return viaAbacus()
+        .then(function(v){ done(v, 'abacus'); })
+        .catch(function(){ el.textContent = '—'; el.title = '计数服务暂不可用'; });
     });
 })();
 </script>
