@@ -481,8 +481,8 @@ html[data-theme="night"] nav{
 /* 叠加一层会移动的柔光（滤色模式，光合成的感觉） */
 .film::before, .mail::before{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
-  background:radial-gradient(52% 46% at var(--gx) var(--gy),
-    rgba(255,255,255,.50) 0%, rgba(255,255,255,.14) 42%, transparent 72%);
+  background:radial-gradient(54% 48% at var(--gx) var(--gy),
+    rgba(255,255,255,.68) 0%, rgba(255,255,255,.22) 40%, transparent 72%);
   mix-blend-mode:screen;opacity:.9;
   transition:opacity .3s;
 }
@@ -570,10 +570,10 @@ html[data-theme="night"] .g-item{
 /* ② 主光：柔光混合，像光打在照片上（不洗白） */
 .g-item::after{
   content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(58% 62% at var(--gx) var(--gy),
-    rgba(255,255,255,.58) 0%,
-    rgba(255,255,255,.18) 34%,
-    rgba(255,255,255,0)   68%);
+  background:radial-gradient(62% 68% at var(--gx) var(--gy),
+    rgba(255,255,255,.78) 0%,
+    rgba(255,255,255,.30) 30%,
+    rgba(255,255,255,0)   66%);
   mix-blend-mode:soft-light;
   transition:opacity .3s;
 }
@@ -587,8 +587,20 @@ html[data-theme="night"] .g-item::after{
 /* ③ 表面反光：滤色叠加，模拟玻璃面的一层薄光 */
 .g-item::before{
   content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:radial-gradient(72% 84% at var(--gx) var(--gy),
-    rgba(255,255,255,.14) 0%, rgba(255,255,255,.04) 46%, transparent 70%);
+  background:
+    /* 常驻：左上角一道玻璃斜光，静态也看得见 */
+    linear-gradient(126deg,
+      rgba(255,255,255,.26) 0%,
+      rgba(255,255,255,.10) 14%,
+      rgba(255,255,255,.02) 26%,
+      transparent 40%),
+    /* 右下角一道极淡的反光，制造厚度 */
+    linear-gradient(306deg,
+      rgba(255,255,255,.12) 0%,
+      transparent 30%),
+    /* 移动：跟随重力的反光 */
+    radial-gradient(74% 86% at var(--gx) var(--gy),
+      rgba(255,255,255,.20) 0%, rgba(255,255,255,.06) 44%, transparent 72%);
   mix-blend-mode:screen;
 }
 
@@ -958,8 +970,16 @@ html[data-theme="night"] .g-item::after{
   window.addEventListener('touchend', askPerm, { passive:true });
   window.addEventListener('click', askPerm);
 
+  var t0 = Date.now();
   /* 帧循环：平滑插值，避免抖动 */
   function loop(){
+    /* 兜底：1.2 秒内没收到任何传感器数据 → 自动缓慢漂移，
+       保证光感一定"动得起来"（浏览器不给权限时也不会死寂） */
+    if (!hasData && Date.now() - t0 > 1200) {
+      var t = Date.now() / 1000;
+      tx = Math.sin(t * 0.45) * 0.62;
+      ty = Math.cos(t * 0.31) * 0.50;
+    }
     cx += (tx - cx) * 0.10;
     cy += (ty - cy) * 0.10;
     root.style.setProperty('--gx', clamp(50 + cx * 38, 4, 96).toFixed(1) + '%');
