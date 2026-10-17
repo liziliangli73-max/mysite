@@ -925,6 +925,12 @@ html[data-theme="night"] .langsel button.on{color:#0d0f0d}
   white-space:nowrap}
 .st .l{font-size:11px;letter-spacing:.18em;color:var(--ink3);white-space:nowrap}
 @media(max-width:360px){.stats{gap:22px}}
+
+/* 微信行（按钮形态，点一下复制） */
+button.mail{font:inherit;color:inherit;width:100%;text-align:left;cursor:pointer;
+  -webkit-appearance:none;appearance:none}
+button.mail:active{transform:scale(.995)}
+.mail .v.copied{color:var(--jade)}
 </style>
 <script>
 /* 页面打开时强制回到顶部（浏览器默认会恢复上次滚动位置，
@@ -1102,10 +1108,11 @@ html[data-theme="night"] .langsel button.on{color:#0d0f0d}
 <section class="contact" id="contact">
   <div class="wrap">
     <h2 class="rv" data-en="Say hello" data-ja="話しましょう">说说话</h2>
-    <p class="rv" data-en="Either address works." data-ja="どちらのアドレスでも届きます。">随便哪个邮箱都能找到我。</p>
+    <p class="rv" data-en="Email or WeChat — either works." data-ja="メールでも WeChat でも、どちらでも届きます。">邮箱或微信都可以找到我。</p>
     <div class="mails rv">
       <a class="mail" href="mailto:liziliangli73@gmail.com"><span class="k">GMAIL</span><span class="v">liziliangli73@gmail.com</span></a>
       <a class="mail" href="mailto:2011961478@qq.com"><span class="k">QQ</span><span class="v">2011961478@qq.com</span></a>
+      <button type="button" class="mail" data-copy="Bygone_verse" title="点击复制微信号"><span class="k">WECHAT</span><span class="v" id="wxid">Bygone_verse</span></button>
       <a class="mail" href="https://github.com/liziliangli73-max" target="_blank" rel="noopener"><span class="k">GITHUB</span><span class="v">@liziliangli73-max</span></a>
     </div>
   </div>
@@ -1446,6 +1453,60 @@ html[data-theme="night"] .langsel button.on{color:#0d0f0d}
         .then(function(v){ done(v, 'abacus'); })
         .catch(function(){ el.textContent = '—'; el.title = '计数服务暂不可用'; });
     });
+})();
+</script>
+
+<script>
+(function(){
+  var btn = document.querySelector('[data-copy]');
+  if (!btn) return;
+  var v = btn.querySelector('.v');
+  var original = btn.getAttribute('data-copy');
+  var timer = null;
+
+  function msg(){
+    var l = document.documentElement.getAttribute('data-lang');
+    if (l === 'en') return 'Copied ✓';
+    if (l === 'ja') return 'コピーしました ✓';
+    return '已复制 ✓';
+  }
+  function feedback(ok){
+    clearTimeout(timer);
+    if (ok) {
+      v.textContent = msg();
+      v.classList.add('copied');
+      timer = setTimeout(function(){
+        v.textContent = original;
+        v.classList.remove('copied');
+      }, 1500);
+    } else {
+      v.textContent = original;
+    }
+  }
+  function legacyCopy(){
+    var ta = document.createElement('textarea');
+    ta.value = original;
+    ta.setAttribute('readonly','');
+    ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;pointer-events:none';
+    document.body.appendChild(ta);
+    ta.select();
+    ta.setSelectionRange(0, ta.value.length);
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch(e){ ok = false; }
+    document.body.removeChild(ta);
+    feedback(ok);
+  }
+
+  btn.addEventListener('click', function(){
+    /* http 页面不是安全上下文，navigator.clipboard 不可用，要走 execCommand */
+    if (window.isSecureContext && navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(original)
+        .then(function(){ feedback(true); })
+        .catch(legacyCopy);
+    } else {
+      legacyCopy();
+    }
+  });
 })();
 </script>
 </body>
