@@ -865,11 +865,9 @@ html[data-theme="night"] nav{
   .mist{filter:blur(18px)!important}
 }
 
-/* ⑨ 离屏区块跳过渲染（长页面滚动更顺） */
-#jp, #hz, #films, #about, .contact, footer{
-  content-visibility:auto;
-  contain-intrinsic-size:auto 800px;
-}
+/* ⑨ 注意：content-visibility 已撤掉。
+      它会让浏览器在渲染前把区块当作固定高度，
+      导致页面总高度是估算值，滚动定位/刷新会跳到错误位置。 */
 
 /* ══════════════════════════════════════════
    调色优化（只改颜色，不碰布局）
@@ -918,6 +916,25 @@ html[data-theme="night"]{
 html[data-theme="night"] .langsel button.on{color:#0d0f0d}
 @media(max-width:400px){.langsel button{padding:5px 5px;font-size:10.5px}}
 </style>
+<script>
+/* 页面打开时强制回到顶部（浏览器默认会恢复上次滚动位置，
+   配合图片懒加载会造成"一打开就跳到底部"） */
+(function(){
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  function toTop(){
+    if (location.hash) return;
+    var de = document.documentElement;
+    var prev = de.style.scrollBehavior;
+    de.style.scrollBehavior = 'auto';   /* 先用瞬时滚动，避免看到跳动动画 */
+    window.scrollTo(0, 0);
+    de.style.scrollBehavior = prev;
+  }
+  toTop();
+  document.addEventListener('DOMContentLoaded', toTop);
+  window.addEventListener('load', function(){ setTimeout(toTop, 0); });
+  window.addEventListener('pageshow', function(e){ if (e.persisted) toTop(); });
+})();
+</script>
 </head>
 <body>
 
