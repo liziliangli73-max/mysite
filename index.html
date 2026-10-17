@@ -758,6 +758,118 @@ html[data-theme="night"] .g-item::after{
     inset 0 -16px 26px -18px rgba(0,0,0,.75),
     inset 0 16px 26px -20px rgba(190,245,225,.12);
 }
+
+/* ══════════════════════════════════════════
+   性能优化版（视觉保留，代价砍掉）
+   ══════════════════════════════════════════ */
+
+/* ① 砍掉大面积的 backdrop-filter（滚动卡顿元凶） */
+.film, .mail{
+  backdrop-filter:none!important;
+  -webkit-backdrop-filter:none!important;
+  background:
+    linear-gradient(158deg,
+      rgba(255,255,255,.66) 0%,
+      rgba(255,255,255,.36) 46%,
+      rgba(255,255,255,.56) 100%)!important;
+}
+html[data-theme="night"] .film,
+html[data-theme="night"] .mail{
+  background:linear-gradient(158deg,
+    rgba(255,255,255,.11) 0%,
+    rgba(255,255,255,.045) 46%,
+    rgba(255,255,255,.09) 100%)!important;
+}
+/* 观影卡的高光改成静态（不再每帧重绘） */
+.film::before, .mail::before{
+  background:radial-gradient(54% 48% at 18% 6%,
+    rgba(255,255,255,.62) 0%, rgba(255,255,255,.18) 40%, transparent 72%)!important;
+}
+html[data-theme="night"] .film::before,
+html[data-theme="night"] .mail::before{
+  background:radial-gradient(54% 48% at 18% 6%,
+    rgba(170,240,214,.16) 0%, rgba(170,240,214,.05) 40%, transparent 72%)!important;
+}
+
+/* ② 照片：conic+mask 太贵 → 换成 4 条 inset 线（便宜 10 倍） */
+.g-item{
+  transform:none!important;
+  box-shadow:0 24px 46px -26px var(--gl-shadow)!important;
+}
+.g-item::before{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  border-radius:inherit;
+  padding:0!important;
+  background:none!important;
+  mix-blend-mode:normal!important;
+  -webkit-mask:none!important;mask:none!important;
+  -webkit-mask-composite:source-over!important;mask-composite:add!important;
+  box-shadow:
+    inset 0 1.5px 0 rgba(255,255,255,.95),      /* 顶部亮线 */
+    inset 1.5px 0 0 rgba(255,255,255,.50),      /* 左侧中线 */
+    inset 0 0 0 1px rgba(255,255,255,.26),      /* 细环 */
+    inset -1.5px 0 0 rgba(255,255,255,.10),     /* 右侧弱 */
+    inset 0 -1.5px 0 rgba(255,255,255,.06),     /* 底部更弱 */
+    inset 0 -18px 24px -20px rgba(0,0,0,.55);   /* 底部内暗 */
+}
+.g-item::after{display:none!important}   /* 整层去掉 */
+
+html[data-theme="night"] .g-item::before{
+  box-shadow:
+    inset 0 1.5px 0 rgba(190,245,225,.70),
+    inset 1.5px 0 0 rgba(190,245,225,.32),
+    inset 0 0 0 1px rgba(255,255,255,.10),
+    inset -1.5px 0 0 rgba(255,255,255,.05),
+    inset 0 -1.5px 0 rgba(255,255,255,.03),
+    inset 0 -18px 24px -20px rgba(0,0,0,.80);
+}
+
+/* ③ 去掉所有每帧变化的 transform */
+.poster, .hero-in{transform:none!important}
+.film, .mail{transform:none!important}
+.film:hover, .mail:hover{transform:none!important}
+
+/* ④ 首屏光晕改静态 */
+.hero::after{
+  background:radial-gradient(46% 38% at 22% 4%,
+    rgba(255,244,222,.60) 0%, rgba(255,244,222,.20) 38%, transparent 70%)!important;
+}
+html[data-theme="night"] .hero::after{
+  background:radial-gradient(46% 38% at 22% 4%,
+    rgba(140,200,255,.24) 0%, rgba(140,200,255,.07) 40%, transparent 72%)!important;
+}
+
+/* ⑤ 云：减少模糊半径 + 加合成层提示 */
+.mist{filter:blur(22px)!important;will-change:transform}
+.stars{will-change:auto}
+
+/* ⑥ 灯箱按钮去掉 backdrop-filter */
+.lb-btn{
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  background:rgba(255,255,255,.18)!important;
+}
+
+/* ⑦ 导航条：模糊 26px → 12px（成本约降到 1/4，观感几乎不变） */
+nav{
+  backdrop-filter:blur(12px) saturate(160%)!important;
+  -webkit-backdrop-filter:blur(12px) saturate(160%)!important;
+  background:linear-gradient(180deg, rgba(255,255,255,.80), rgba(255,255,255,.62))!important;
+}
+html[data-theme="night"] nav{
+  background:linear-gradient(180deg, rgba(22,34,30,.92), rgba(14,23,20,.82))!important;
+}
+
+/* ⑧ 手机端只保留 2 朵云（少两个大模糊层） */
+@media(max-width:760px){
+  .m3, .m4{display:none!important}
+  .mist{filter:blur(18px)!important}
+}
+
+/* ⑨ 离屏区块跳过渲染（长页面滚动更顺） */
+#jp, #hz, #films, #about, .contact, footer{
+  content-visibility:auto;
+  contain-intrinsic-size:auto 800px;
+}
 </style>
 </head>
 <body>
@@ -1080,21 +1192,18 @@ html[data-theme="night"] .g-item::after{
 (function(){
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var root = document.documentElement;
-  var tx = 0, ty = 0;   // 目标
-  var cx = 0, cy = 0;   // 平滑后的当前值
-  var hasData = false;
+  var tx = 0, ty = 0, cx = 0, cy = 0;
+  var hasData = false, t0 = 0;
+  var lastA = -1, lastB = -1;
 
   function clamp(v, a, b){ return v < a ? a : (v > b ? b : v); }
 
-  /* 设备方向：gamma 左右，beta 前后 */
   function onOri(e){
     if (e.gamma == null && e.beta == null) return;
     hasData = true;
-    tx = clamp((e.gamma || 0) / 42, -1, 1);
-    // 竖持手机时 beta 约 45~70，把 55° 当"正对"
-    ty = clamp(((e.beta || 0) - 55) / 42, -1, 1);
+    tx = clamp((e.gamma || 0) / 48, -1, 1);
+    ty = clamp(((e.beta || 0) - 55) / 48, -1, 1);
   }
-  /* 备用：加速度计 */
   function onMot(e){
     if (hasData) return;
     var a = e.accelerationIncludingGravity;
@@ -1102,11 +1211,9 @@ html[data-theme="night"] .g-item::after{
     tx = clamp((a.x || 0) / 9.4, -1, 1);
     ty = clamp(-(a.y || 0) / 9.4, -1, 1);
   }
-
   window.addEventListener('deviceorientation', onOri, true);
   window.addEventListener('devicemotion', onMot, true);
 
-  /* iOS 13+ 需要用户手势授权 */
   function askPerm(){
     if (typeof DeviceOrientationEvent !== 'undefined' &&
         typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -1118,27 +1225,38 @@ html[data-theme="night"] .g-item::after{
   window.addEventListener('touchend', askPerm, { passive:true });
   window.addEventListener('click', askPerm);
 
-  var t0 = Date.now();
-  /* 帧循环：平滑插值，避免抖动 */
-  function loop(){
-    /* 兜底：1.2 秒内没收到任何传感器数据 → 自动缓慢漂移，
-       保证光感一定"动得起来"（浏览器不给权限时也不会死寂） */
-    if (!hasData && Date.now() - t0 > 1200) {
-      var t = Date.now() / 1000;
+  /* 关键优化：
+     · 限制到约 15fps（人眼看不出），不再 60fps
+     · 位置变化小于 0.6% 就跳过写入（静止时几乎不触发重排）
+     · 页面切到后台自动停 */
+  var INTERVAL = 66;
+  var lastRun = 0;
+
+  function tick(now){
+    requestAnimationFrame(tick);
+    if (document.hidden) return;
+    if (now - lastRun < INTERVAL) return;
+    lastRun = now;
+
+    if (!t0) t0 = now;
+    if (!hasData && now - t0 > 1200) {
+      var t = now / 1000;
       tx = Math.sin(t * 0.45) * 0.62;
       ty = Math.cos(t * 0.31) * 0.50;
     }
-    cx += (tx - cx) * 0.10;
-    cy += (ty - cy) * 0.10;
-    root.style.setProperty('--gx', clamp(50 + cx * 38, 4, 96).toFixed(1) + '%');
-    root.style.setProperty('--gy', clamp(26 + cy * 26, 2, 80).toFixed(1) + '%');
-    /* 亮边方向跟随重力旋转：默认亮部朝左上(315°)，倾斜时转动 */
-    root.style.setProperty('--ga', (315 - cx * 55 + cy * 45).toFixed(1));
-    root.style.setProperty('--gxr', cx.toFixed(3));
-    root.style.setProperty('--gyr', cy.toFixed(3));
-    requestAnimationFrame(loop);
+    cx += (tx - cx) * 0.16;
+    cy += (ty - cy) * 0.16;
+
+    var a = clamp(50 + cx * 38, 4, 96);
+    var b = clamp(26 + cy * 26, 2, 80);
+
+    if (Math.abs(a - lastA) > 0.6 || Math.abs(b - lastB) > 0.6) {
+      lastA = a; lastB = b;
+      root.style.setProperty('--gx', a.toFixed(1) + '%');
+      root.style.setProperty('--gy', b.toFixed(1) + '%');
+    }
   }
-  requestAnimationFrame(loop);
+  requestAnimationFrame(tick);
 })();
 </script>
 </body>
