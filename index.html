@@ -621,6 +621,77 @@ html[data-theme="night"] .g-item::after{
 .school::before{
   content:"";width:16px;height:1px;background:currentColor;opacity:.55;
 }
+
+/* ══════════════════════════════════════════
+   照片墙 · 液态玻璃（重做：用覆盖层而非 inset）
+   ══════════════════════════════════════════ */
+.g-item{
+  position:relative;
+  box-shadow:0 26px 54px -26px var(--gl-shadow);
+}
+
+/* ── 玻璃面：一块半透明白玻璃压在照片上 ── */
+.g-item::before{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  border-radius:inherit;
+  background:
+    /* 左上角镜面高光（这是"看起来是玻璃"的关键） */
+    radial-gradient(44% 36% at 7% 3%,
+      rgba(255,255,255,.46) 0%,
+      rgba(255,255,255,.14) 40%,
+      transparent 68%),
+    /* 斜向玻璃厚薄变化 */
+    linear-gradient(134deg,
+      rgba(255,255,255,.20) 0%,
+      rgba(255,255,255,.05) 24%,
+      rgba(255,255,255,0)   48%,
+      rgba(0,0,0,.07)      100%);
+  /* 棱边：顶亮线 + 细亮环 + 底部内阴影 */
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.92),
+    inset 0 0 0 1px rgba(255,255,255,.30),
+    inset 0 -3px 9px -3px rgba(0,0,0,.30);
+}
+
+/* ── 跟随重力的移动光（screen 叠加，明显更亮） ── */
+.g-item::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  border-radius:inherit;
+  background:radial-gradient(56% 62% at var(--gx) var(--gy),
+    rgba(255,255,255,.42) 0%,
+    rgba(255,255,255,.13) 32%,
+    rgba(255,255,255,0)   64%);
+  mix-blend-mode:screen;
+  opacity:.95;
+}
+
+/* 说明条压在最上面 */
+.g-cap{z-index:3}
+
+/* ── 夜间 ── */
+html[data-theme="night"] .g-item::before{
+  background:
+    radial-gradient(44% 36% at 7% 3%, rgba(180,240,215,.20) 0%, rgba(180,240,215,.05) 40%, transparent 68%),
+    linear-gradient(134deg,
+      rgba(255,255,255,.08) 0%,
+      rgba(255,255,255,.02) 24%,
+      rgba(255,255,255,0)   48%,
+      rgba(0,0,0,.26)      100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.26),
+    inset 0 0 0 1px rgba(255,255,255,.12),
+    inset 0 -3px 9px -3px rgba(0,0,0,.55);
+}
+html[data-theme="night"] .g-item::after{
+  background:radial-gradient(56% 62% at var(--gx) var(--gy),
+    rgba(170,240,214,.26) 0%,
+    rgba(170,240,214,.08) 34%,
+    transparent 66%);
+}
+
+@media(prefers-reduced-motion:reduce){
+  .g-item::after{display:none}
+}
 </style>
 </head>
 <body>
@@ -754,7 +825,7 @@ html[data-theme="night"] .g-item::after{
     </div>
     <div class="about-split">
       <div>
-        <p class="school rv" data-en="Vocational University of Science &amp; Technology · Class of 2024">河科技职大 · 2024 级</p>
+        <p class="school rv" data-en="Vocational University of Science &amp; Technology · Class of 2024">河科职大 · 2024 级</p>
         <p class="rv" data-en="A college student. I take photos on the way to class, and build small things on the side.">一个在校学生。会在去上课的路上拍照，也会在课余做点小东西。</p>
         <p class="rv" data-en="Still learning: Linux, Git, a little Python. And still collecting roads.">还在学 Linux、Git，还有一点点 Python。也还在收集各种各样的路。</p>
       </div>
