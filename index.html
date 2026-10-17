@@ -906,19 +906,30 @@ html[data-theme="night"]{
 .tag{color:var(--ink2)}
 .mail .k{color:var(--ink3)}
 .g-cap .n{color:rgba(255,255,255,.72)}
+
+/* 三语选择器 */
+.langsel{display:inline-flex;align-items:center;gap:1px;
+  border:1px solid var(--line);border-radius:9px;padding:2px;margin:0 4px}
+.langsel button{border:none;background:transparent;color:var(--ink);opacity:.52;
+  font:inherit;font-size:11px;font-weight:700;letter-spacing:.02em;
+  padding:5px 7px;border-radius:7px;cursor:pointer;transition:.18s;line-height:1}
+.langsel button:hover{opacity:.85}
+.langsel button.on{opacity:1;background:var(--jade);color:#fff}
+html[data-theme="night"] .langsel button.on{color:#0d0f0d}
+@media(max-width:400px){.langsel button{padding:5px 5px;font-size:10.5px}}
 </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-in">
-    <a class="brand" href="#" data-en="Spring &amp; I">春风皆过客</a>
+    <a class="brand" href="#" data-en="Spring &amp; I" data-ja="春風と私">春风皆过客</a>
     <div class="nav-links">
-      <a href="#jp" data-en="Photos">照片</a>
-      <a href="#films" class="m" data-en="Films">观影</a>
-      <a href="#about" class="m" data-en="About">关于</a>
-      <a href="#contact" data-en="Contact">联系</a>
-      <button class="ico lang" id="lang" aria-label="Switch language">EN</button>
+      <a href="#jp" data-en="Photos" data-ja="写真">照片</a>
+      <a href="#films" class="m" data-en="Films" data-ja="映画">观影</a>
+      <a href="#about" class="m" data-en="About" data-ja="について">关于</a>
+      <a href="#contact" data-en="Contact" data-ja="連絡">联系</a>
+      <div class="langsel" role="group" aria-label="Language"><button data-setlang="zh">中</button><button data-setlang="en">EN</button><button data-setlang="ja">日</button></div>
       <button class="ico" id="tgl" aria-label="Toggle day/night">◐</button>
     </div>
   </div>
@@ -929,39 +940,39 @@ html[data-theme="night"]{
   <div class="mist m3"></div><div class="mist m4"></div>
   <div class="stars"></div>
   <div class="hero-in">
-    <p class="kicker" data-en="Hello, World">你好，世界。</p>
-    <h1 data-en="I &amp; the Spring Breeze<br>Are Both Passers-by">我与春风皆过客</h1>
-    <p class="lead" data-en="Into Japanese streetscapes, animated films,<br>and <em>the green of Hangzhou</em>.">喜欢日本街景、动画电影，<br>和<em>杭州的满眼绿意</em>。</p>
+    <p class="kicker" data-en="Hello, World" data-ja="ハロー・ワールド">你好，世界。</p>
+    <h1 data-en="I &amp; the Spring Breeze<br>Are Both Passers-by" data-ja="私も春風も<br>通り過ぎる人">我与春风皆过客</h1>
+    <p class="lead" data-en="Into Japanese streetscapes, animated films,<br>and <em>the green of Hangzhou</em>." data-ja="日本の街並みとアニメ映画、<br>そして<em>杭州の緑</em>が好き。">喜欢日本街景、动画电影，<br>和<em>杭州的满眼绿意</em>。</p>
   </div>
   <div class="scroll-hint"><span>SCROLL</span><i></i></div>
 </header>
 
 <section class="poem">
   <div class="wrap">
-    <blockquote class="rv" data-en="Flowers bloom again.<br><span>Youth never returns.</span>">花有重开日<br><span>人无再少年</span></blockquote>
-    <cite class="rv" data-en="— Guan Hanqing, Yuan dynasty">—— 元 · 关汉卿</cite>
+    <blockquote class="rv" data-en="Flowers bloom again.<br><span>Youth never returns.</span>" data-ja="花は再び咲けども<br><span>人は再び若しからず</span>">花有重开日<br><span>人无再少年</span></blockquote>
+    <cite class="rv" data-en="— Guan Hanqing, Yuan dynasty" data-ja="— 元・関漢卿">—— 元 · 关汉卿</cite>
   </div>
 </section>
 
 <section class="sec" id="jp">
   <div class="wrap">
     <div class="sec-head">
-      <h2 class="rv" data-en="Japan, Oct 2022">日本 · 2022.10</h2>
+      <h2 class="rv" data-en="Japan, Oct 2022" data-ja="日本・2022.10">日本 · 2022.10</h2>
       <span class="rule"></span>
-      <p class="rv" data-en="a few roads, and the frames they echoed">随手拍的一些路，和它们让我想起的画面</p>
+      <p class="rv" data-en="a few roads, and the frames they echoed" data-ja="何気なく撮ったいくつかの道と、そこから思い出した風景">随手拍的一些路，和它们让我想起的画面</p>
     </div>
     <div class="gallery">
-      <figure class="g-item g-1 g-w rv" data-cap="望坂 · 像是《天气之子》里的那条坡" data-cap-en="Misasaka — right out of Weathering With You">
+      <figure class="g-item g-1 g-w rv" data-cap="望坂 · 像是《天气之子》里的那条坡" data-cap-ja="望坂 — 『天気の子』に出てきそうな坂" data-cap-en="Misasaka — right out of Weathering With You">
         <img src="photos/slope.jpg" alt="望坂" loading="lazy" width="1080" height="1215">
-        <figcaption class="g-cap"><span data-en="Misasaka — like the slope in Weathering With You">望坂 · 像是《天气之子》里的那条坡</span><span class="n">01</span></figcaption>
+        <figcaption class="g-cap"><span data-en="Misasaka — like the slope in Weathering With You" data-ja="望坂 — 『天気の子』に出てきそうな坂">望坂 · 像是《天气之子》里的那条坡</span><span class="n">01</span></figcaption>
       </figure>
-      <figure class="g-item g-2 g-w rv" data-cap="赤城神社 · 鸟居下面就是便利店" data-cap-en="Akagi Shrine, with a Lawson right below">
+      <figure class="g-item g-2 g-w rv" data-cap="赤城神社 · 鸟居下面就是便利店" data-cap-ja="赤城神社 — 鳥居のすぐ下にコンビニ" data-cap-en="Akagi Shrine, with a Lawson right below">
         <img src="photos/shrine.jpg" alt="赤城神社" loading="lazy" width="1400" height="700">
-        <figcaption class="g-cap"><span data-en="Akagi Shrine — a Lawson under the torii">赤城神社 · 鸟居下面就是便利店</span><span class="n">02</span></figcaption>
+        <figcaption class="g-cap"><span data-en="Akagi Shrine — a Lawson under the torii" data-ja="赤城神社 — 鳥居のすぐ下にコンビニ">赤城神社 · 鸟居下面就是便利店</span><span class="n">02</span></figcaption>
       </figure>
-      <figure class="g-item g-3 g-w rv" data-cap="夏天的云下，一栋橙色的房子" data-cap-en="An orange house under summer clouds">
+      <figure class="g-item g-3 g-w rv" data-cap="夏天的云下，一栋橙色的房子" data-cap-ja="夏の雲の下、オレンジ色の家" data-cap-en="An orange house under summer clouds">
         <img src="photos/house.jpg" alt="橙色木屋" loading="lazy" width="1400" height="700">
-        <figcaption class="g-cap"><span data-en="An orange house under summer clouds">夏天的云下，一栋橙色的房子</span><span class="n">03</span></figcaption>
+        <figcaption class="g-cap"><span data-en="An orange house under summer clouds" data-ja="夏の雲の下、オレンジ色の家">夏天的云下，一栋橙色的房子</span><span class="n">03</span></figcaption>
       </figure>
     </div>
   </div>
@@ -970,18 +981,18 @@ html[data-theme="night"]{
 <section class="sec" id="hz">
   <div class="wrap">
     <div class="sec-head">
-      <h2 class="rv" data-en="Hangzhou · by the Qiantang">杭州 · 钱塘江岸</h2>
+      <h2 class="rv" data-en="Hangzhou · by the Qiantang" data-ja="杭州・銭塘江のほとり">杭州 · 钱塘江岸</h2>
       <span class="rule"></span>
-      <p class="rv" data-en="the wind messed up something, but left the green">风吹过钱塘江岸，也吹散了你说来杭州的约定</p>
+      <p class="rv" data-en="the wind messed up something, but left the green" data-ja="銭塘江を風が吹き抜け、君が言った杭州の約束も吹き消した">风吹过钱塘江岸，也吹散了你说来杭州的约定</p>
     </div>
     <div class="gallery">
-      <figure class="g-item g-1 g-w rv" data-cap="梧桐树下，一辆绿色的出租车开过" data-cap-en="A green cab under the plane trees">
+      <figure class="g-item g-1 g-w rv" data-cap="梧桐树下，一辆绿色的出租车开过" data-cap-ja="プラタナスの下、緑のタクシーが走り過ぎる" data-cap-en="A green cab under the plane trees">
         <img src="photos/hz-road.jpg" alt="林荫道" loading="lazy" width="1200" height="1600">
-        <figcaption class="g-cap"><span data-en="A green cab under the plane trees">梧桐树下，一辆绿色的出租车开过</span><span class="n">04</span></figcaption>
+        <figcaption class="g-cap"><span data-en="A green cab under the plane trees" data-ja="プラタナスの下、緑のタクシーが走り過ぎる">梧桐树下，一辆绿色的出租车开过</span><span class="n">04</span></figcaption>
       </figure>
-      <figure class="g-item g-1 g-w rv" data-cap="抬头 · 一整棵长满青苔的树" data-cap-en="Looking up — a whole tree covered in moss">
+      <figure class="g-item g-1 g-w rv" data-cap="抬头 · 一整棵长满青苔的树" data-cap-ja="見上げれば — 苔むした一本の木" data-cap-en="Looking up — a whole tree covered in moss">
         <img src="photos/canopy.jpg" alt="大树仰拍" loading="lazy" width="1400" height="1050">
-        <figcaption class="g-cap"><span data-en="Looking up — a whole tree covered in moss">抬头 · 一整棵长满青苔的树</span><span class="n">05</span></figcaption>
+        <figcaption class="g-cap"><span data-en="Looking up — a whole tree covered in moss" data-ja="見上げれば — 苔むした一本の木">抬头 · 一整棵长满青苔的树</span><span class="n">05</span></figcaption>
       </figure>
       </div>
   </div>
@@ -990,41 +1001,41 @@ html[data-theme="night"]{
 <section class="sec" id="films">
   <div class="wrap">
     <div class="sec-head">
-      <h2 class="rv" data-en="Films I keep going back to">看过的一些</h2>
+      <h2 class="rv" data-en="Films I keep going back to" data-ja="観てきたもの">看过的一些</h2>
       <span class="rule"></span>
-      <p class="rv" data-en="some of them I've watched more than once">有几部看了不止一遍</p>
+      <p class="rv" data-en="some of them I've watched more than once" data-ja="何度も観返した作品もある">有几部看了不止一遍</p>
     </div>
     <div class="films">
       <article class="film rv">
         <img class="poster" src="photos/yourname.jpg" alt="你的名字。" loading="lazy" width="460" height="690">
         <div class="f-body">
         <div class="y">2016</div>
-        <h3 data-en="Your Name.">你的名字。</h3>
-        <p data-en="The moment at dusk on the mountain top — that's the most concrete picture I have of what “passing each other by” means.">「黄昏之时」那一幕，是我对"擦肩而过"这四个字最具体的想象。两个人在山顶终于见面，天光只剩最后一分钟。</p>
+        <h3 data-en="Your Name." data-ja="君の名は。">你的名字。</h3>
+        <p data-en="The moment at dusk on the mountain top — that's the most concrete picture I have of what “passing each other by” means." data-ja="「黄昏時」のあの場面は、「すれ違い」という言葉について私が持っている最も具体的なイメージだ。山の頂でようやく出会う二人に、残された光はあと一分しかない。">「黄昏之时」那一幕，是我对"擦肩而过"这四个字最具体的想象。两个人在山顶终于见面，天光只剩最后一分钟。</p>
         </div>
       </article>
       <article class="film rv">
         <img class="poster" src="photos/weathering.jpg" alt="天气之子" loading="lazy" width="460" height="690">
         <div class="f-body">
         <div class="y">2019</div>
-        <h3 data-en="Weathering With You">天气之子</h3>
-        <p data-en="Rain buries the whole city and nobody apologises for it. I like that it refuses to be a noble story.">雨把整座城市淹了，他也没打算道歉。喜欢它不肯做一个"正确"的选择，就是想把那个人留下来而已。</p>
+        <h3 data-en="Weathering With You" data-ja="天気の子">天气之子</h3>
+        <p data-en="Rain buries the whole city and nobody apologises for it. I like that it refuses to be a noble story." data-ja="雨が街を丸ごと沈めても、彼は謝ろうとしない。「正しい」選択を拒んだところが好きだ。ただ、あの人を残したかっただけなのだ。">雨把整座城市淹了，他也没打算道歉。喜欢它不肯做一个"正确"的选择，就是想把那个人留下来而已。</p>
         </div>
       </article>
       <article class="film rv">
         <img class="poster" src="photos/helloworld.jpg" alt="HELLO WORLD" loading="lazy" width="460" height="690">
         <div class="f-body">
         <div class="y">2019</div>
-        <h3 data-en="HELLO WORLD">HELLO WORLD</h3>
-        <p data-en="“Hello, World.” I've been using this line as a signature ever since — it's also the first thing every program says.">「你好，世界。」后来我把这句话一直用着 —— 它是每段程序说的第一句话，也是人第一次抬头看这个世界时说的。</p>
+        <h3 data-en="HELLO WORLD" data-ja="HELLO WORLD">HELLO WORLD</h3>
+        <p data-en="“Hello, World.” I've been using this line as a signature ever since — it's also the first thing every program says." data-ja="「ハロー・ワールド」。それからずっとこの言葉を使っている。プログラムが最初に発する言葉であり、人が初めてこの世界を見上げたときに言う言葉でもある。">「你好，世界。」后来我把这句话一直用着 —— 它是每段程序说的第一句话，也是人第一次抬头看这个世界时说的。</p>
         </div>
       </article>
       <article class="film rv">
         <img class="poster" src="photos/suzume.jpg" alt="铃芽之旅" loading="lazy" width="460" height="690">
         <div class="f-body">
         <div class="y">2022</div>
-        <h3 data-en="Suzume">铃芽之旅</h3>
-        <p data-en="Doors, ruins, and the things people left behind. The closing door is a kind of goodbye.">关于门、废墟，还有被留下的东西。关上一扇门，其实也是一种告别。</p>
+        <h3 data-en="Suzume" data-ja="すずめの戸締まり">铃芽之旅</h3>
+        <p data-en="Doors, ruins, and the things people left behind. The closing door is a kind of goodbye." data-ja="扉と、廃墟と、置き去りにされたものの話。扉を閉めることも、また一つの別れなのだ。">关于门、废墟，还有被留下的东西。关上一扇门，其实也是一种告别。</p>
         </div>
       </article>
     </div>
@@ -1034,21 +1045,21 @@ html[data-theme="night"]{
 <section class="sec" id="about">
   <div class="wrap">
     <div class="sec-head">
-      <h2 class="rv" data-en="About">关于</h2>
+      <h2 class="rv" data-en="About" data-ja="について">关于</h2>
       <span class="rule"></span>
     </div>
     <div class="about-split">
       <div>
-        <p class="school rv" data-en="Vocational University of Science &amp; Technology · Class of 2024">河科职大 · 2024 级</p>
-        <p class="rv" data-en="A college student. I take photos on the way to class, and build small things on the side.">一个在校学生。会在去上课的路上拍照，也会在课余做点小东西。</p>
-        <p class="rv" data-en="Still learning: Linux, Git, a little Python. And still collecting roads.">还在学 Linux、Git，还有一点点 Python。也还在收集各种各样的路。</p>
+        <p class="school rv" data-en="Vocational University of Science &amp; Technology · Class of 2024" data-ja="河科職大・2024年度入学">河科职大 · 2024 级</p>
+        <p class="rv" data-en="A college student. I take photos on the way to class, and build small things on the side." data-ja="学生です。授業へ向かう道で写真を撮り、空いた時間に小さなものを作っています。">一个在校学生。会在去上课的路上拍照，也会在课余做点小东西。</p>
+        <p class="rv" data-en="Still learning: Linux, Git, a little Python. And still collecting roads." data-ja="Linux と Git、それに少しだけ Python を勉強中。いろいろな道も、まだ集めています。">还在学 Linux、Git，还有一点点 Python。也还在收集各种各样的路。</p>
       </div>
       <div class="rv">
         <div class="tags">
-          <span class="tag" data-en="Animated films">动画电影</span>
-          <span class="tag" data-en="Japanese streets">日本街景</span>
-          <span class="tag" data-en="Photography">拍照</span>
-          <span class="tag" data-en="Walking">走路</span>
+          <span class="tag" data-en="Animated films" data-ja="アニメ映画">动画电影</span>
+          <span class="tag" data-en="Japanese streets" data-ja="日本の街並み">日本街景</span>
+          <span class="tag" data-en="Photography" data-ja="写真">拍照</span>
+          <span class="tag" data-en="Walking" data-ja="散歩">走路</span>
           <span class="tag">HTML / CSS</span>
           <span class="tag">JavaScript</span>
           <span class="tag">Python</span>
@@ -1063,8 +1074,8 @@ html[data-theme="night"]{
 
 <section class="contact" id="contact">
   <div class="wrap">
-    <h2 class="rv" data-en="Say hello">说说话</h2>
-    <p class="rv" data-en="Either address works.">随便哪个邮箱都能找到我。</p>
+    <h2 class="rv" data-en="Say hello" data-ja="話しましょう">说说话</h2>
+    <p class="rv" data-en="Either address works." data-ja="どちらのアドレスでも届きます。">随便哪个邮箱都能找到我。</p>
     <div class="mails rv">
       <a class="mail" href="mailto:liziliangli73@gmail.com"><span class="k">GMAIL</span><span class="v">liziliangli73@gmail.com</span></a>
       <a class="mail" href="mailto:2011961478@qq.com"><span class="k">QQ</span><span class="v">2011961478@qq.com</span></a>
@@ -1075,8 +1086,8 @@ html[data-theme="night"]{
 
 <footer>
   <div class="wrap f">
-    <div data-en="© 2026 · hand-written HTML &amp; CSS">© 2026 · 手写 HTML / CSS</div>
-    <div data-en=" Photos from my own camera roll">照片来自我的相册</div>
+    <div data-en="© 2026 · hand-written HTML &amp; CSS" data-ja="© 2026 · HTML / CSS 手書き">© 2026 · 手写 HTML / CSS</div>
+    <div data-en=" Photos from my own camera roll" data-ja="写真は自分のアルバムから">照片来自我的相册</div>
   </div>
 </footer>
 
@@ -1110,32 +1121,40 @@ html[data-theme="night"]{
 
   /* 语言 */
   var META={
-    zh:{title:'我与春风皆过客',desc:'花有重开日，人无再少年。喜欢日本街景、动画电影，也喜欢拍照和写网页。',lang:'zh-CN',btn:'EN'},
-    en:{title:'Spring Breeze & I',desc:'Flowers bloom again; youth never returns. Japanese streetscapes, animated films, photography.',lang:'en',btn:'中文'}
+    zh:{title:'我与春风皆过客',desc:'花有重开日，人无再少年。喜欢日本街景、动画电影，也喜欢拍照和写网页。',lang:'zh-CN'},
+    en:{title:'Spring Breeze & I',desc:'Flowers bloom again; youth never returns. Japanese streetscapes, animated films, photography.',lang:'en'},
+    ja:{title:'春風と私',desc:'花は再び咲けども、人は再び若しからず。日本の街並みとアニメ映画、写真が好きです。',lang:'ja'}
   };
-  var nodes=[]; 
+  var nodes=[];
   document.querySelectorAll('[data-en]').forEach(function(el){
-    nodes.push({el:el, zh:el.innerHTML, en:el.getAttribute('data-en')});
+    nodes.push({el:el, zh:el.innerHTML, en:el.getAttribute('data-en'), ja:el.getAttribute('data-ja')});
   });
   var imgs=document.querySelectorAll('.g-item');
   function setLang(lang){
     var m=META[lang]||META.zh;
-    nodes.forEach(function(n){ n.el.innerHTML=(lang==='en')?n.en:n.zh; });
+    nodes.forEach(function(n){
+      n.el.innerHTML = (lang==='en') ? n.en : (lang==='ja' ? (n.ja||n.zh) : n.zh);
+    });
     imgs.forEach(function(fig){
-      var zh=fig.getAttribute('data-cap'), en=fig.getAttribute('data-cap-en');
-      fig.setAttribute('data-active-cap', (lang==='en')?(en||zh):(zh||''));
+      var zh=fig.getAttribute('data-cap'),
+          en=fig.getAttribute('data-cap-en'),
+          ja=fig.getAttribute('data-cap-ja');
+      fig.setAttribute('data-active-cap',
+        lang==='en' ? (en||zh) : (lang==='ja' ? (ja||zh) : (zh||'')));
     });
     root.setAttribute('data-lang',lang); root.setAttribute('lang',m.lang);
     document.title=m.title;
     var d=document.querySelector('meta[name="description"]'); if(d) d.setAttribute('content',m.desc);
-    var b=document.getElementById('lang'); if(b) b.textContent=m.btn;
+    document.querySelectorAll('[data-setlang]').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-setlang')===lang);
+    });
     try{ localStorage.setItem('lang',lang); }catch(e){}
   }
   imgs.forEach(function(fig){ fig.setAttribute('data-active-cap', fig.getAttribute('data-cap')||''); });
   var sl='zh'; try{ sl=localStorage.getItem('lang')||'zh'; }catch(e){}
-  if(sl==='en') setLang('en');
-  document.getElementById('lang').addEventListener('click', function(){
-    setLang(root.getAttribute('data-lang')==='en'?'zh':'en');
+  if(sl==='en'||sl==='ja') setLang(sl);
+  document.querySelectorAll('[data-setlang]').forEach(function(b){
+    b.addEventListener('click', function(){ setLang(b.getAttribute('data-setlang')); });
   });
 
   /* 灯箱 · 图集 */
