@@ -321,6 +321,145 @@ footer .f{font-size:12px;letter-spacing:.06em;color:var(--ink3);line-height:2}
   .contact{padding:64px 0 72px}
   .about-split{gap:28px}
 }
+
+/* ══════════════════════════════════════════
+   液态玻璃 Liquid Glass
+   ══════════════════════════════════════════ */
+:root{
+  --gl-hi:rgba(255,255,255,.74);
+  --gl-mid:rgba(255,255,255,.30);
+  --gl-lo:rgba(255,255,255,.08);
+  --gl-rim:rgba(255,255,255,.82);
+  --gl-rim2:rgba(255,255,255,.20);
+  --gl-shadow:rgba(16,44,36,.22);
+  --gl-blob1:rgba(79,124,110,.24);
+  --gl-blob2:rgba(198,139,110,.18);
+}
+html[data-theme="night"]{
+  --gl-hi:rgba(255,255,255,.16);
+  --gl-mid:rgba(255,255,255,.07);
+  --gl-lo:rgba(255,255,255,.015);
+  --gl-rim:rgba(255,255,255,.20);
+  --gl-rim2:rgba(255,255,255,.06);
+  --gl-shadow:rgba(0,0,0,.6);
+  --gl-blob1:rgba(127,185,166,.16);
+  --gl-blob2:rgba(224,161,131,.12);
+}
+
+/* ① 让玻璃「有东西可折射」：区块背后放柔光斑 */
+#films, #about, .contact{position:relative;isolation:isolate;overflow:hidden}
+#films::before, #about::before, .contact::before{
+  content:"";position:absolute;inset:-10%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(42% 36% at 14% 18%, var(--gl-blob1), transparent 70%),
+    radial-gradient(38% 32% at 88% 72%, var(--gl-blob2), transparent 70%),
+    radial-gradient(28% 26% at 58% 6%,  var(--gl-blob1), transparent 72%);
+  filter:blur(6px);
+}
+#films > .wrap, #about > .wrap, .contact > .wrap{position:relative;z-index:1}
+
+/* ② 玻璃基底 */
+.film, .mail{
+  position:relative;
+  background:
+    radial-gradient(130% 95% at 14% -12%, var(--gl-hi) 0%, transparent 56%),
+    linear-gradient(158deg, var(--gl-mid) 0%, var(--gl-lo) 48%, var(--gl-mid) 100%);
+  backdrop-filter:blur(22px) saturate(185%);
+  -webkit-backdrop-filter:blur(22px) saturate(185%);
+  border:1px solid var(--gl-rim);
+  box-shadow:
+    inset 0 1px 0 var(--gl-hi),
+    inset 0 -1px 0 var(--gl-rim2),
+    inset 1px 0 0 var(--gl-rim2),
+    inset -1px 0 0 var(--gl-rim2),
+    0 20px 44px -22px var(--gl-shadow),
+    0 3px 10px -5px var(--gl-shadow);
+  overflow:hidden;
+  transition:background .3s, box-shadow .35s, transform .3s;
+}
+.film:hover, .mail:hover{
+  transform:translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 var(--gl-hi),
+    inset 0 -1px 0 var(--gl-rim2),
+    inset 1px 0 0 var(--gl-rim2),
+    inset -1px 0 0 var(--gl-rim2),
+    0 26px 54px -24px var(--gl-shadow),
+    0 4px 14px -6px var(--gl-shadow);
+}
+
+/* ③ 液态光泽：hover 时一道高光扫过 */
+.film::after, .mail::after{
+  content:"";position:absolute;inset:-50% -20%;
+  background:linear-gradient(112deg, transparent 36%, rgba(255,255,255,.55) 48%, transparent 60%);
+  transform:translateX(-65%);opacity:0;pointer-events:none;
+  transition:opacity .45s ease, transform 1s cubic-bezier(.2,.7,.2,1);
+  mix-blend-mode:screen;
+}
+html[data-theme="night"] .film::after,
+html[data-theme="night"] .mail::after{
+  background:linear-gradient(112deg, transparent 36%, rgba(180,230,210,.28) 48%, transparent 60%);
+}
+.film:hover::after, .mail:hover::after{opacity:1;transform:translateX(65%)}
+
+/* ④ 药丸标签：轻玻璃（不加 backdrop-filter，省性能） */
+.tag{
+  border:1px solid var(--gl-rim);
+  background:
+    radial-gradient(130% 100% at 22% -25%, var(--gl-hi), transparent 62%),
+    linear-gradient(160deg, var(--gl-mid), var(--gl-lo));
+  box-shadow:inset 0 1px 0 var(--gl-hi), 0 6px 16px -10px var(--gl-shadow);
+  color:var(--ink2);
+}
+.tag:hover{
+  background:
+    radial-gradient(130% 100% at 22% -25%, rgba(255,255,255,.5), transparent 62%),
+    linear-gradient(160deg, var(--jade), var(--jade2));
+  border-color:rgba(255,255,255,.5);
+  color:#fff;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 10px 22px -12px var(--gl-shadow);
+}
+
+/* ⑤ 导航条升级为厚玻璃 */
+nav{
+  background:linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.30));
+  backdrop-filter:blur(26px) saturate(200%);
+  -webkit-backdrop-filter:blur(26px) saturate(200%);
+  border-bottom:1px solid rgba(255,255,255,.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9),
+    0 8px 28px -18px rgba(16,44,36,.42);
+}
+html[data-theme="night"] nav{
+  background:linear-gradient(180deg, rgba(22,34,30,.76), rgba(14,23,20,.58));
+  border-bottom-color:rgba(255,255,255,.12);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.10), 0 8px 28px -18px rgba(0,0,0,.8);
+}
+
+/* ⑥ 灯箱缩略图：玻璃边框 */
+.lb-thumbs img{
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:0 6px 16px -8px rgba(0,0,0,.6);
+}
+.lb-thumbs img.on{
+  border-color:rgba(160,235,210,.95);
+  box-shadow:0 0 0 1px rgba(160,235,210,.6), 0 8px 22px -8px rgba(0,0,0,.7);
+}
+
+/* ⑦ 灯箱按钮：玻璃胶囊 */
+.lb-btn{
+  background:rgba(255,255,255,.14);
+  backdrop-filter:blur(14px) saturate(180%);
+  -webkit-backdrop-filter:blur(14px) saturate(180%);
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45), 0 8px 22px -12px rgba(0,0,0,.7);
+}
+.lb-btn:hover{background:rgba(255,255,255,.26)}
+
+@media(prefers-reduced-motion:reduce){
+  .film::after,.mail::after{display:none}
+  .film:hover,.mail:hover{transform:none}
+}
 </style>
 </head>
 <body>
