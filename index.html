@@ -611,6 +611,16 @@ html[data-theme="night"] .g-item::after{
   .g-item{transform:none!important}
   .g-item::before,.g-item::after{display:none}
 }
+
+/* 学校 / 年级 */
+.school{
+  font-size:14px;font-weight:600;letter-spacing:.1em;
+  color:var(--jade);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.school::before{
+  content:"";width:16px;height:1px;background:currentColor;opacity:.55;
+}
 </style>
 </head>
 <body>
@@ -744,6 +754,7 @@ html[data-theme="night"] .g-item::after{
     </div>
     <div class="about-split">
       <div>
+        <p class="school rv" data-en="Vocational University of Science &amp; Technology · Class of 2024">河科技职大 · 2024 级</p>
         <p class="rv" data-en="A college student. I take photos on the way to class, and build small things on the side.">一个在校学生。会在去上课的路上拍照，也会在课余做点小东西。</p>
         <p class="rv" data-en="Still learning: Linux, Git, a little Python. And still collecting roads.">还在学 Linux、Git，还有一点点 Python。也还在收集各种各样的路。</p>
       </div>
