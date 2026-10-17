@@ -692,6 +692,72 @@ html[data-theme="night"] .g-item::after{
 @media(prefers-reduced-motion:reduce){
   .g-item::after{display:none}
 }
+
+/* ══════════════════════════════════════════
+   照片墙 · 渐变亮边（去掉高光，只留棱）
+   ══════════════════════════════════════════ */
+.g-item{
+  position:relative;
+  box-shadow:
+    0 30px 58px -28px var(--gl-shadow),
+    0 6px 16px -8px var(--gl-shadow);
+}
+
+/* ── 渐变亮边：用 mask 挖空中间，只留 1.5px 的环 ── */
+.g-item::before{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  border-radius:inherit;
+  padding:1.5px;
+  mix-blend-mode:normal;
+  background:conic-gradient(from calc(var(--ga, 315) * 1deg),
+    rgba(255,255,255,.98)   0deg,
+    rgba(255,255,255,.62)  26deg,
+    rgba(255,255,255,.16)  62deg,
+    rgba(255,255,255,.03) 118deg,
+    rgba(255,255,255,.02) 186deg,
+    rgba(255,255,255,.10) 244deg,
+    rgba(255,255,255,.40) 296deg,
+    rgba(255,255,255,.80) 336deg,
+    rgba(255,255,255,.98) 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;
+          mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+          mask-composite:exclude;
+}
+
+/* ── 立体感：底部内暗 + 外投影已在上方 ── */
+.g-item::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;
+  border-radius:inherit;
+  background:transparent;          /* 清掉旧的高光底 */
+  mix-blend-mode:normal;
+  opacity:1;
+  box-shadow:
+    inset 0 -16px 26px -18px rgba(0,0,0,.55),
+    inset 0 16px 26px -20px rgba(255,255,255,.30);
+}
+
+/* 说明条压在最上面 */
+.g-cap{z-index:3}
+
+/* ── 夜间 ── */
+html[data-theme="night"] .g-item::before{
+  background:conic-gradient(from calc(var(--ga, 315) * 1deg),
+    rgba(190,245,225,.85)   0deg,
+    rgba(190,245,225,.45)  26deg,
+    rgba(190,245,225,.10)  62deg,
+    rgba(255,255,255,.02) 118deg,
+    rgba(255,255,255,.015)186deg,
+    rgba(190,245,225,.06) 244deg,
+    rgba(190,245,225,.28) 296deg,
+    rgba(190,245,225,.62) 336deg,
+    rgba(190,245,225,.85) 360deg);
+}
+html[data-theme="night"] .g-item::after{
+  box-shadow:
+    inset 0 -16px 26px -18px rgba(0,0,0,.75),
+    inset 0 16px 26px -20px rgba(190,245,225,.12);
+}
 </style>
 </head>
 <body>
@@ -1066,6 +1132,8 @@ html[data-theme="night"] .g-item::after{
     cy += (ty - cy) * 0.10;
     root.style.setProperty('--gx', clamp(50 + cx * 38, 4, 96).toFixed(1) + '%');
     root.style.setProperty('--gy', clamp(26 + cy * 26, 2, 80).toFixed(1) + '%');
+    /* 亮边方向跟随重力旋转：默认亮部朝左上(315°)，倾斜时转动 */
+    root.style.setProperty('--ga', (315 - cx * 55 + cy * 45).toFixed(1));
     root.style.setProperty('--gxr', cx.toFixed(3));
     root.style.setProperty('--gyr', cy.toFixed(3));
     requestAnimationFrame(loop);
