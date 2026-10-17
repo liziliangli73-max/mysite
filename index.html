@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="light">
+<html lang="zh-CN" data-theme="light" data-lang="zh">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -9,13 +9,11 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230066cc'/><text x='50' y='68' font-size='54' font-family='-apple-system,PingFang SC,sans-serif' fill='%23fff' text-anchor='middle'>琳</text></svg>">
 <style>
 :root{
-  --w:#ffffff; --g:#f5f5f7; --k:#000000;
-  --fg:#1d1d1f; --dim:#6e6e73; --faint:#86868b;
+  --w:#ffffff; --g:#f5f5f7; --fg:#1d1d1f; --dim:#6e6e73; --faint:#86868b;
   --blue:#0066cc; --blue-h:#0077ed; --hair:rgba(0,0,0,.10);
 }
 html[data-theme="dark"]{
-  --w:#000000; --g:#1d1d1f; --k:#0a0a0c;
-  --fg:#f5f5f7; --dim:#a1a1a6; --faint:#86868b;
+  --w:#000000; --g:#1d1d1f; --fg:#f5f5f7; --dim:#a1a1a6; --faint:#86868b;
   --blue:#2997ff; --blue-h:#4aa8ff; --hair:rgba(255,255,255,.12);
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -42,26 +40,30 @@ nav{
   display:flex;align-items:center;justify-content:space-between}
 .brand{font-size:19px;font-weight:600;letter-spacing:-.02em}
 .nav-links{display:flex;align-items:center}
-.nav-links a{font-size:12px;line-height:1;opacity:.8;padding:0 11px;transition:opacity .2s}
+.nav-links a{font-size:12px;line-height:1;opacity:.8;padding:0 10px;transition:opacity .2s}
 .nav-links a:hover{opacity:1}
-.tgl{border:none;background:transparent;cursor:pointer;color:var(--fg);opacity:.8;
-  width:30px;height:44px;font-size:14px;display:grid;place-items:center;padding:0 8px}
-.tgl:hover{opacity:1}
-@media(max-width:640px){.nav-links .m{display:none}}
+.ico{border:none;background:transparent;cursor:pointer;color:var(--fg);opacity:.8;
+  height:44px;font-size:14px;display:grid;place-items:center;padding:0 7px;
+  font-family:inherit;transition:opacity .2s}
+.ico:hover{opacity:1}
+.ico.lang{
+  font-size:12px;font-weight:600;letter-spacing:.02em;
+  border:1px solid var(--hair);border-radius:6px;
+  height:22px;padding:0 7px;margin:0 4px;
+}
+@media(max-width:700px){.nav-links .m{display:none}}
 
-/* 首屏 */
 .hero{text-align:center;padding:74px 0 0;background:var(--w)}
 .hero .kicker{font-size:19px;font-weight:600;color:var(--dim);margin-bottom:8px}
 .hero h1{font-size:clamp(48px,11.5vw,88px);font-weight:600;letter-spacing:-.04em;line-height:1.04;margin-bottom:14px}
 .hero .lead{font-size:clamp(19px,4.6vw,28px);font-weight:400;letter-spacing:-.012em;
-  color:var(--dim);max-width:640px;margin:0 auto;line-height:1.32}
+  color:var(--dim);max-width:660px;margin:0 auto;line-height:1.32}
 .hero .lead b{color:var(--fg);font-weight:600}
 .links-row{display:flex;justify-content:center;gap:34px;flex-wrap:wrap;margin-top:26px}
 .links-row a{color:var(--blue);font-size:clamp(17px,3.8vw,21px)}
 .links-row a:hover{text-decoration:underline}
 .links-row a::after{content:" ›"}
 
-/* 大数字区（带视差） */
 .stage{margin-top:52px;padding:78px 24px 66px;text-align:center;
   background:linear-gradient(180deg,#fbfbfd 0%,#f2f5fa 62%,#e8eef7 100%);
   border-top:1px solid var(--hair);overflow:hidden}
@@ -75,28 +77,21 @@ html[data-theme="dark"] .stage{background:linear-gradient(180deg,#0d1014 0%,#111
 .stage .cell + .cell{border-left:1px solid var(--hair)}
 .stage .cell .k{font-size:12px;color:var(--faint)}
 .stage .cell .v{font-size:21px;font-weight:600;letter-spacing:-.02em;margin-top:3px}
-@media(max-width:520px){
-  .stage .cell{min-width:50%;margin-bottom:18px}
-  .stage .cell:nth-child(3){border-left:none}
-}
+@media(max-width:520px){.stage .cell{min-width:50%;margin-bottom:18px}
+  .stage .cell:nth-child(3){border-left:none}}
 
-/* ★ 产品大视觉区（苹果式） */
 .feature{padding:104px 0 96px;background:var(--w);text-align:center;overflow:hidden}
 .feature .kicker{font-size:19px;font-weight:600;color:var(--dim);margin-bottom:10px}
 .feature h2{font-size:clamp(32px,7.4vw,48px);font-weight:600;letter-spacing:-.03em;line-height:1.08;margin-bottom:18px}
-.feature p{font-size:clamp(17px,4vw,21px);color:var(--dim);max-width:660px;margin:0 auto;line-height:1.5}
+.feature p{font-size:clamp(17px,4vw,21px);color:var(--dim);max-width:680px;margin:0 auto;line-height:1.5}
 .feature .acts{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-top:28px}
 .feature .acts a{color:var(--blue);font-size:clamp(17px,3.8vw,21px)}
 .feature .acts a:hover{text-decoration:underline}
 .feature .acts a::after{content:" ›"}
 
-/* 浏览器样机（纯 CSS 绘制，无图片） */
-.mock{
-  max-width:860px;margin:60px auto 0;border-radius:14px;overflow:hidden;
+.mock{max-width:860px;margin:60px auto 0;border-radius:14px;overflow:hidden;
   background:#fff;border:1px solid var(--hair);
-  box-shadow:0 60px 120px -50px rgba(0,0,0,.42),0 2px 10px rgba(0,0,0,.05);
-  text-align:left;
-}
+  box-shadow:0 60px 120px -50px rgba(0,0,0,.42),0 2px 10px rgba(0,0,0,.05);text-align:left}
 html[data-theme="dark"] .mock{background:#161617}
 .mock-bar{height:34px;display:flex;align-items:center;gap:6px;padding:0 13px;
   background:#f5f5f7;border-bottom:1px solid var(--hair)}
@@ -124,7 +119,6 @@ html[data-theme="dark"] .mock-tile{background:#242426}
 html[data-theme="dark"] .mock-tile.d{background:#2e2e30}
 @media(max-width:560px){.mock-grid{grid-template-columns:1fr}}
 
-/* 文字区块 */
 .txt{padding:110px 0;background:var(--g)}
 .txt .kicker{font-size:19px;font-weight:600;color:var(--dim);margin-bottom:10px}
 .txt h2{font-size:clamp(32px,7.4vw,48px);font-weight:600;letter-spacing:-.03em;line-height:1.08;margin-bottom:22px}
@@ -137,7 +131,6 @@ html[data-theme="dark"] .mock-tile.d{background:#2e2e30}
 .num-i .n{font-size:clamp(44px,10vw,64px);font-weight:600;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
 .num-i .l{font-size:14px;color:var(--faint);margin-top:8px}
 
-/* promo 瓷砖网格 */
 .promo{display:grid;gap:12px;padding:12px;background:var(--w);grid-template-columns:1fr}
 @media(min-width:734px){.promo{grid-template-columns:1fr 1fr}}
 .tile{background:var(--g);color:var(--fg);min-height:400px;padding:60px 34px 52px;
@@ -160,14 +153,13 @@ html[data-theme="dark"] .tile.dark{background:#242426}
 .skills h2{font-size:clamp(32px,7.4vw,48px);font-weight:600;letter-spacing:-.03em;line-height:1.08;margin-bottom:16px}
 .skills .sub{font-size:clamp(17px,4vw,21px);color:var(--dim);max-width:660px}
 .pills{display:flex;flex-wrap:wrap;gap:10px;margin-top:44px}
-.pill{font-size:15px;padding:10px 20px;border-radius:980px;background:var(--g);
-  color:var(--fg);transition:.2s}
+.pill{font-size:15px;padding:10px 20px;border-radius:980px;background:var(--g);color:var(--fg);transition:.2s}
 .pill:hover{background:var(--blue);color:#fff}
 @media(max-width:700px){.skills{padding:66px 0}}
 
 .contact{padding:110px 0;background:var(--g);text-align:center}
 .contact h2{font-size:clamp(32px,7.4vw,48px);font-weight:600;letter-spacing:-.03em;margin-bottom:14px}
-.contact .sub{font-size:clamp(17px,4vw,21px);color:var(--dim);max-width:560px;margin:0 auto}
+.contact .sub{font-size:clamp(17px,4vw,21px);color:var(--dim);max-width:580px;margin:0 auto}
 .acts-big{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:34px}
 .btn{display:inline-block;padding:12px 22px;border-radius:980px;font-size:17px;
   background:var(--blue);color:#fff;transition:background .2s}
@@ -202,47 +194,48 @@ footer{background:var(--g);border-top:1px solid var(--hair);padding:0 0 34px}
 
 <nav>
   <div class="nav-in">
-    <a class="brand" href="#">琳琅</a>
+    <a class="brand" href="#" data-en="Linlang">琳琅</a>
     <div class="nav-links">
-      <a href="#about" class="m">关于</a>
-      <a href="#works" class="m">作品</a>
-      <a href="#skills" class="m">技能</a>
-      <a href="#contact">联系</a>
-      <button class="tgl" id="tgl" aria-label="切换深浅色">◐</button>
+      <a href="#about" class="m" data-en="About">关于</a>
+      <a href="#works" class="m" data-en="Work">作品</a>
+      <a href="#skills" class="m" data-en="Skills">技能</a>
+      <a href="#contact" data-en="Contact">联系</a>
+      <button class="ico lang" id="lang" aria-label="Switch language">EN</button>
+      <button class="ico" id="tgl" aria-label="Toggle theme">◐</button>
     </div>
   </div>
 </nav>
 
 <header class="hero">
   <div class="wrap">
-    <p class="kicker rv">你好</p>
-    <h1 class="rv">琳琅。</h1>
-    <p class="lead rv">在校学生。喜欢写网页，<br>也喜欢<b>折腾些东西</b>。</p>
+    <p class="kicker rv" data-en="Hello">你好</p>
+    <h1 class="rv" data-en="Linlang.">琳琅。</h1>
+    <p class="lead rv" data-en="College student. I like building web pages,<br>and tinkering with things.">在校学生。喜欢写网页，<br>也喜欢<b>折腾些东西</b>。</p>
     <div class="links-row rv">
-      <a href="#about">了解更多</a>
-      <a href="#contact">联系我</a>
+      <a href="#about" data-en="Learn more">了解更多</a>
+      <a href="#contact" data-en="Get in touch">联系我</a>
     </div>
   </div>
 </header>
 
 <div class="stage">
   <div class="num" id="days">1</div>
-  <p class="cap rv">这个小站已上线（天）</p>
+  <p class="cap rv" data-en="Days this site has been live">这个小站已上线（天）</p>
   <div class="row rv">
-    <div class="cell"><div class="k">作品</div><div class="v">4 个</div></div>
-    <div class="cell"><div class="k">技能</div><div class="v">8 项</div></div>
-    <div class="cell"><div class="k">更新</div><div class="v">2026.10</div></div>
+    <div class="cell"><div class="k" data-en="Projects">作品</div><div class="v" data-en="4">4 个</div></div>
+    <div class="cell"><div class="k" data-en="Skills">技能</div><div class="v" data-en="8">8 项</div></div>
+    <div class="cell"><div class="k" data-en="Updated">更新</div><div class="v" data-en="Oct 2026">2026.10</div></div>
   </div>
 </div>
 
 <section class="feature">
   <div class="wrap">
-    <p class="kicker rv">这个页面</p>
-    <h2 class="rv">从零手写，<br>没有用任何框架。</h2>
-    <p class="rv">没有模板、没有组件库、也没有一张图片。你在下面看到的每一个圆角、每一处留白，都是 CSS 写的。</p>
+    <p class="kicker rv" data-en="This page">这个页面</p>
+    <h2 class="rv" data-en="Hand-written from scratch.<br>No framework at all.">从零手写，<br>没有用任何框架。</h2>
+    <p class="rv" data-en="No template, no component library, not a single image. Every rounded corner and every bit of whitespace you see below is plain CSS.">没有模板、没有组件库、也没有一张图片。你在下面看到的每一个圆角、每一处留白，都是 CSS 写的。</p>
     <div class="acts rv">
-      <a href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener">查看源码</a>
-      <a href="#works">看看作品</a>
+      <a href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener" data-en="View source">查看源码</a>
+      <a href="#works" data-en="See the work">看看作品</a>
     </div>
 
     <div class="mock rv" aria-hidden="true">
@@ -251,15 +244,13 @@ footer{background:var(--g);border-top:1px solid var(--hair);padding:0 0 34px}
         <span class="mock-url"></span>
       </div>
       <div class="mock-body">
-        <div class="mock-h">琳琅。</div>
-        <div class="mock-sub">在校学生。喜欢写网页，<br>也喜欢折腾些东西。</div>
+        <div class="mock-h" data-en="Linlang.">琳琅。</div>
+        <div class="mock-sub" data-en="College student. I like building web pages,<br>and tinkering with things.">在校学生。喜欢写网页，<br>也喜欢折腾些东西。</div>
         <div class="mock-links"><i></i><i></i></div>
         <div class="mock-stage"></div>
         <div class="mock-grid">
-          <div class="mock-tile"></div>
-          <div class="mock-tile"></div>
-          <div class="mock-tile d"></div>
-          <div class="mock-tile d"></div>
+          <div class="mock-tile"></div><div class="mock-tile"></div>
+          <div class="mock-tile d"></div><div class="mock-tile d"></div>
         </div>
       </div>
     </div>
@@ -268,51 +259,51 @@ footer{background:var(--g);border-top:1px solid var(--hair);padding:0 0 34px}
 
 <section class="txt" id="about">
   <div class="wrap">
-    <p class="kicker rv">关于我</p>
-    <h2 class="rv">不是最快的，<br>但是自己一步步搭的。</h2>
-    <p class="rv">我是一名在校学生，正在学 <b>HTML/CSS、JavaScript 和 Python</b>。喜欢动手做点小东西 —— 从一个网页，到一些顺手的小脚本。</p>
-    <p class="rv">这个站的每一行都是我亲手写的：<b>没有框架、没有模板、也没有一张图片</b>，全部用 CSS 和字体完成。代码开源在 GitHub 上。</p>
-    <p class="rv">最近在补 <b>Linux 和 Git</b> 的功课，也喜欢研究网络相关的小玩意，比如用 AdGuard Home 给全屋设备做去广告 DNS。</p>
+    <p class="kicker rv" data-en="About">关于我</p>
+    <h2 class="rv" data-en="Not the fastest.<br>But I built it step by step.">不是最快的，<br>但是自己一步步搭的。</h2>
+    <p class="rv" data-en="I'm a college student, currently learning <b>HTML/CSS, JavaScript and Python</b>. I like making small things — from a web page to a handy little script.">我是一名在校学生，正在学 <b>HTML/CSS、JavaScript 和 Python</b>。喜欢动手做点小东西 —— 从一个网页，到一些顺手的小脚本。</p>
+    <p class="rv" data-en="Every line on this site is written by hand: <b>no framework, no template, not a single image</b> — just CSS and type. The code is open source on GitHub.">这个站的每一行都是我亲手写的：<b>没有框架、没有模板、也没有一张图片</b>，全部用 CSS 和字体完成。代码开源在 GitHub 上。</p>
+    <p class="rv" data-en="Right now I'm working on <b>Linux and Git</b>, and I enjoy small networking projects — like running AdGuard Home to block ads for every device at home.">最近在补 <b>Linux 和 Git</b> 的功课，也喜欢研究网络相关的小玩意，比如用 AdGuard Home 给全屋设备做去广告 DNS。</p>
 
     <div class="nums rv">
-      <div class="num-i"><div class="n">4</div><div class="l">个作品</div></div>
-      <div class="num-i"><div class="n">8</div><div class="l">项技能</div></div>
-      <div class="num-i"><div class="n" id="days2">1</div><div class="l">天运行中</div></div>
+      <div class="num-i"><div class="n">4</div><div class="l" data-en="projects">个作品</div></div>
+      <div class="num-i"><div class="n">8</div><div class="l" data-en="skills">项技能</div></div>
+      <div class="num-i"><div class="n" id="days2">1</div><div class="l" data-en="days online">天运行中</div></div>
     </div>
   </div>
 </section>
 
 <div class="promo" id="works">
   <div class="tile rv">
-    <div class="tag">作品</div>
-    <h3>个人主页</h3>
-    <p>手写 HTML / CSS，没有框架，也没有任何图片资源。深浅色随系统。</p>
-    <div class="acts"><a href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener">查看源码</a></div>
+    <div class="tag" data-en="Work">作品</div>
+    <h3 data-en="This site">个人主页</h3>
+    <p data-en="Hand-written HTML / CSS. No framework, no images. Light and dark follow your system.">手写 HTML / CSS，没有框架，也没有任何图片资源。深浅色随系统。</p>
+    <div class="acts"><a href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener" data-en="View source">查看源码</a></div>
   </div>
   <div class="tile rv">
-    <div class="tag">作品</div>
+    <div class="tag" data-en="Work">作品</div>
     <h3>AdGuard Home</h3>
-    <p>在 Android 上以 root 方式运行，为家里所有设备提供去广告 DNS。</p>
-    <div class="acts"><a href="https://github.com/liziliangli73-max/AdGuardHomeForRoot" target="_blank" rel="noopener">查看源码</a></div>
+    <p data-en="Running AdGuard Home with root on Android, giving every device at home an ad-blocking DNS.">在 Android 上以 root 方式运行，为家里所有设备提供去广告 DNS。</p>
+    <div class="acts"><a href="https://github.com/liziliangli73-max/AdGuardHomeForRoot" target="_blank" rel="noopener" data-en="View source">查看源码</a></div>
   </div>
   <div class="tile dark rv">
-    <div class="tag">作品</div>
-    <h3>待办清单</h3>
-    <p>纯前端待办工具，数据存在浏览器本地，关掉页面也不会丢。</p>
-    <div class="acts"><a href="#">了解一下</a></div>
+    <div class="tag" data-en="Work">作品</div>
+    <h3 data-en="To-do list">待办清单</h3>
+    <p data-en="A pure front-end to-do tool. Data lives in your browser, so closing the page won't lose it.">纯前端待办工具，数据存在浏览器本地，关掉页面也不会丢。</p>
+    <div class="acts"><a href="#" data-en="Learn more">了解一下</a></div>
   </div>
   <div class="tile dark rv">
-    <div class="tag">作品</div>
-    <h3>图片批处理</h3>
-    <p>用 Python 批量压缩、重命名图片，省掉一张张手动处理的时间。</p>
-    <div class="acts"><a href="#">了解一下</a></div>
+    <div class="tag" data-en="Work">作品</div>
+    <h3 data-en="Image batch script">图片批处理</h3>
+    <p data-en="A small Python script that compresses and renames images in bulk, saving the manual work.">用 Python 批量压缩、重命名图片，省掉一张张手动处理的时间。</p>
+    <div class="acts"><a href="#" data-en="Learn more">了解一下</a></div>
   </div>
 </div>
 
 <section class="skills" id="skills">
   <div class="wrap">
-    <h2 class="rv">正在学的。</h2>
-    <p class="sub rv">还在路上，但每一个都亲手用过。</p>
+    <h2 class="rv" data-en="Currently learning.">正在学的。</h2>
+    <p class="sub rv" data-en="Still on the way — but I've used every one of these by hand.">还在路上，但每一个都亲手用过。</p>
     <div class="pills rv">
       <span class="pill">HTML</span><span class="pill">CSS</span>
       <span class="pill">JavaScript</span><span class="pill">Python</span>
@@ -324,10 +315,10 @@ footer{background:var(--g);border-top:1px solid var(--hair);padding:0 0 34px}
 
 <section class="contact" id="contact">
   <div class="wrap">
-    <h2 class="rv">聊聊？</h2>
-    <p class="sub rv">有想法、有问题，或者只是想打个招呼，都欢迎。</p>
+    <h2 class="rv" data-en="Say hello?">聊聊？</h2>
+    <p class="sub rv" data-en="Got an idea, a question, or just want to say hi? All welcome.">有想法、有问题，或者只是想打个招呼，都欢迎。</p>
     <div class="acts-big rv">
-      <a class="btn" href="mailto:liziliangli73@gmail.com">发邮件</a>
+      <a class="btn" href="mailto:liziliangli73@gmail.com" data-en="Email me">发邮件</a>
       <a class="btn line" href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">GitHub</a>
     </div>
   </div>
@@ -335,15 +326,15 @@ footer{background:var(--g);border-top:1px solid var(--hair);padding:0 0 34px}
 
 <footer>
   <div class="f-in">
-    <div class="f-dir">更多内容可以在 <a href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">GitHub</a> 上找到，或者直接 <a href="mailto:liziliangli73@gmail.com">写信给我</a>。</div>
+    <div class="f-dir" data-en="You can find more on <a href=&quot;https://github.com/liziliangli73-max&quot;>GitHub</a>, or just <a href=&quot;mailto:liziliangli73@gmail.com&quot;>write to me</a>.">更多内容可以在 <a href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">GitHub</a> 上找到，或者直接 <a href="mailto:liziliangli73@gmail.com">写信给我</a>。</div>
     <div class="f-cols">
-      <div class="f-col"><h4>关于本站</h4><a href="#about">关于我</a><a href="#works">作品</a><a href="#skills">技能</a></div>
-      <div class="f-col"><h4>代码</h4><a href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener">本站源码</a><a href="https://github.com/liziliangli73-max" target="_blank" rel="noopener">我的 GitHub</a></div>
-      <div class="f-col"><h4>联系</h4><a href="mailto:liziliangli73@gmail.com">liziliangli73@gmail.com</a></div>
-      <div class="f-col"><h4>技术</h4><a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a><a href="#about">手写 HTML / CSS</a></div>
+      <div class="f-col"><h4 data-en="This site">关于本站</h4><a href="#about" data-en="About me">关于我</a><a href="#works" data-en="Work">作品</a><a href="#skills" data-en="Skills">技能</a></div>
+      <div class="f-col"><h4 data-en="Code">代码</h4><a href="https://github.com/liziliangli73-max/mysite" target="_blank" rel="noopener" data-en="Source">本站源码</a><a href="https://github.com/liziliangli73-max" target="_blank" rel="noopener" data-en="My GitHub">我的 GitHub</a></div>
+      <div class="f-col"><h4 data-en="Contact">联系</h4><a href="mailto:liziliangli73@gmail.com">liziliangli73@gmail.com</a></div>
+      <div class="f-col"><h4 data-en="Built with">技术</h4><a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a><a href="#about" data-en="Hand-written HTML / CSS">手写 HTML / CSS</a></div>
     </div>
     <div class="f-legal">
-      <span>Copyright © 2026 琳琅。保留所有权利。</span>
+      <span data-en="Copyright © 2026 Linlang. All rights reserved.">Copyright © 2026 琳琅。保留所有权利。</span>
       <span id="year"></span>
     </div>
   </div>
@@ -352,9 +343,11 @@ footer{background:var(--g);border-top:1px solid var(--hair);padding:0 0 34px}
 <script>
 (function(){
   var root = document.documentElement;
-  var saved = null;
-  try { saved = localStorage.getItem('theme'); } catch(e){}
-  if (saved === 'dark') root.setAttribute('data-theme','dark');
+
+  /* ---------- 主题 ---------- */
+  var savedTheme = null;
+  try { savedTheme = localStorage.getItem('theme'); } catch(e){}
+  if (savedTheme === 'dark') root.setAttribute('data-theme','dark');
 
   document.getElementById('tgl').addEventListener('click', function(){
     var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
@@ -362,15 +355,49 @@ footer{background:var(--g);border-top:1px solid var(--hair);padding:0 0 34px}
     try { localStorage.setItem('theme', next); } catch(e){}
   });
 
+  /* ---------- 语言 ---------- */
+  var META = {
+    zh: { title: '琳琅', desc: '琳琅，在校学生。喜欢写网页，也喜欢折腾些东西。', lang: 'zh-CN', btn: 'EN' },
+    en: { title: 'Linlang', desc: 'Linlang — a college student who likes building web pages and tinkering with things.', lang: 'en', btn: '中文' }
+  };
+  var nodes = [];
+  document.querySelectorAll('[data-en]').forEach(function(el){
+    nodes.push({ el: el, zh: el.innerHTML, en: el.getAttribute('data-en') });
+  });
+
+  function setLang(lang){
+    var m = META[lang] || META.zh;
+    nodes.forEach(function(n){
+      n.el.innerHTML = (lang === 'en') ? n.en : n.zh;
+    });
+    root.setAttribute('data-lang', lang);
+    root.setAttribute('lang', m.lang);
+    document.title = m.title;
+    var d = document.querySelector('meta[name="description"]');
+    if (d) d.setAttribute('content', m.desc);
+    var b = document.getElementById('lang');
+    if (b) b.textContent = m.btn;
+    try { localStorage.setItem('lang', lang); } catch(e){}
+  }
+
+  var savedLang = 'zh';
+  try { savedLang = localStorage.getItem('lang') || 'zh'; } catch(e){}
+  if (savedLang === 'en') setLang('en');
+
+  document.getElementById('lang').addEventListener('click', function(){
+    setLang(root.getAttribute('data-lang') === 'en' ? 'zh' : 'en');
+  });
+
+  /* ---------- 天数 ---------- */
   var start = new Date(2026, 9, 17);
   var d = Math.max(1, Math.floor((Date.now() - start.getTime()) / 86400000));
   var a = document.getElementById('days'); if(a) a.textContent = d;
-  var b = document.getElementById('days2'); if(b) b.textContent = d;
+  var b2 = document.getElementById('days2'); if(b2) b2.textContent = d;
   var y = document.getElementById('year'); if(y) y.textContent = new Date().getFullYear();
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // 滚动淡入
+  /* ---------- 滚动淡入 ---------- */
   var els = document.querySelectorAll('.rv');
   if (!('IntersectionObserver' in window) || reduce) {
     els.forEach(function(e){ e.classList.add('in'); });
@@ -383,7 +410,7 @@ footer{background:var(--g);border-top:1px solid var(--hair);padding:0 0 34px}
     els.forEach(function(e){ io.observe(e); });
   }
 
-  // 视差：大数字随滚动缩放+淡入（苹果式）
+  /* ---------- 视差 ---------- */
   if (!reduce && a) {
     var ticking = false;
     function onScroll(){
@@ -394,8 +421,7 @@ footer{background:var(--g);border-top:1px solid var(--hair);padding:0 0 34px}
         var vh = window.innerHeight || 800;
         var p = (vh - r.top) / (vh + r.height);
         p = Math.max(0, Math.min(1, p));
-        var s = 0.90 + p * 0.10;
-        a.style.transform = 'scale(' + s.toFixed(4) + ')';
+        a.style.transform = 'scale(' + (0.90 + p * 0.10).toFixed(4) + ')';
         a.style.opacity = (0.45 + p * 0.55).toFixed(3);
         ticking = false;
       });
