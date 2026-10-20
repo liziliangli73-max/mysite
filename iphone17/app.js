@@ -904,9 +904,9 @@
     const canvas = makeCanvas(512, 640);
     const ctx = canvas.getContext('2d');
     const grad = ctx.createLinearGradient(120, 130, 400, 500);
-    grad.addColorStop(0, 'rgba(219,231,241,0.78)');
-    grad.addColorStop(0.45, 'rgba(165,184,199,0.55)');
-    grad.addColorStop(1, 'rgba(100,118,132,0.34)');
+    grad.addColorStop(0, 'rgba(96,112,126,0.62)');
+    grad.addColorStop(0.45, 'rgba(128,146,161,0.46)');
+    grad.addColorStop(1, 'rgba(163,180,194,0.24)');
     ctx.fillStyle = grad;
 
     // Apple silhouette (stylised, generated path)
@@ -1367,7 +1367,7 @@
       });
 
     M.aluminum = standard({
-      color: 0x9da8b3,
+      color: 0xc3ccd5,        /* 雾蓝机身配的浅铝 */
       metalness: 1,
       roughness: 0.28,
     });
@@ -1447,9 +1447,9 @@
       depthWrite: false,
     });
     M.rearGlass = new THREE.MeshPhysicalMaterial({
-      color: 0x171c22,
-      metalness: 0.23,
-      roughness: 0.48,
+      color: 0xb7c6d2,        /* iPhone 17 雾蓝 */
+      metalness: 0.12,
+      roughness: 0.42,
       clearcoat: 0.55,
       clearcoatRoughness: 0.35,
       envMapIntensity: 0.9,
@@ -1987,15 +1987,18 @@
       return button;
     };
 
-    addButton(-PHONE_W / 2 - 0.018, 0.97, 0.06, 0.3, 0.1, M.aluminum, 'left');
-    addButton(-PHONE_W / 2 - 0.018, 0.5, 0.06, 0.41, 0.1, M.aluminum, 'left');
-    addButton(-PHONE_W / 2 - 0.018, 0.05, 0.06, 0.41, 0.1, M.aluminum, 'left');
-    addButton(PHONE_W / 2 + 0.018, 0.48, 0.06, 0.68, 0.1, M.aluminum, 'right');
+    /* 真机按键：横向厚度约 0.6mm、沿机身厚度方向占 ~60%
+       音量键/操作键 = 左侧，电源键 = 右侧 */
+    addButton(-PHONE_W / 2 - 0.004, 0.97, 0.026, 0.29, 0.155, M.aluminum, 'left');
+    addButton(-PHONE_W / 2 - 0.004, 0.52, 0.026, 0.40, 0.155, M.aluminum, 'left');
+    addButton(-PHONE_W / 2 - 0.004, 0.06, 0.026, 0.40, 0.155, M.aluminum, 'left');
+    addButton(PHONE_W / 2 + 0.004, 0.50, 0.026, 0.66, 0.155, M.aluminum, 'right');
 
     // 相机控制键
-    const cameraButton = addButton(PHONE_W / 2 + 0.018, -0.51, 0.068, 0.34, 0.108, M.aluminum, 'right');
-    const cameraButtonGlass = roundedBox(0.006, 0.28, 0.078, 0.025, M.sapphire, 8);
-    cameraButtonGlass.position.set(PHONE_W / 2 + 0.051, -0.51, 0);
+    /* 相机控制键：几乎齐平，表面一块蓝宝石 */
+    const cameraButton = addButton(PHONE_W / 2 + 0.002, -0.52, 0.022, 0.32, 0.14, M.aluminum, 'right');
+    const cameraButtonGlass = roundedBox(0.004, 0.26, 0.10, 0.022, M.sapphire, 8);
+    cameraButtonGlass.position.set(PHONE_W / 2 + 0.017, -0.52, 0);
     group.add(cameraButtonGlass);
 
     // 底部接口与螺丝
@@ -2223,41 +2226,41 @@
   }
 
   function addCameraLens(group, x, y, radius) {
-    const outer = cylinderZ(radius, radius, 0.1, 48, M.aluminum);
-    outer.position.set(x, y, -0.18);
+    const outer = cylinderZ(radius, radius, 0.05, 48, M.aluminum);
+    outer.position.set(x, y, -0.06);
     group.add(outer);
 
     const outerLip = new THREE.Mesh(
       new THREE.TorusGeometry(radius * 0.9, 0.018, 10, 48),
       M.aluminumBright
     );
-    outerLip.position.set(x, y, -0.231);
+    outerLip.position.set(x, y, -0.088);
     group.add(outerLip);
 
-    const barrel = cylinderZ(radius * 0.8, radius * 0.8, 0.11, 48, M.darkMetal);
-    barrel.position.set(x, y, -0.224);
+    const barrel = cylinderZ(radius * 0.8, radius * 0.8, 0.04, 48, M.darkMetal);
+    barrel.position.set(x, y, -0.075);
     group.add(barrel);
 
     const ring1 = new THREE.Mesh(
       new THREE.TorusGeometry(radius * 0.63, 0.012, 8, 40),
       M.aluminumDark
     );
-    ring1.position.set(x, y, -0.281);
+    ring1.position.set(x, y, -0.090);
     group.add(ring1);
 
-    const glass = cylinderZ(radius * 0.58, radius * 0.58, 0.018, 48, M.cameraGlass);
-    glass.position.set(x, y, -0.291);
+    const glass = cylinderZ(radius * 0.58, radius * 0.58, 0.012, 48, M.cameraGlass);
+    glass.position.set(x, y, -0.093);
     group.add(glass);
 
     const innerRing = new THREE.Mesh(
       new THREE.TorusGeometry(radius * 0.36, 0.009, 8, 36),
       M.titanium
     );
-    innerRing.position.set(x, y, -0.302);
+    innerRing.position.set(x, y, -0.097);
     group.add(innerRing);
 
-    const pupil = cylinderZ(radius * 0.2, radius * 0.2, 0.01, 32, M.blackGloss);
-    pupil.position.set(x, y, -0.311);
+    const pupil = cylinderZ(radius * 0.2, radius * 0.2, 0.008, 32, M.blackGloss);
+    pupil.position.set(x, y, -0.100);
     group.add(pupil);
 
     const glint = new THREE.Mesh(
@@ -2272,7 +2275,7 @@
         toneMapped: false,
       })
     );
-    glint.position.set(x - radius * 0.16, y + radius * 0.14, -0.318);
+    glint.position.set(x - radius * 0.16, y + radius * 0.14, -0.103);
     group.add(glint);
   }
 
@@ -2287,12 +2290,12 @@
     const PH = 1.66;
     const PR = PW / 2;
 
-    const plate = roundedBox(PW, PH, 0.11, PR, M.aluminum, 20);
-    plate.position.z = -0.025;
+    const plate = roundedBox(PW, PH, 0.072, PR, M.aluminum, 20);
+    plate.position.z = -0.046;
     group.add(plate);
 
-    const plateau = roundedBox(PW - 0.09, PH - 0.09, 0.13, (PW - 0.09) / 2, M.rearGlass, 20);
-    plateau.position.z = -0.09;
+    const plateau = roundedBox(PW - 0.09, PH - 0.09, 0.045, (PW - 0.09) / 2, M.rearGlass, 20);
+    plateau.position.z = -0.060;
     group.add(plateau);
 
     // 模组边缘高光
@@ -2300,7 +2303,7 @@
       PW - 0.09,
       PH - 0.09,
       (PW - 0.09) / 2 - 0.012,
-      -0.156,
+      -0.084,
       new THREE.LineBasicMaterial({
         color: 0xbfe9ff,
         transparent: true,
@@ -2317,16 +2320,16 @@
 
     // 闪光灯 —— 药丸外侧右上
     const flashBody = cylinderZ(0.092, 0.092, 0.055, 32, M.aluminumDark);
-    flashBody.position.set(0.62, 0.50, -0.15);
+    flashBody.position.set(0.62, 0.50, -0.050);
     group.add(flashBody);
     const flashRing = new THREE.Mesh(
       new THREE.TorusGeometry(0.084, 0.01, 8, 32),
       M.titanium
     );
-    flashRing.position.set(0.62, 0.50, -0.181);
+    flashRing.position.set(0.62, 0.50, -0.075);
     group.add(flashRing);
     const flash = cylinderZ(0.068, 0.068, 0.02, 32, M.flashGlass);
-    flash.position.set(0.62, 0.50, -0.189);
+    flash.position.set(0.62, 0.50, -0.078);
     group.add(flash);
 
     // 麦克风 —— 药丸外侧右下（标准版没有 LiDAR）
@@ -2334,10 +2337,10 @@
       new THREE.TorusGeometry(0.036, 0.008, 6, 20),
       M.aluminumDark
     );
-    micRing.position.set(0.62, -0.50, -0.163);
+    micRing.position.set(0.62, -0.50, -0.062);
     group.add(micRing);
     const mic = cylinderZ(0.025, 0.025, 0.01, 16, M.rubber);
-    mic.position.set(0.62, -0.50, -0.16);
+    mic.position.set(0.62, -0.50, -0.060);
     group.add(mic);
 
     // 模组内侧屏蔽罩与排线（拆解后从正面可见）
