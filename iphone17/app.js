@@ -261,7 +261,7 @@
   const TOTAL_PARTS = PART_DEFS.length;
   const FOV = 38;
   const PHONE_W = 2.36;
-  const PHONE_H = 4.84;
+  const PHONE_H = 4.94;
   const PHONE_D = 0.26;
   const PHONE_R = 0.46;
 
@@ -2279,19 +2279,27 @@
   function buildCamera() {
     const group = new THREE.Group();
 
-    const plate = roundedBox(1.08, 1.16, 0.11, 0.29, M.aluminum, 14);
+    /* ── iPhone 17 标准版：竖向药丸形模组 ──
+       按真机比例换算（机身宽 71.5mm 对应 2.36 单位）：
+       药丸 26 × 50mm → 0.86 × 1.66；镜头外环 13mm → 半径 0.205
+       圆角 = 半宽 → 完全胶囊；标准版没有 LiDAR */
+    const PW = 0.86;
+    const PH = 1.66;
+    const PR = PW / 2;
+
+    const plate = roundedBox(PW, PH, 0.11, PR, M.aluminum, 20);
     plate.position.z = -0.025;
     group.add(plate);
 
-    const plateau = roundedBox(0.98, 1.06, 0.13, 0.27, M.rearGlass, 14);
+    const plateau = roundedBox(PW - 0.09, PH - 0.09, 0.13, (PW - 0.09) / 2, M.rearGlass, 20);
     plateau.position.z = -0.09;
     group.add(plateau);
 
     // 模组边缘高光
     const rim = roundedRectLine(
-      0.98,
-      1.06,
-      0.255,
+      PW - 0.09,
+      PH - 0.09,
+      (PW - 0.09) / 2 - 0.012,
       -0.156,
       new THREE.LineBasicMaterial({
         color: 0xbfe9ff,
@@ -2303,57 +2311,44 @@
     );
     group.add(rim);
 
-    addCameraLens(group, -0.17, 0.27, 0.237);
-    addCameraLens(group, -0.17, -0.28, 0.225);
+    // 两枚 4800 万镜头，上下居中排列
+    addCameraLens(group, 0, 0.40, 0.205);
+    addCameraLens(group, 0, -0.40, 0.205);
 
-    // 闪光灯
-    const flashBody = cylinderZ(0.096, 0.096, 0.055, 32, M.aluminumDark);
-    flashBody.position.set(0.32, 0.33, -0.15);
+    // 闪光灯 —— 药丸外侧右上
+    const flashBody = cylinderZ(0.092, 0.092, 0.055, 32, M.aluminumDark);
+    flashBody.position.set(0.62, 0.50, -0.15);
     group.add(flashBody);
     const flashRing = new THREE.Mesh(
-      new THREE.TorusGeometry(0.088, 0.01, 8, 32),
+      new THREE.TorusGeometry(0.084, 0.01, 8, 32),
       M.titanium
     );
-    flashRing.position.set(0.32, 0.33, -0.181);
+    flashRing.position.set(0.62, 0.50, -0.181);
     group.add(flashRing);
-    const flash = cylinderZ(0.071, 0.071, 0.02, 32, M.flashGlass);
-    flash.position.set(0.32, 0.33, -0.189);
+    const flash = cylinderZ(0.068, 0.068, 0.02, 32, M.flashGlass);
+    flash.position.set(0.62, 0.50, -0.189);
     group.add(flash);
 
-    // LiDAR / 传感器
-    const lidarRing = new THREE.Mesh(
-      new THREE.TorusGeometry(0.083, 0.016, 10, 32),
-      M.aluminumDark
-    );
-    lidarRing.position.set(0.33, -0.3, -0.16);
-    group.add(lidarRing);
-    const lidar = cylinderZ(0.068, 0.068, 0.016, 32, M.blackGloss);
-    lidar.position.set(0.33, -0.3, -0.155);
-    group.add(lidar);
-    const lidarDot = cylinderZ(0.024, 0.024, 0.006, 20, M.cameraGlass);
-    lidarDot.position.set(0.33, -0.3, -0.168);
-    group.add(lidarDot);
-
-    // 麦克风
+    // 麦克风 —— 药丸外侧右下（标准版没有 LiDAR）
     const micRing = new THREE.Mesh(
-      new THREE.TorusGeometry(0.038, 0.008, 6, 20),
+      new THREE.TorusGeometry(0.036, 0.008, 6, 20),
       M.aluminumDark
     );
-    micRing.position.set(0.34, 0.01, -0.163);
+    micRing.position.set(0.62, -0.50, -0.163);
     group.add(micRing);
-    const mic = cylinderZ(0.026, 0.026, 0.01, 16, M.rubber);
-    mic.position.set(0.34, 0.01, -0.16);
+    const mic = cylinderZ(0.025, 0.025, 0.01, 16, M.rubber);
+    mic.position.set(0.62, -0.50, -0.16);
     group.add(mic);
 
     // 模组内侧屏蔽罩与排线（拆解后从正面可见）
-    const innerShield = roundedPlane(0.9, 0.98, 0.23, M.cameraInner, 10);
+    const innerShield = roundedPlane(0.74, 1.52, 0.37, M.cameraInner, 16);
     innerShield.position.set(0, 0, 0.038);
     group.add(innerShield);
     const innerScrewPositions = [
-      [-0.37, 0.41],
-      [0.37, 0.41],
-      [-0.37, -0.41],
-      [0.37, -0.41],
+      [-0.28, 0.64],
+      [0.28, 0.64],
+      [-0.28, -0.64],
+      [0.28, -0.64],
     ];
     innerScrewPositions.forEach(([x, y]) => {
       const screw = cylinderZ(0.024, 0.024, 0.012, 14, M.steel);
