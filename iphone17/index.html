@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#04070b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23060d14'/%3E%3Ctext x='32' y='43' font-size='27' font-family='monospace' fill='%2363e6ff' text-anchor='middle'%3E17%3C/text%3E%3C/svg%3E" />
+  <meta name="description" content="iPhone 17 三维拆解实验室 — 由 Three.js 实时渲染的交互式拆解可视化。" />
+  <title>iPhone 17 · 3D 拆解实验室</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <!-- 背景氛围层 -->
+  <div class="ambient" aria-hidden="true">
+    <span class="ambient__orb ambient__orb--cyan"></span>
+    <span class="ambient__orb ambient__orb--violet"></span>
+    <span class="ambient__grid"></span>
+    <span class="ambient__noise"></span>
+    <span class="ambient__scanlines"></span>
+  </div>
+
+  <!-- 加载屏 -->
+  <div class="loader" id="loader" role="status" aria-live="polite">
+    <div class="loader__core">
+      <span class="loader__ring"></span>
+      <span class="loader__ring loader__ring--2"></span>
+      <span class="loader__monogram">17</span>
+    </div>
+    <div class="loader__title">iPhone 17</div>
+    <div class="loader__subtitle">3D TEARDOWN LAB</div>
+    <div class="loader__track"><i id="loaderBar"></i></div>
+    <div class="loader__meta"><span id="loaderStatus">初始化渲染引擎</span><span id="loaderPct">00%</span></div>
+  </div>
+
+  <!-- 3D 画布 -->
+  <canvas id="scene" aria-label="iPhone 17 三维拆解模型"></canvas>
+  <div class="canvas-shade" aria-hidden="true"></div>
+
+  <!-- 顶部导航 -->
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="回到整机概览" id="brandHome">
+      <span class="brand__mark" aria-hidden="true">
+        <i></i><b>17</b>
+      </span>
+      <span class="brand__copy">
+        <span class="brand__eyebrow">APPLE / TEARDOWN PROGRAM</span>
+        <span class="brand__name">iPhone 17 <em>拆解实验室</em></span>
+      </span>
+    </a>
+
+    <div class="topbar__status" aria-hidden="true">
+      <div class="status-chip">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="systemState">SYSTEM READY</span>
+      </div>
+      <span class="status-divider"></span>
+      <div class="status-readout"><span>MODEL</span><b>A19 / 2025</b></div>
+      <span class="status-divider"></span>
+      <div class="status-readout"><span>LOCAL</span><b id="localClock">--:--:--</b></div>
+    </div>
+
+    <nav class="topbar__actions" aria-label="页面操作">
+      <button class="ghost-btn" id="guideBtn" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M9.7 9.2a2.4 2.4 0 1 1 3.2 2.3c-.9.4-1.2.8-1.2 1.8"/><path d="M11.7 16.7h.1"/></svg>
+        <span>操作指南</span>
+      </button>
+      <button class="icon-btn" id="fullscreenBtn" type="button" aria-label="切换全屏" title="全屏">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4M16 4h4v4M20 16v4h-4M4 16v4h4"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- 左侧部件清单 -->
+  <aside class="panel parts-panel" id="partsPanel" aria-label="部件清单">
+    <span class="panel__corner panel__corner--tl"></span>
+    <span class="panel__corner panel__corner--br"></span>
+    <div class="panel__head">
+      <span class="kicker">COMPONENT INDEX</span>
+      <span class="panel__count"><b id="partCount">09</b><small>PARTS</small></span>
+    </div>
+    <div class="panel__title-row">
+      <div>
+        <h2>部件清单</h2>
+        <p>点击部件，展开结构并查看参数</p>
+      </div>
+      <button class="panel-close" id="partsClose" type="button" aria-label="关闭部件清单">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>
+      </button>
+    </div>
+    <div class="parts-list" id="partsList" role="group" aria-label="部件清单条目"></div>
+    <div class="panel__foot">
+      <span class="foot-pulse"></span>
+      <span>ALL SYSTEMS NOMINAL</span>
+      <span class="foot-line"></span>
+      <span>REV. 17.0</span>
+    </div>
+  </aside>
+
+  <!-- 右侧详情面板 -->
+  <aside class="panel inspector-panel" id="inspectorPanel" aria-label="部件详情">
+    <span class="panel__corner panel__corner--tl"></span>
+    <span class="panel__corner panel__corner--br"></span>
+    <div class="panel__head">
+      <span class="kicker">COMPONENT INSPECTOR</span>
+      <button class="panel-close" id="inspectorClose" type="button" aria-label="关闭部件详情">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>
+      </button>
+      <span class="panel__index" id="inspectorIndex">00 / 09</span>
+    </div>
+    <div class="inspector-body" id="inspectorBody"><!-- JS 渲染 --></div>
+  </aside>
+
+  <!-- 三维标注 -->
+  <div class="annotation-svg" id="annotationSvg" aria-hidden="true">
+    <svg id="leaderSvg"></svg>
+  </div>
+  <div class="annotation-layer" id="annotationLayer" aria-hidden="true"></div>
+
+  <!-- 悬浮部件提示 -->
+  <div class="hover-tip" id="hoverTip" aria-hidden="true">
+    <span class="hover-tip__dot"></span>
+    <span id="hoverTipText">点击查看部件</span>
+    <b>CLICK</b>
+  </div>
+
+  <!-- 左下角提示 -->
+  <div class="side-readout" aria-hidden="true">
+    <div class="side-readout__line"></div>
+    <span>INTERACTION</span>
+    <p>拖动旋转 · 滚轮缩放 · 点击部件</p>
+    <div class="side-readout__keys">
+      <kbd>空格</kbd><span>拆解</span>
+      <kbd>R</kbd><span>复位</span>
+    </div>
+  </div>
+
+  <!-- 底部控制台 -->
+  <div class="bottom-hud">
+    <div class="telemetry" aria-hidden="true">
+      <div><span>RENDER</span><b id="fpsValue">60</b><small>FPS</small></div>
+      <i></i>
+      <div><span>MESH</span><b id="meshValue">000</b></div>
+      <i></i>
+      <div><span>VIEW</span><b id="viewState">FRONT</b></div>
+    </div>
+
+    <div class="toolbar" role="toolbar" aria-label="三维场景控制">
+      <button class="tool-btn tool-btn--primary" id="explodeBtn" type="button" aria-pressed="false">
+        <span class="tool-btn__icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v5M12 16v5M3 12h5M16 12h5M5.6 5.6l3.5 3.5M14.9 14.9l3.5 3.5M18.4 5.6l-3.5 3.5M9.1 14.9l-3.5 3.5"/></svg>
+        </span>
+        <span class="tool-btn__copy"><b id="explodeLabel">一键拆解</b><small>EXPLODE VIEW</small></span>
+      </button>
+
+      <span class="toolbar__sep"></span>
+
+      <button class="tool-btn tool-btn--compact" id="viewBtn" type="button" aria-pressed="false">
+        <span class="tool-btn__icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 12s3-6 8.5-6 8.5 6 8.5 6-3 6-8.5 6-8.5-6-8.5-6Z"/><circle cx="12" cy="12" r="2.5"/></svg>
+        </span>
+        <span class="tool-btn__label" id="viewLabel">背面视角</span>
+      </button>
+
+      <button class="tool-btn tool-btn--compact" id="rotateBtn" type="button" aria-pressed="false">
+        <span class="tool-btn__icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v4h-4"/></svg>
+        </span>
+        <span class="tool-btn__label">自动旋转</span>
+      </button>
+
+      <button class="tool-btn tool-btn--compact is-active" id="labelsBtn" type="button" aria-pressed="true">
+        <span class="tool-btn__icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h10l6 6-6 6H4z"/><path d="M8 12h5"/></svg>
+        </span>
+        <span class="tool-btn__label">标注</span>
+      </button>
+
+      <button class="tool-btn tool-btn--compact" id="resetBtn" type="button">
+        <span class="tool-btn__icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/></svg>
+        </span>
+        <span class="tool-btn__label">复位</span>
+      </button>
+
+      <button class="tool-btn tool-btn--compact mobile-only" id="partsToggle" type="button" aria-expanded="false">
+        <span class="tool-btn__icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </span>
+        <span class="tool-btn__label">清单</span>
+      </button>
+    </div>
+
+    <div class="coordinate-readout" aria-hidden="true">
+      <span class="coord-label">CAM</span>
+      <span id="coordX">X +00.0</span>
+      <span id="coordY">Y +00.0</span>
+      <span id="coordZ">Z +00.0</span>
+    </div>
+  </div>
+
+  <!-- 首次进入提示 -->
+  <div class="coachmark" id="coachmark" role="status">
+    <span class="coachmark__line"></span>
+    <span class="coachmark__tag">TIP 01</span>
+    <p><b>点击任意部件</b>，即可触发拆解动画与高亮标注</p>
+    <button type="button" id="coachClose" aria-label="关闭提示">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>
+    </button>
+  </div>
+
+  <!-- 操作指南弹层 -->
+  <div class="modal" id="guideModal" role="dialog" aria-modal="true" aria-labelledby="guideTitle" aria-hidden="true">
+    <div class="modal__scrim" data-close-modal></div>
+    <div class="modal__card">
+      <div class="modal__head">
+        <div>
+          <span class="kicker">INTERACTION PROTOCOL</span>
+          <h2 id="guideTitle">三维拆解操作指南</h2>
+        </div>
+        <button class="icon-btn" id="guideClose" type="button" aria-label="关闭指南">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"/></svg>
+        </button>
+      </div>
+      <div class="guide-grid">
+        <article><span>01</span><div><b>自由旋转</b><p>按住模型拖动，360° 查看机身、边框与背部材质。</p></div></article>
+        <article><span>02</span><div><b>缩放观察</b><p>滚轮或双指捏合，放大检查镜头环、接口与螺丝细节。</p></div></article>
+        <article><span>03</span><div><b>点击拆解</b><p>点击任意部件，自动展开结构，并高亮当前选择。</p></div></article>
+        <article><span>04</span><div><b>查看参数</b><p>左侧清单或三维标注均可切换部件，右侧同步显示规格。</p></div></article>
+      </div>
+      <div class="guide-legend">
+        <span><i class="legend-dot legend-dot--cyan"></i>选中高亮</span>
+        <span><i class="legend-dot legend-dot--violet"></i>结构标注</span>
+        <span class="guide-shortcuts">快捷键 <kbd>空格</kbd> 拆解 · <kbd>R</kbd> 复位 · <kbd>L</kbd> 标注</span>
+      </div>
+      <button class="primary-wide" id="guideStart" type="button"><span>开始探索</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+
+  <!-- WebGL 错误 -->
+  <div class="webgl-error" id="webglError" hidden>
+    <div>
+      <span class="kicker">RENDERER OFFLINE</span>
+      <h2>无法启动 3D 渲染</h2>
+      <p>请使用支持 WebGL 的现代浏览器，或关闭省电模式后刷新页面。</p>
+      <button class="primary-wide" onclick="location.reload()" type="button"><span>重新加载</span></button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <div class="webgl-error">
+      <div>
+        <span class="kicker">JAVASCRIPT REQUIRED</span>
+        <h2>需要启用 JavaScript</h2>
+        <p>本页面需要 JavaScript 与 WebGL 才能渲染三维模型。</p>
+      </div>
+    </div>
+  </noscript>
+
+  <script src="./vendor/three.min.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
