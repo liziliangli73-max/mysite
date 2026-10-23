@@ -931,6 +931,14 @@ button.mail{font:inherit;color:inherit;width:100%;text-align:left;cursor:pointer
   -webkit-appearance:none;appearance:none}
 button.mail:active{transform:scale(.995)}
 .mail .v.copied{color:var(--jade)}
+
+/* ── 每日一句 ── */
+.daily{padding:76px 0;text-align:center;background:var(--tint)}
+.daily .kicker{font-size:11.5px;letter-spacing:.32em;color:var(--ink3);text-transform:uppercase;margin:0 0 22px}
+.daily .line{font-size:clamp(19px,4.6vw,27px);font-weight:500;letter-spacing:.06em;line-height:1.95;margin:0 0 16px;color:var(--ink)}
+.daily .from{font-style:normal;font-size:12.5px;letter-spacing:.18em;color:var(--ink3)}
+.daily[hidden]{display:none}
+@media(max-width:520px){.daily{padding:60px 0}}
 </style>
 <script>
 /* 页面打开时强制回到顶部（浏览器默认会恢复上次滚动位置，
@@ -986,6 +994,14 @@ button.mail:active{transform:scale(.995)}
     <cite class="rv" data-en="— Guan Hanqing, Yuan dynasty" data-ja="— 元・関漢卿">—— 元 · 关汉卿</cite>
   </div>
 </section>
+  <section class="daily" id="dailyQuote" hidden aria-label="每日一句">
+    <div class="wrap">
+      <p class="kicker">今日一句</p>
+      <blockquote class="line" id="dqText"></blockquote>
+      <cite class="from" id="dqFrom"></cite>
+    </div>
+  </section>
+
 
 <section class="sec" id="jp">
   <div class="wrap">
@@ -1507,6 +1523,38 @@ button.mail:active{transform:scale(.995)}
       legacyCopy();
     }
   });
+})();
+</script>
+
+<script>
+(function () {
+  var box = document.getElementById('dailyQuote');
+  if (!box) return;
+  var elText = document.getElementById('dqText');
+  var elFrom = document.getElementById('dqFrom');
+  var elKick = box.querySelector('.kicker');
+  var doc = null;
+
+  function lang() { return document.documentElement.getAttribute('data-lang') || 'zh'; }
+
+  function paint() {
+    if (!doc) return;
+    var L = lang();
+    var text = doc.text, from = '—— ' + doc.author;
+    if (L === 'en') { text = doc.en || doc.text; from = '— ' + (doc.authorEn || doc.author); }
+    else if (L === 'ja') { text = doc.ja || doc.text; from = '— ' + (doc.authorJa || doc.author); }
+    elText.textContent = text;
+    elFrom.textContent = from;
+    elKick.textContent = L === 'en' ? 'A line for today' : (L === 'ja' ? '今日の一句' : '今日一句');
+    box.hidden = false;
+  }
+
+  fetch('daily/quote.json?v=' + Date.now())
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+    .then(function (d) { doc = d; paint(); })
+    .catch(function () { box.hidden = true; });
+
+  window.addEventListener('langchange', paint);
 })();
 </script>
 </body>
