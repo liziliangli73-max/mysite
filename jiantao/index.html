@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#faf9f5" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="description" content="一份关于"不信人"的检讨书。" />
+<title>检讨书 · 关于“不信”</title>
+<style>
+:root{
+  --paper:#faf9f5;
+  --ink:#1a1a17;
+  --jade:#4b6f64;
+  --tint:#f3f2ec;
+  --mute:#8a877e;
+  --line:#e8e6dd;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font:17px/1.9 -apple-system,BlinkMacSystemFont,“PingFang SC”,“Hiragino Sans GB”,“Noto Sans CJK SC”,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  padding:0 0 80px;
+}
+.wrap{max-width:660px;margin:0 auto;padding:0 24px}
+
+/* 顶部 */
+.hero{padding:72px 0 44px;text-align:center}
+.pill{
+  display:inline-block;
+  font-size:12.5px;letter-spacing:.02em;
+  color:var(--mute);
+  background:var(--tint);
+  border-radius:980px;
+  padding:7px 16px;
+  margin-bottom:26px;
+}
+h1{
+  font-size:34px;line-height:1.24;font-weight:600;
+  letter-spacing:-.03em;margin:0 0 16px;
+}
+.hero .sub{font-size:15px;color:var(--mute);margin:0;letter-spacing:-.01em}
+
+/* 引子对话 */
+.quote{
+  margin:8px 0 0;padding:26px 24px;
+  background:var(--tint);border-radius:22px;
+}
+.quote .who{font-size:12.5px;color:var(--mute);margin-bottom:14px;letter-spacing:.02em}
+.bubble{
+  display:inline-block;
+  padding:9px 15px;border-radius:18px;
+  font-size:15.5px;line-height:1.6;
+  margin:5px 0;
+  max-width:88%;
+}
+.bubble.them{background:#fff;color:var(--ink);border-top-left-radius:5px}
+.bubble.me{background:#e7efe9;color:#25423a;border-top-right-radius:5px;margin-left:auto;display:block;width:fit-content}
+.qline{display:flex;flex-direction:column}
+
+/* 正文 */
+article{padding-top:46px}
+article p{
+  margin:0 0 26px;
+  letter-spacing:.005em;
+  color:#23231e;
+}
+article p:first-of-type::first-letter{
+  /* 首字下沉，只用一处强调 */
+  font-size:1em;
+}
+
+/* 措施列表 */
+ol.fix{
+  counter-reset:fix;
+  list-style:none;
+  margin:8px 0 30px;
+  padding:0;
+}
+ol.fix li{
+  counter-increment:fix;
+  position:relative;
+  padding:18px 20px 18px 52px;
+  background:var(--tint);
+  border-radius:16px;
+  margin-bottom:10px;
+  font-size:16.5px;
+  line-height:1.72;
+}
+ol.fix li b{font-weight:600}
+ol.fix li::before{
+  content:counter(fix);
+  position:absolute;left:20px;top:19px;
+  width:22px;height:22px;
+  display:grid;place-items:center;
+  font-size:12.5px;font-weight:600;
+  color:var(--jade);
+  background:#fff;border-radius:50%;
+}
+
+/* 结语强调 —— 全文第二处绿色 */
+.final{
+  margin:56px 0 0;
+  padding:34px 26px;
+  background:var(--tint);
+  border-radius:22px;
+  text-align:center;
+}
+.final p{margin:0;font-size:19px;line-height:1.75;font-weight:500;letter-spacing:-.01em}
+.final .jade{color:var(--jade)}
+
+/* 落款 */
+.sign{
+  margin-top:44px;
+  text-align:right;
+  font-size:14px;
+  color:var(--mute);
+  line-height:2;
+}
+.sign .name{color:var(--ink);font-size:15px}
+
+footer{
+  margin-top:64px;padding-top:28px;
+  border-top:1px solid var(--line);
+  text-align:center;
+  font-size:12.5px;color:#b3afa4;
+  letter-spacing:.02em;
+}
+@media(max-width:420px){
+  h1{font-size:28px}
+  .hero{padding:52px 0 34px}
+  body{font-size:16.5px;line-height:1.85}
+  .quote{padding:22px 18px}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="pill">检讨书 · 2026.11.02</span>
+    <h1>关于“不信”</h1>
+    <p class="sub">一份交给自己，也交给朋友的检讨</p>
+  </header>
+
+  <div class="quote">
+    <div class="who">事发那晚</div>
+    <div class="qline">
+      <span class="bubble them">我刚问他了</span>
+      <span class="bubble me">放屁吧</span>
+      <span class="bubble them">为啥不信</span>
+      <span class="bubble them">不信</span>
+      <span class="bubble them">不信</span>
+      <span class="bubble them">给我写一千字检讨</span>
+    </div>
+  </div>
+
+  <article>
+<p>事发在昨晚十一点。朋友在群里说了件事，我第一反应是三个字回过去：放屁吧。接着对方连问三遍“为什么不信”，我依旧没松口，还搬出自己那套逻辑，把“我觉得不会”当成了结论。</p>
+<p>现在回头看，那三遍“不信”，砸的不是我那句反驳，砸的是朋友愿意跟我讲这件事的心。他不是来找我审判的，是来找我分享的。而我给出的，是一张冷冰冰的、连证据都没有的判决书。</p>
+<p>我错在哪？第一，我把“较真”当成了“认真”。朋友之间区分“较真”和“认真”，就在一个“心”字。认真是冲着事，较真是冲着人。我一边说着“我只是讲道理”，一边把对方的感受丢在一边，这不是讲道理，是讲赢了。</p>
+<p>第二，我把“质疑”当成了“聪明”。好像凡事都要先怀疑三分，才显得自己脑子清醒。可事实上，真正的清醒是有判断力地信任：知道谁值得信，也知道什么时候该信。一个永远不肯信人的人，不是谨慎，是怕上当怕到连情分都不敢要了。</p>
+<p>第三，我把“我有主见”当成了免罪牌。我得承认，说出“放屁吧”的那一刻，心里是有点得意的——觉得自己看得透、说得准。可那句话落在屏幕上，对方看到的是一个连解释机会都不给的人。爽的是我，冷的是他。</p>
+<p>往深里说，这是习惯。平时跟人说话，我总爱先来一句“不可能”“你别瞎说”“真的假的”，以为这是亲近，其实这是不把对方当回事。熟不是没分寸，亲不是可以随便。越是熟的人，我越该把话说软一点、把耳朵支起来一点。因为陌生人的话我可以不听，朋友的话我不听，就真的没人跟我说了。</p>
+<p>我反省出的第二条根子，是怕。怕自己轻信了显得傻，怕被人骗了没面子，于是先把怀疑摆出来，把自己放在安全的高地上。可这份“安全”，换来的是朋友一遍遍问“为啥不信”，最后连解释都懒得解释，只丢下一句“给我写一千字检讨”。那六声“不信”，我听见的不是语气，是失望。</p>
+<p>还有一点，是我事后才想明白的：我把“求证”用错了地方。对事实该求证，对人该先给出基本的信任。朋友跟我说的是他身边的事，我没有在场，凭什么用“我感觉不会”去否定别人的亲眼所见？我的经验不是尺子，量不了别人的人生。这句话我记住了。</p>
+<p>我认这个检讨。不是为了交差，是这件事我确实做得不像样。以后我打算这样改：</p>
+<ol class="fix">
+<li><b>先接住话，再谈看法。</b>别人讲完，我先说“我听听”，而不是“不可能”。真有疑问，把“你骗人吧”换成“我想再确认下”。</li>
+<li><b>把“放屁吧”这类词，从对着人说的话里删掉。</b>可以不同意观点，但别拿话往人身上砸。</li>
+<li><b>分清场合。</b>私下讨论可以较真，朋友分享情绪的时候，先陪着，别急着纠错。</li>
+<li><b>也是最重要的：信任是选出来的，不是验出来的。</b>我相信这个人，就不必事事要他先自证清白。他要真的说错了，我们笑着改就是；可我要一开始就不信，那连笑的余地都没有了。</li>
+</ol>
+<p>写到这里，一千字差不多。我知道检讨写得再好，抵不过当天那句“放屁吧”伤人。所以我更愿意用后面的话和后面的态度来补。朋友肯让我写这份检讨，说明还愿意给我机会，这份机会我接住。</p>
+  </article>
+
+  <div class="final">
+    <p>下次你再说一件事，<br><span class="jade">我先说“我在听”。</span></p>
+  </div>
+
+  <div class="sign">
+    <div class="name">检讨人：本人</div>
+    <div>2026 年 11 月 2 日</div>
+  </div>
+
+  <footer>字数约一千 · 手写于心，非机写于纸</footer>
+
+</div>
+
+</body>
+</html>
